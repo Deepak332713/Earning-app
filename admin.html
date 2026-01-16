@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MASTER GOD v24.0 - MAX PRO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        
+        :root { 
+            --main-bg: #020617; 
+            --card-bg: #0f172a; 
+            --accent: #3b82f6; 
+            --border: rgba(255, 255, 255, 0.1);
+            --success: #10b981;
+        }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--main-bg); 
+            color: #f8fafc; margin: 0; padding: 0; 
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* --- LOGIN PAGE PRE-INSTALLED LOOK --- */
+        #login-page { 
+            position: fixed; inset: 0; 
+            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%); 
+            display: flex; align-items: center; justify-content: center; 
+            z-index: 100000; padding: 20px; 
+        }
+        .login-card { 
+            background: rgba(15, 23, 42, 0.85); 
+            backdrop-filter: blur(50px); 
+            border: 1px solid var(--border); 
+            padding: 50px 30px; border-radius: 45px; 
+            width: 100%; max-width: 420px; 
+            text-align: center; box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+        }
+
+        /* --- DASHBOARD SECTION --- */
+        #admin-panel { display: none; padding: 15px; }
+        
+        .main-header {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            padding: 20px; border-radius: 25px;
+            margin-bottom: 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        /* --- 4 COLUMN GRID --- */
+        .folder-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 10px; 
+            padding: 0 5px 100px 5px; 
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .folder-card {
+            background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%); 
+            border: 1px solid var(--border);
+            border-radius: 18px; 
+            display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            padding: 12px 4px;
+            transition: all 0.3s ease;
+            aspect-ratio: 1/1;
+            overflow: hidden;
+        }
+        .folder-card:active { transform: scale(0.9); border-color: var(--accent); }
+        .folder-card i { font-size: 1.2rem; margin-bottom: 6px; }
+        
+        .folder-card h3 { 
+            font-size: 7.5px; 
+            font-weight: 800; 
+            text-transform: uppercase; color: #ffffff; 
+            text-align: center; width: 100%;
+            line-height: 1.2;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+
+        /* --- INPUTS & BUTTONS --- */
+        .custom-input { 
+            background: rgba(0,0,0,0.3) !important; 
+            border: 1px solid rgba(255,255,255,0.1) !important; 
+            color: #fff !important; border-radius: 15px; padding: 18px; 
+            width: 100%; font-weight: 600; outline: none; margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .btn-sync { 
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8); 
+            color: white; width: 100%; padding: 18px; 
+            border-radius: 22px; font-weight: 900; 
+            text-transform: uppercase; border: none;
+            letter-spacing: 1px;
+        }
+
+        /* --- MODULE OVERLAY --- */
+        .tab-view { 
+            display: none; position: fixed; inset: 0; 
+            background: #020617; z-index: 90000; 
+            overflow-y: auto; padding: 30px 20px; 
+        }
+        .tab-view.active { display: block; }
+        
+        .module-container {
+            background: #0f172a; 
+            border-radius: 35px; 
+            padding: 40px 20px; 
+            border: 1px solid var(--border); 
+            max-width: 500px; 
+            margin: 0 auto; 
+            text-align: center;
+            position: relative;
+        }
+
+        .db-path {
+            font-size: 10px;
+            color: #64748b;
+            margin-bottom: 20px;
+            font-family: monospace;
+            background: rgba(0,0,0,0.2);
+            padding: 5px 12px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-page">
+        <div class="login-card">
+            <div class="mb-6 inline-flex p-6 rounded-full bg-blue-500/10 text-blue-500 text-6xl">
+                <i class="fas fa-fingerprint"></i>
+            </div>
+            <h1 class="text-4xl font-black mb-1 italic">MASTER<span class="text-blue-500">GOD</span></h1>
+            <p class="text-[10px] text-slate-500 mb-10 uppercase tracking-[4px] font-bold">Cloud Authentication Active</p>
+            
+            <input type="email" id="auth-email" placeholder="Your Registered Email" class="custom-input">
+            <input type="password" id="auth-pass" placeholder="Secure Password" class="custom-input">
+            
+            <button onclick="handleCloudLogin()" class="btn-sync" id="auth-btn">Authorize Entry</button>
+        </div>
+    </div>
+
+    <div id="admin-panel">
+        <div class="main-header">
+            <div>
+                <h1 class="text-xl font-black italic">GOD<span class="text-blue-500">.</span>HUB</h1>
+                <p class="text-[8px] text-emerald-500 font-bold uppercase tracking-widest">● System Encryption Active</p>
+            </div>
+            <button onclick="location.reload()" class="h-10 w-10 bg-red-500/10 text-red-500 rounded-xl flex items-center justify-center border border-red-500/20"><i class="fas fa-power-off text-sm"></i></button>
+        </div>
+
+        <div class="folder-grid" id="main-grid"></div>
+    </div>
+
+    <div id="universal-tab" class="tab-view">
+        <div class="flex items-center justify-between mb-8 px-2">
+            <button onclick="closeFolder()" class="h-12 w-12 bg-slate-900 border border-white/10 rounded-2xl flex items-center justify-center"><i class="fas fa-arrow-left"></i></button>
+            <h2 id="tab-title" class="text-lg font-black italic uppercase tracking-wider">MODULE</h2>
+            <div class="h-12 w-12 flex items-center justify-center text-emerald-500 bg-emerald-500/10 rounded-full border border-emerald-500/20">
+                <i class="fas fa-circle text-[8px]"></i>
+            </div>
+        </div>
+        <div id="tab-content"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCPvpgRkqIEdpmrvKWh-GBS04BQj2_8SAI",
+            authDomain: "earning-app-c048f.firebaseapp.com",
+            databaseURL: "https://earning-app-c048f-default-rtdb.firebaseio.com",
+            projectId: "earning-app-c048f",
+            storageBucket: "earning-app-c048f.firebasestorage.app",
+            messagingSenderId: "1089921883808",
+            appId: "1:1089921883808:web:b09e829bd2017be218f3c5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        const folders = [
+            {id:"withdraw", hi:"Withdrawal", i:"wallet", c:"#fb923c", p:"Enter Amount Status"},
+            {id:"users", hi:"User List", i:"users", c:"#4ade80", p:"Search User ID"}, 
+            {id:"tasks", hi:"Task Control", i:"tasks", c:"#60a5fa", p:"Task Reward Value"},
+            {id:"promo", hi:"Promo Code", i:"ticket-alt", c:"#c084fc", p:"New Promo Code"},
+            {id:"refer", hi:"Refer System", i:"gift", c:"#f87171", p:"Points per Refer"},
+            {id:"daily", hi:"Daily Login", i:"calendar-check", c:"#facc15", p:"Daily Bonus Amount"},
+            {id:"security", hi:"Firewall", i:"shield-alt", c:"#ef4444", p:"System Protection Mode"},
+            {id:"ads", hi:"Ads Manager", i:"play-circle", c:"#38bdf8", p:"Ad Unit ID"},
+            {id:"leader", hi:"Leaderboard", i:"trophy", c:"#fbbf24", p:"Ranking Limit"},
+            {id:"notice", hi:"Global News", i:"bullhorn", c:"#a855f7", p:"Enter Global Notice"},
+            {id:"limits", hi:"App Limits", i:"clock", c:"#94a3b8", p:"Max Daily Limit"},
+            {id:"settings", hi:"System Config", i:"cog", c:"#ffffff", p:"Server Key Value"},
+            {id:"giftcard", hi:"Redeem Card", i:"key", c:"#60a5fa", p:"Gift Card Code"},
+            {id:"aicheat", hi:"AI Guard", i:"robot", c:"#f87171", p:"Anti-Cheat Level"},
+            {id:"stats", hi:"Live Stats", i:"chart-bar", c:"#4ade80", p:"Stat Refresh Rate"},
+            {id:"update", hi:"App Update", i:"sync-alt", c:"#fb923c", p:"Latest Version Code"},
+            {id:"rich", hi:"Notifications", i:"bell", c:"#c084fc", p:"Broadcast Message"},
+            {id:"minpay", hi:"Min Payout", i:"minus-circle", c:"#f87171", p:"Minimum Payout"},
+            {id:"maint", hi:"Maintenance", i:"server", c:"#60a5fa", p:"Maintenance Status"},
+            {id:"bonus", hi:"Extra Bonus", i:"coins", c:"#facc15", p:"Extra Bonus Value"},
+            {id:"logs", hi:"Activity Logs", i:"history", c:"#94a3b8", p:"Activity Log Path"},
+            {id:"backup", hi:"Database", i:"database", c:"#4ade80", p:"Auto Backup Path"},
+            {id:"mail", hi:"Broadcast", i:"envelope", c:"#38bdf8", p:"Mail Content"},
+            {id:"support", hi:"Help Center", i:"headset", c:"#60a5fa", p:"Support Link"},
+            {id:"verify", hi:"KYC Verify", i:"user-check", c:"#4ade80", p:"KYC Status Code"},
+            {id:"banners", hi:"Banner Ads", i:"images", c:"#c084fc", p:"Banner Image URL"},
+            {id:"scratch", hi:"Scratch Card", i:"layer-group", c:"#facc15", p:"Scratch Points"},
+            {id:"banlog", hi:"Blacklist", i:"user-slash", c:"#ef4444", p:"Banned User ID"},
+            {id:"filters", hi:"IP Filter", i:"filter", c:"#fb923c", p:"IP Block Range"},
+            {id:"files", hi:"Cloud Storage", i:"folder-open", c:"#94a3b8", p:"Cloud Path"},
+            {id:"devices", hi:"ID Blocker", i:"mobile-alt", c:"#f87171", p:"Device ID Block"},
+            {id:"spin", hi:"Lucky Spin", i:"dharmachakra", c:"#facc15", p:"Spin Reward Value"},
+            {id:"news", hi:"News Feed", i:"newspaper", c:"#38bdf8", p:"News API Key"},
+            {id:"streak", hi:"User Streak", i:"fire", c:"#fb923c", p:"Daily Streak Goal"},
+            {id:"vpn", hi:"VPN Blocker", i:"shield-virus", c:"#a855f7", p:"VPN Status Detection"},
+            {id:"target", hi:"Milestones", i:"bullseye", c:"#ef4444", p:"Milestone Points"},
+            {id:"prize", hi:"Jackpot", i:"crown", c:"#fbbf24", p:"Winning Amount"},
+            {id:"otp", hi:"SMS Gateway", i:"sms", c:"#60a5fa", p:"OTP Gateway ID"},
+            {id:"voice", hi:"Voice Alert", i:"microphone", c:"#c084fc", p:"Alert URL"},
+            {id:"scheduler", hi:"Cron Job", i:"calendar-alt", c:"#94a3b8", p:"Cron Timer Value"},
+            {id:"jackpot", hi:"Mega Prize", i:"gem", c:"#fbbf24", p:"Prize Pool Value"},
+            {id:"recblock", hi:"Rec Blocker", i:"video-slash", c:"#ef4444", p:"Recorder Sensitivity"},
+            {id:"deeplink", hi:"Smart Link", i:"link", c:"#38bdf8", p:"Smart Link URL"},
+            {id:"rating", hi:"App Review", i:"star", c:"#facc15", p:"Review Link URL"},
+            {id:"forceup", hi:"Hard Update", i:"arrow-circle-up", c:"#60a5fa", p:"Force Version"},
+            {id:"multi", hi:"Multiplier", i:"bolt", c:"#fb923c", p:"Earning Multiplier"},
+            {id:"themes", hi:"Theme Lab", i:"palette", c:"#c084fc", p:"Custom Theme Hex"},
+            {id:"auto", hi:"Automation", i:"magic", c:"#4ade80", p:"Automation Script"},
+            {id:"view-bal", hi:"Wallet Check", i:"eye", c:"#10b981", p:"User Balance Check"},
+            {id:"edit-bal", hi:"Admin Edit", i:"edit", c:"#ef4444", p:"Manual Balance Edit"}
+        ];
+
+        window.handleCloudLogin = async () => {
+            const email = document.getElementById('auth-email').value;
+            const pass = document.getElementById('auth-pass').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+                renderGrid();
+            } catch (e) { alert("Access Denied: Invalid Key"); }
+        };
+
+        function renderGrid() {
+            const grid = document.getElementById('main-grid');
+            grid.innerHTML = folders.map(f => `
+                <div onclick="openFolder('${f.id}', '${f.hi}', '${f.i}', '${f.c}', '${f.p}')" class="folder-card">
+                    <i class="fas fa-${f.i}" style="color:${f.c}"></i>
+                    <h3>${f.hi}</h3>
+                </div>
+            `).join('');
+        }
+
+        window.openFolder = async (id, title, icon, color, placeholder) => {
+            document.getElementById('tab-title').innerText = title;
+            document.getElementById('universal-tab').classList.add('active');
+            
+            const snapshot = await get(ref(db, `config/${id}`));
+            const currentVal = snapshot.exists() ? snapshot.val() : "";
+
+            document.getElementById('tab-content').innerHTML = `
+                <div class="module-container" style="border-top: 5px solid ${color}">
+                    <div class="mb-6 inline-flex p-5 rounded-3xl bg-white/5 text-5xl" style="color:${color}">
+                        <i class="fas fa-${icon}"></i>
+                    </div>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Configuring Module</p>
+                    <h2 class="text-2xl font-black mb-1 italic uppercase">${title}</h2>
+                    <div class="db-path">database path: /config/${id}</div>
+                    
+                    <div class="text-left px-2">
+                        <label class="text-[10px] uppercase font-bold text-slate-500 mb-2 block tracking-widest">SET VALUE FOR MODULE</label>
+                        <input type="text" id="sync-input" value="${currentVal}" placeholder="${placeholder}" class="custom-input">
+                    </div>
+
+                    <button onclick="cloudSync('${id}')" id="push-btn" class="btn-sync" style="background:${color}">
+                        SYNC WITH CLOUD
+                    </button>
+                    
+                    <p class="text-[9px] mt-6 text-slate-600 font-bold uppercase tracking-widest italic">master protocol encryption active</p>
+                </div>
+            `;
+        };
+
+        window.closeFolder = () => document.getElementById('universal-tab').classList.remove('active');
+
+        window.cloudSync = (id) => {
+            const val = document.getElementById('sync-input').value;
+            set(ref(db, `config/${id}`), val).then(() => { 
+                alert("Cloud Synced Successfully!"); 
+                closeFolder(); 
+            });
+        };
+    </script>
+</body>
+</html>
