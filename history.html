@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Transaction History - EarnZone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#22c55e',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-poppins bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen pb-20">
+    <!-- Header -->
+    <header class="bg-slate-900/80 backdrop-blur-lg sticky top-0 z-40 border-b border-slate-700/50">
+        <div class="max-w-lg mx-auto px-4 py-3 flex items-center">
+            <a href="wallet.html" class="p-2 text-slate-400 hover:text-white transition">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </a>
+            <h1 class="flex-1 text-center text-lg font-bold text-white">Transaction History</h1>
+            <button onclick="exportHistory()" class="p-2 text-slate-400 hover:text-white transition">
+                <i class="fas fa-download text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-lg mx-auto px-4 py-6">
+        <!-- Filter Tabs -->
+        <div class="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
+            <button onclick="filterTransactions('all')" class="filter-btn active px-4 py-2 rounded-full text-sm font-medium bg-primary text-white whitespace-nowrap">
+                All
+            </button>
+            <button onclick="filterTransactions('credit')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-slate-800 text-slate-400 whitespace-nowrap">
+                <i class="fas fa-arrow-down mr-1"></i>Credits
+            </button>
+            <button onclick="filterTransactions('debit')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-slate-800 text-slate-400 whitespace-nowrap">
+                <i class="fas fa-arrow-up mr-1"></i>Withdrawals
+            </button>
+            <button onclick="filterTransactions('pending')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-slate-800 text-slate-400 whitespace-nowrap">
+                <i class="fas fa-clock mr-1"></i>Pending
+            </button>
+        </div>
+
+        <!-- Summary -->
+        <div class="grid grid-cols-2 gap-3 mb-6">
+            <div class="bg-green-500/10 border border-green-500/30 rounded-xl p-4">
+                <p class="text-slate-400 text-sm">Total Credited</p>
+                <p class="text-xl font-bold text-green-400" id="totalCredit">₹0</p>
+            </div>
+            <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-4">
+                <p class="text-slate-400 text-sm">Total Debited</p>
+                <p class="text-xl font-bold text-red-400" id="totalDebit">₹0</p>
+            </div>
+        </div>
+
+        <!-- Transactions List -->
+        <div class="space-y-4" id="transactionsList">
+            <!-- Transactions will be grouped by date -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-12">
+            <div class="w-20 h-20 bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-receipt text-3xl text-slate-500"></i>
+            </div>
+            <p class="text-slate-400 mb-2">No transactions found</p>
+            <p class="text-slate-500 text-sm">Start earning to see your history here</p>
+            <a href="tasks.html" class="inline-block mt-4 bg-primary px-6 py-2 rounded-lg text-white font-medium">
+                Start Earning
+            </a>
+        </div>
+
+        <!-- Load More -->
+        <button onclick="loadMore()" id="loadMoreBtn" class="hidden w-full mt-6 bg-slate-800/50 border border-slate-700 py-3 rounded-xl text-slate-400 font-medium hover:bg-slate-800 transition">
+            <i class="fas fa-chevron-down mr-2"></i>Load More
+        </button>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-t border-slate-700/50 z-40">
+        <div class="max-w-lg mx-auto px-4">
+            <div class="flex items-center justify-around py-2">
+                <a href="index.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-home text-xl mb-1"></i>
+                    <span class="text-xs">Home</span>
+                </a>
+                <a href="tasks.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-tasks text-xl mb-1"></i>
+                    <span class="text-xs">Earn</span>
+                </a>
+                <a href="wallet.html" class="flex flex-col items-center py-2 px-4 text-primary">
+                    <i class="fas fa-wallet text-xl mb-1"></i>
+                    <span class="text-xs">Wallet</span>
+                </a>
+                <a href="referral.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-users text-xl mb-1"></i>
+                    <span class="text-xs">Refer</span>
+                </a>
+                <a href="profile.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-user text-xl mb-1"></i>
+                    <span class="text-xs">Profile</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Transaction Detail Modal -->
+    <div id="detailModal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 rounded-2xl p-6 w-full max-w-sm">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" id="detailIcon">
+                    <i class="fas fa-arrow-down text-3xl"></i>
+                </div>
+                <p class="text-3xl font-bold" id="detailAmount">₹0</p>
+                <p class="text-slate-400" id="detailStatus">Completed</p>
+            </div>
+
+            <div class="space-y-3 mb-6">
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Type</span>
+                    <span class="text-white" id="detailType">Credit</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Description</span>
+                    <span class="text-white" id="detailDesc">Task Reward</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Date</span>
+                    <span class="text-white" id="detailDate">-</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Time</span>
+                    <span class="text-white" id="detailTime">-</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Transaction ID</span>
+                    <span class="text-white font-mono text-sm" id="detailTxnId">-</span>
+                </div>
+            </div>
+
+            <button onclick="closeDetailModal()" class="w-full bg-primary py-3 rounded-xl text-white font-medium">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCPvpgRkqIEdpmrvKWh-GBS04BQj2_8SAI",
+            authDomain: "earning-app-c048f.firebaseapp.com",
+            databaseURL: "https://earning-app-c048f-default-rtdb.firebaseio.com",
+            projectId: "earning-app-c048f",
+            storageBucket: "earning-app-c048f.firebasestorage.app"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        let allTransactions = [];
+        let currentFilter = 'all';
+        let displayedCount = 0;
+        const ITEMS_PER_PAGE = 20;
+
+        const userId = localStorage.getItem('userId');
+        if (userId) {
+            loadTransactions();
+        }
+
+        function loadTransactions() {
+            database.ref('transactions/' + userId).orderByChild('timestamp').on('value', (snapshot) => {
+                allTransactions = [];
+                let totalCredit = 0;
+                let totalDebit = 0;
+
+                if (snapshot.exists()) {
+                    snapshot.forEach((child) => {
+                        const txn = { id: child.key, ...child.val() };
+                        allTransactions.push(txn);
+
+                        if (txn.type === 'credit') {
+                            totalCredit += txn.amount;
+                        } else {
+                            totalDebit += txn.amount;
+                        }
+                    });
+                }
+
+                allTransactions.reverse();
+                document.getElementById('totalCredit').textContent = '₹' + totalCredit;
+                document.getElementById('totalDebit').textContent = '₹' + totalDebit;
+
+                displayTransactions();
+            });
+        }
+
+        function displayTransactions() {
+            const container = document.getElementById('transactionsList');
+            const emptyState = document.getElementById('emptyState');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+            let filtered = allTransactions;
+            if (currentFilter !== 'all') {
+                if (currentFilter === 'pending') {
+                    filtered = allTransactions.filter(t => t.status === 'pending');
+                } else {
+                    filtered = allTransactions.filter(t => t.type === currentFilter);
+                }
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                loadMoreBtn.classList.add('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            container.innerHTML = '';
+            displayedCount = 0;
+
+            // Group by date
+            const grouped = {};
+            filtered.forEach(txn => {
+                const date = new Date(txn.timestamp).toLocaleDateString('hi-IN', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                if (!grouped[date]) grouped[date] = [];
+                grouped[date].push(txn);
+            });
+
+            for (const [date, transactions] of Object.entries(grouped)) {
+                if (displayedCount >= ITEMS_PER_PAGE) break;
+
+                let html = `
+                    <div class="mb-4">
+                        <p class="text-slate-400 text-sm mb-3">${date}</p>
+                        <div class="space-y-2">
+                `;
+
+                transactions.forEach(txn => {
+                    if (displayedCount >= ITEMS_PER_PAGE) return;
+
+                    const isCredit = txn.type === 'credit';
+                    const isPending = txn.status === 'pending';
+                    const time = new Date(txn.timestamp).toLocaleTimeString('hi-IN', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    html += `
+                        <div onclick="showDetail('${txn.id}')" class="flex items-center gap-3 bg-slate-800/50 rounded-xl p-3 border border-slate-700/50 hover:border-primary/50 transition cursor-pointer">
+                            <div class="w-10 h-10 ${isPending ? 'bg-yellow-500/20' : isCredit ? 'bg-green-500/20' : 'bg-red-500/20'} rounded-full flex items-center justify-center">
+                                <i class="fas fa-${isPending ? 'clock' : isCredit ? 'arrow-down' : 'arrow-up'} ${isPending ? 'text-yellow-400' : isCredit ? 'text-green-400' : 'text-red-400'}"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-white font-medium">${txn.description || 'Transaction'}</p>
+                                <p class="text-slate-500 text-xs">${time} ${isPending ? '• Pending' : ''}</p>
+                            </div>
+                            <span class="${isPending ? 'text-yellow-400' : isCredit ? 'text-green-400' : 'text-red-400'} font-semibold">
+                                ${isCredit ? '+' : '-'}₹${txn.amount}
+                            </span>
+                        </div>
+                    `;
+
+                    displayedCount++;
+                });
+
+                html += '</div></div>';
+                container.innerHTML += html;
+            }
+
+            // Show load more if there are more transactions
+            if (displayedCount < filtered.length) {
+                loadMoreBtn.classList.remove('hidden');
+            } else {
+                loadMoreBtn.classList.add('hidden');
+            }
+        }
+
+        function filterTransactions(filter) {
+            currentFilter = filter;
+
+            // Update button styles
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-primary', 'text-white');
+                btn.classList.add('bg-slate-800', 'text-slate-400');
+            });
+            event.target.classList.add('active', 'bg-primary', 'text-white');
+            event.target.classList.remove('bg-slate-800', 'text-slate-400');
+
+            displayTransactions();
+        }
+
+        function loadMore() {
+            const ITEMS_PER_PAGE_INCREASE = 20;
+            // Implementation would continue loading more items
+            alert('Loading more transactions...');
+        }
+
+        function showDetail(txnId) {
+            const txn = allTransactions.find(t => t.id === txnId);
+            if (!txn) return;
+
+            const isCredit = txn.type === 'credit';
+            const isPending = txn.status === 'pending';
+
+            const iconDiv = document.getElementById('detailIcon');
+            iconDiv.className = `w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${isPending ? 'bg-yellow-500/20' : isCredit ? 'bg-green-500/20' : 'bg-red-500/20'}`;
+            iconDiv.innerHTML = `<i class="fas fa-${isPending ? 'clock' : isCredit ? 'arrow-down' : 'arrow-up'} text-3xl ${isPending ? 'text-yellow-400' : isCredit ? 'text-green-400' : 'text-red-400'}"></i>`;
+
+            document.getElementById('detailAmount').textContent = (isCredit ? '+' : '-') + '₹' + txn.amount;
+            document.getElementById('detailAmount').className = `text-3xl font-bold ${isPending ? 'text-yellow-400' : isCredit ? 'text-green-400' : 'text-red-400'}`;
+            document.getElementById('detailStatus').textContent = isPending ? 'Pending' : 'Completed';
+            document.getElementById('detailType').textContent = isCredit ? 'Credit' : 'Debit';
+            document.getElementById('detailDesc').textContent = txn.description || 'Transaction';
+            document.getElementById('detailDate').textContent = new Date(txn.timestamp).toLocaleDateString('hi-IN');
+            document.getElementById('detailTime').textContent = new Date(txn.timestamp).toLocaleTimeString('hi-IN');
+            document.getElementById('detailTxnId').textContent = txn.txnId || txnId;
+
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+        function exportHistory() {
+            let csv = 'Date,Time,Type,Description,Amount,Status\n';
+
+            allTransactions.forEach(txn => {
+                const date = new Date(txn.timestamp).toLocaleDateString('hi-IN');
+                const time = new Date(txn.timestamp).toLocaleTimeString('hi-IN');
+                csv += `${date},${time},${txn.type},${txn.description || 'Transaction'},${txn.amount},${txn.status || 'completed'}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'earnzone_history.csv';
+            a.click();
+        }
+    </script>
+</body>
+</html>

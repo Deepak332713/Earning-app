@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Surveys - EarnZone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#22c55e',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-poppins bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen pb-20">
+    <!-- Header -->
+    <header class="bg-slate-900/80 backdrop-blur-lg sticky top-0 z-40 border-b border-slate-700/50">
+        <div class="max-w-lg mx-auto px-4 py-3 flex items-center">
+            <a href="dashboard.html" class="p-2 text-slate-400 hover:text-white transition">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </a>
+            <h1 class="flex-1 text-center text-lg font-bold text-white">Surveys</h1>
+            <div class="w-10"></div>
+        </div>
+    </header>
+
+    <main class="max-w-lg mx-auto px-4 py-6">
+        <!-- Survey Stats -->
+        <div class="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl p-4 mb-6 border border-purple-500/30">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-slate-400 text-sm">Survey Earnings</p>
+                    <p class="text-2xl font-bold text-white">₹<span id="surveyEarnings">0</span></p>
+                </div>
+                <div class="text-right">
+                    <p class="text-slate-400 text-sm">Surveys Done</p>
+                    <p class="text-2xl font-bold text-purple-400" id="surveysCompleted">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Survey Tips -->
+        <div class="bg-slate-800/50 backdrop-blur rounded-xl p-4 mb-6 border border-slate-700/50">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-yellow-500/20 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-lightbulb text-yellow-400"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-1">Pro Tips</h4>
+                    <ul class="text-slate-400 text-sm space-y-1">
+                        <li>• Honest answers = More surveys</li>
+                        <li>• Complete profile for better matches</li>
+                        <li>• Check daily for new surveys</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Surveys -->
+        <h3 class="text-lg font-bold text-white mb-4">
+            <i class="fas fa-poll text-purple-400 mr-2"></i>Available Surveys
+        </h3>
+
+        <div class="space-y-3" id="surveyList">
+            <!-- Survey 1 -->
+            <div class="survey-card bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 hover:border-purple-500/50 transition">
+                <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-shopping-cart text-2xl text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <h4 class="text-white font-semibold">Shopping Habits Survey</h4>
+                            <span class="bg-green-500/20 text-green-400 text-xs px-2 py-0.5 rounded-full">NEW</span>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-2">Share your online shopping preferences</p>
+                        <div class="flex items-center gap-4 text-xs">
+                            <span class="text-slate-500"><i class="fas fa-clock mr-1"></i>5 min</span>
+                            <span class="text-slate-500"><i class="fas fa-question-circle mr-1"></i>15 questions</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xl font-bold text-green-400">₹25</p>
+                        <button onclick="startSurvey('shopping')" class="mt-2 bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-1.5 rounded-lg text-white text-sm font-medium">
+                            Start
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Survey 2 -->
+            <div class="survey-card bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 hover:border-purple-500/50 transition">
+                <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-mobile-alt text-2xl text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <h4 class="text-white font-semibold">Mobile Usage Survey</h4>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-2">Tell us about your smartphone usage</p>
+                        <div class="flex items-center gap-4 text-xs">
+                            <span class="text-slate-500"><i class="fas fa-clock mr-1"></i>8 min</span>
+                            <span class="text-slate-500"><i class="fas fa-question-circle mr-1"></i>20 questions</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xl font-bold text-green-400">₹40</p>
+                        <button onclick="startSurvey('mobile')" class="mt-2 bg-gradient-to-r from-blue-500 to-cyan-500 px-4 py-1.5 rounded-lg text-white text-sm font-medium">
+                            Start
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Survey 3 -->
+            <div class="survey-card bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 hover:border-purple-500/50 transition">
+                <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-utensils text-2xl text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <h4 class="text-white font-semibold">Food Preferences Survey</h4>
+                            <span class="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-0.5 rounded-full">HOT</span>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-2">Share your dining and food choices</p>
+                        <div class="flex items-center gap-4 text-xs">
+                            <span class="text-slate-500"><i class="fas fa-clock mr-1"></i>6 min</span>
+                            <span class="text-slate-500"><i class="fas fa-question-circle mr-1"></i>18 questions</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xl font-bold text-green-400">₹30</p>
+                        <button onclick="startSurvey('food')" class="mt-2 bg-gradient-to-r from-green-500 to-emerald-500 px-4 py-1.5 rounded-lg text-white text-sm font-medium">
+                            Start
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Survey 4 -->
+            <div class="survey-card bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 hover:border-purple-500/50 transition">
+                <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-film text-2xl text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-white font-semibold mb-1">Entertainment Survey</h4>
+                        <p class="text-slate-400 text-sm mb-2">Your streaming and movie preferences</p>
+                        <div class="flex items-center gap-4 text-xs">
+                            <span class="text-slate-500"><i class="fas fa-clock mr-1"></i>10 min</span>
+                            <span class="text-slate-500"><i class="fas fa-question-circle mr-1"></i>25 questions</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xl font-bold text-green-400">₹50</p>
+                        <button onclick="startSurvey('entertainment')" class="mt-2 bg-gradient-to-r from-red-500 to-orange-500 px-4 py-1.5 rounded-lg text-white text-sm font-medium">
+                            Start
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Survey 5 -->
+            <div class="survey-card bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 hover:border-purple-500/50 transition">
+                <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-r from-indigo-500 to-violet-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-car text-2xl text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <h4 class="text-white font-semibold">Travel Survey</h4>
+                            <span class="bg-purple-500/20 text-purple-400 text-xs px-2 py-0.5 rounded-full">PREMIUM</span>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-2">Your travel and vacation habits</p>
+                        <div class="flex items-center gap-4 text-xs">
+                            <span class="text-slate-500"><i class="fas fa-clock mr-1"></i>12 min</span>
+                            <span class="text-slate-500"><i class="fas fa-question-circle mr-1"></i>30 questions</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xl font-bold text-green-400">₹75</p>
+                        <button onclick="startSurvey('travel')" class="mt-2 bg-gradient-to-r from-indigo-500 to-violet-500 px-4 py-1.5 rounded-lg text-white text-sm font-medium">
+                            Start
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Survey 6 - High Value -->
+            <div class="survey-card bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-xl p-4 border border-yellow-500/30">
+                <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-building text-2xl text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <h4 class="text-white font-semibold">Brand Awareness Survey</h4>
+                            <span class="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-0.5 rounded-full">₹200</span>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-2">Detailed brand preference study</p>
+                        <div class="flex items-center gap-4 text-xs">
+                            <span class="text-slate-500"><i class="fas fa-clock mr-1"></i>20 min</span>
+                            <span class="text-slate-500"><i class="fas fa-question-circle mr-1"></i>50 questions</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xl font-bold text-yellow-400">₹200</p>
+                        <button onclick="startSurvey('brand')" class="mt-2 bg-gradient-to-r from-yellow-500 to-orange-500 px-4 py-1.5 rounded-lg text-white text-sm font-medium">
+                            Start
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No More Surveys -->
+        <div class="mt-6 text-center">
+            <p class="text-slate-500 text-sm">More surveys coming soon!</p>
+            <p class="text-slate-600 text-xs mt-1">Check back in a few hours</p>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-t border-slate-700/50 z-40">
+        <div class="max-w-lg mx-auto px-4">
+            <div class="flex items-center justify-around py-2">
+                <a href="index.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-home text-xl mb-1"></i>
+                    <span class="text-xs">Home</span>
+                </a>
+                <a href="tasks.html" class="flex flex-col items-center py-2 px-4 text-primary">
+                    <i class="fas fa-tasks text-xl mb-1"></i>
+                    <span class="text-xs">Earn</span>
+                </a>
+                <a href="wallet.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-wallet text-xl mb-1"></i>
+                    <span class="text-xs">Wallet</span>
+                </a>
+                <a href="referral.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-users text-xl mb-1"></i>
+                    <span class="text-xs">Refer</span>
+                </a>
+                <a href="profile.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-user text-xl mb-1"></i>
+                    <span class="text-xs">Profile</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Survey Modal -->
+    <div id="surveyModal" class="hidden fixed inset-0 bg-slate-900/95 z-50 flex flex-col">
+        <header class="bg-slate-800 px-4 py-3 flex items-center">
+            <button onclick="closeSurvey()" class="p-2 text-slate-400 hover:text-white transition">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <h2 class="flex-1 text-center text-lg font-bold text-white" id="surveyTitle">Survey</h2>
+            <div class="text-primary font-medium" id="surveyProgress">1/10</div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-4">
+            <div class="max-w-lg mx-auto">
+                <!-- Progress Bar -->
+                <div class="w-full h-2 bg-slate-700 rounded-full mb-6">
+                    <div class="h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all" id="progressBar" style="width: 10%"></div>
+                </div>
+
+                <!-- Question -->
+                <div id="questionContainer">
+                    <h3 class="text-xl text-white font-semibold mb-6" id="questionText">Loading question...</h3>
+
+                    <div class="space-y-3" id="answersContainer">
+                        <!-- Answers will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-slate-800 p-4">
+            <div class="max-w-lg mx-auto flex gap-3">
+                <button onclick="prevQuestion()" id="prevBtn" class="flex-1 bg-slate-700 py-3 rounded-xl text-white font-medium disabled:opacity-50" disabled>
+                    <i class="fas fa-arrow-left mr-2"></i>Previous
+                </button>
+                <button onclick="nextQuestion()" id="nextBtn" class="flex-1 bg-gradient-to-r from-primary to-secondary py-3 rounded-xl text-white font-medium">
+                    Next<i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Survey Complete Modal -->
+    <div id="completeModal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 rounded-2xl p-8 text-center max-w-sm w-full">
+            <div class="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check-circle text-4xl text-green-500"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Survey Completed!</h3>
+            <p class="text-slate-400 mb-4">Thank you for your responses</p>
+            <p class="text-3xl font-bold text-green-400 mb-6">₹<span id="earnedAmount">0</span> Earned!</p>
+            <button onclick="closeCompleteModal()" class="w-full bg-gradient-to-r from-primary to-secondary py-3 rounded-xl text-white font-medium">
+                Continue
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentSurvey = null;
+        let currentQuestion = 0;
+        let selectedAnswers = [];
+
+        const surveys = {
+            shopping: {
+                title: 'Shopping Habits Survey',
+                reward: 25,
+                questions: [
+                    { q: 'How often do you shop online?', a: ['Daily', 'Weekly', '2-3 times a month', 'Rarely'] },
+                    { q: 'Which platform do you prefer for online shopping?', a: ['Amazon', 'Flipkart', 'Meesho', 'Other'] },
+                    { q: 'What do you mainly buy online?', a: ['Electronics', 'Clothes', 'Groceries', 'All of above'] },
+                    { q: 'How much do you spend monthly on online shopping?', a: ['Below ₹1000', '₹1000-₹5000', '₹5000-₹10000', 'Above ₹10000'] },
+                    { q: 'What influences your purchase decision?', a: ['Price', 'Reviews', 'Brand', 'Offers/Discounts'] }
+                ]
+            },
+            mobile: {
+                title: 'Mobile Usage Survey',
+                reward: 40,
+                questions: [
+                    { q: 'How many hours do you use your phone daily?', a: ['1-2 hours', '3-4 hours', '5-6 hours', 'More than 6 hours'] },
+                    { q: 'Which brand is your current phone?', a: ['Samsung', 'iPhone', 'Xiaomi/Redmi', 'Other'] },
+                    { q: 'What do you mainly use your phone for?', a: ['Social Media', 'Gaming', 'Work/Study', 'Entertainment'] },
+                    { q: 'How often do you change your phone?', a: ['Every year', 'Every 2 years', 'Every 3+ years', 'When it breaks'] },
+                    { q: 'Which mobile network do you use?', a: ['Jio', 'Airtel', 'Vi', 'BSNL'] }
+                ]
+            },
+            food: {
+                title: 'Food Preferences Survey',
+                reward: 30,
+                questions: [
+                    { q: 'How often do you order food online?', a: ['Daily', '2-3 times/week', 'Weekly', 'Rarely'] },
+                    { q: 'Which app do you prefer for food delivery?', a: ['Zomato', 'Swiggy', 'Direct restaurant', 'Other'] },
+                    { q: 'What type of cuisine do you prefer?', a: ['Indian', 'Chinese', 'Fast Food', 'Continental'] },
+                    { q: 'Average order value for food delivery?', a: ['Below ₹200', '₹200-₹500', '₹500-₹1000', 'Above ₹1000'] },
+                    { q: 'What matters most when ordering food?', a: ['Taste', 'Price', 'Delivery time', 'Hygiene ratings'] }
+                ]
+            },
+            entertainment: {
+                title: 'Entertainment Survey',
+                reward: 50,
+                questions: [
+                    { q: 'Which streaming platform do you use most?', a: ['Netflix', 'Amazon Prime', 'Hotstar', 'YouTube Premium'] },
+                    { q: 'How many hours of content do you watch daily?', a: ['1-2 hours', '2-4 hours', '4-6 hours', 'More'] },
+                    { q: 'What type of content do you prefer?', a: ['Movies', 'Web Series', 'Sports', 'News/Documentaries'] },
+                    { q: 'How much do you spend on subscriptions monthly?', a: ['Free only', 'Below ₹500', '₹500-₹1000', 'Above ₹1000'] },
+                    { q: 'Do you prefer watching alone or with family?', a: ['Alone', 'With family', 'With friends', 'Depends'] }
+                ]
+            },
+            travel: {
+                title: 'Travel Survey',
+                reward: 75,
+                questions: [
+                    { q: 'How often do you travel for leisure?', a: ['Monthly', 'Every few months', 'Once a year', 'Rarely'] },
+                    { q: 'Preferred mode of travel?', a: ['Flight', 'Train', 'Bus', 'Personal vehicle'] },
+                    { q: 'Which app do you use for booking?', a: ['MakeMyTrip', 'Goibibo', 'IRCTC', 'Direct website'] },
+                    { q: 'Average travel budget?', a: ['Below ₹5000', '₹5000-₹15000', '₹15000-₹30000', 'Above ₹30000'] },
+                    { q: 'Preferred type of accommodation?', a: ['Budget hotels', '3-star hotels', '5-star hotels', 'Homestays'] }
+                ]
+            },
+            brand: {
+                title: 'Brand Awareness Survey',
+                reward: 200,
+                questions: [
+                    { q: 'Which smartphone brand do you trust most?', a: ['Apple', 'Samsung', 'OnePlus', 'Xiaomi'] },
+                    { q: 'Which e-commerce brand is most reliable?', a: ['Amazon', 'Flipkart', 'Myntra', 'Ajio'] },
+                    { q: 'Which payment app do you prefer?', a: ['Google Pay', 'PhonePe', 'Paytm', 'Amazon Pay'] },
+                    { q: 'Which food delivery brand is best?', a: ['Zomato', 'Swiggy', 'EatSure', 'Other'] },
+                    { q: 'Which bank do you trust most?', a: ['SBI', 'HDFC', 'ICICI', 'Kotak'] },
+                    { q: 'Which OTT platform has best content?', a: ['Netflix', 'Amazon Prime', 'Disney+ Hotstar', 'Sony Liv'] },
+                    { q: 'Which social media do you use most?', a: ['Instagram', 'Facebook', 'YouTube', 'Twitter/X'] },
+                    { q: 'Which car brand do you prefer?', a: ['Maruti', 'Hyundai', 'Tata', 'Mahindra'] }
+                ]
+            }
+        };
+
+        function startSurvey(surveyId) {
+            currentSurvey = surveys[surveyId];
+            if (!currentSurvey) return;
+
+            currentQuestion = 0;
+            selectedAnswers = new Array(currentSurvey.questions.length).fill(null);
+
+            document.getElementById('surveyTitle').textContent = currentSurvey.title;
+            document.getElementById('surveyModal').classList.remove('hidden');
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = currentSurvey.questions[currentQuestion];
+            const total = currentSurvey.questions.length;
+
+            document.getElementById('questionText').textContent = q.q;
+            document.getElementById('surveyProgress').textContent = `${currentQuestion + 1}/${total}`;
+            document.getElementById('progressBar').style.width = `${((currentQuestion + 1) / total) * 100}%`;
+
+            const answersContainer = document.getElementById('answersContainer');
+            answersContainer.innerHTML = q.a.map((answer, index) => `
+                <button onclick="selectAnswer(${index})" class="answer-btn w-full p-4 rounded-xl text-left transition ${selectedAnswers[currentQuestion] === index ? 'bg-primary text-white' : 'bg-slate-800/50 text-white hover:bg-slate-700'}">
+                    <span class="inline-block w-6 h-6 rounded-full border-2 ${selectedAnswers[currentQuestion] === index ? 'bg-white border-white' : 'border-slate-500'} mr-3 text-center text-sm">
+                        ${selectedAnswers[currentQuestion] === index ? '✓' : String.fromCharCode(65 + index)}
+                    </span>
+                    ${answer}
+                </button>
+            `).join('');
+
+            // Update buttons
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+
+            if (currentQuestion === total - 1) {
+                document.getElementById('nextBtn').innerHTML = 'Submit<i class="fas fa-check ml-2"></i>';
+            } else {
+                document.getElementById('nextBtn').innerHTML = 'Next<i class="fas fa-arrow-right ml-2"></i>';
+            }
+        }
+
+        function selectAnswer(index) {
+            selectedAnswers[currentQuestion] = index;
+            loadQuestion();
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (selectedAnswers[currentQuestion] === null) {
+                alert('Please select an answer');
+                return;
+            }
+
+            if (currentQuestion < currentSurvey.questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                completeSurvey();
+            }
+        }
+
+        function completeSurvey() {
+            document.getElementById('surveyModal').classList.add('hidden');
+            document.getElementById('earnedAmount').textContent = currentSurvey.reward;
+            document.getElementById('completeModal').classList.remove('hidden');
+
+            // Update earnings display
+            const currentEarnings = parseInt(document.getElementById('surveyEarnings').textContent) || 0;
+            document.getElementById('surveyEarnings').textContent = currentEarnings + currentSurvey.reward;
+
+            const completed = parseInt(document.getElementById('surveysCompleted').textContent) || 0;
+            document.getElementById('surveysCompleted').textContent = completed + 1;
+        }
+
+        function closeSurvey() {
+            if (confirm('Are you sure you want to exit? Your progress will be lost.')) {
+                document.getElementById('surveyModal').classList.add('hidden');
+            }
+        }
+
+        function closeCompleteModal() {
+            document.getElementById('completeModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

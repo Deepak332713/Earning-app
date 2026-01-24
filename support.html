@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Support - EarnZone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#22c55e',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-poppins bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen pb-20">
+    <!-- Header -->
+    <header class="bg-slate-900/80 backdrop-blur-lg sticky top-0 z-40 border-b border-slate-700/50">
+        <div class="max-w-lg mx-auto px-4 py-3 flex items-center">
+            <a href="profile.html" class="p-2 text-slate-400 hover:text-white transition">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </a>
+            <h1 class="flex-1 text-center text-lg font-bold text-white">Help & Support</h1>
+            <div class="w-10"></div>
+        </div>
+    </header>
+
+    <main class="max-w-lg mx-auto px-4 py-6">
+        <!-- Support Banner -->
+        <div class="bg-gradient-to-r from-pink-500/20 to-purple-500/20 rounded-2xl p-6 mb-6 border border-pink-500/30 text-center">
+            <div class="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-headset text-3xl text-white"></i>
+            </div>
+            <h2 class="text-xl font-bold text-white mb-2">24/7 Customer Support</h2>
+            <p class="text-slate-400">We're here to help you anytime!</p>
+            <div class="flex items-center justify-center gap-2 mt-3 text-green-400">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                <span class="text-sm">Support Online</span>
+            </div>
+        </div>
+
+        <!-- Quick Contact -->
+        <div class="grid grid-cols-2 gap-3 mb-6">
+            <a href="https://wa.me/919876543210" target="_blank" class="bg-green-500/10 border border-green-500/30 rounded-xl p-4 text-center hover:bg-green-500/20 transition">
+                <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <i class="fab fa-whatsapp text-2xl text-green-400"></i>
+                </div>
+                <p class="text-white font-medium">WhatsApp</p>
+                <p class="text-slate-400 text-xs">Instant reply</p>
+            </a>
+
+            <a href="mailto:support@earnzone.app" class="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 text-center hover:bg-blue-500/20 transition">
+                <div class="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <i class="fas fa-envelope text-2xl text-blue-400"></i>
+                </div>
+                <p class="text-white font-medium">Email</p>
+                <p class="text-slate-400 text-xs">24hr response</p>
+            </a>
+        </div>
+
+        <!-- Live Chat -->
+        <button onclick="openChat()" class="w-full bg-gradient-to-r from-primary to-secondary rounded-xl p-4 mb-6 flex items-center gap-4 hover:opacity-90 transition">
+            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                <i class="fas fa-comments text-xl text-white"></i>
+            </div>
+            <div class="flex-1 text-left">
+                <p class="text-white font-semibold">Start Live Chat</p>
+                <p class="text-purple-200 text-sm">Average wait time: 2 min</p>
+            </div>
+            <i class="fas fa-arrow-right text-white"></i>
+        </button>
+
+        <!-- FAQ Section -->
+        <h3 class="text-lg font-bold text-white mb-3">
+            <i class="fas fa-question-circle text-primary mr-2"></i>Frequently Asked Questions
+        </h3>
+
+        <div class="space-y-3 mb-6">
+            <!-- FAQ 1 -->
+            <div class="faq-item bg-slate-800/50 backdrop-blur rounded-xl border border-slate-700/50 overflow-hidden">
+                <button onclick="toggleFAQ(this)" class="w-full flex items-center justify-between p-4 text-left">
+                    <span class="text-white font-medium">Withdrawal kaise kare?</span>
+                    <i class="fas fa-chevron-down text-slate-400 transition-transform"></i>
+                </button>
+                <div class="faq-answer hidden px-4 pb-4">
+                    <p class="text-slate-400 text-sm">
+                        1. Wallet section me jao<br>
+                        2. Withdraw button pe click karo<br>
+                        3. UPI/Paytm/Bank select karo<br>
+                        4. Amount enter karke submit karo<br>
+                        5. 1-24 hours me paisa aa jayega
+                    </p>
+                </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="faq-item bg-slate-800/50 backdrop-blur rounded-xl border border-slate-700/50 overflow-hidden">
+                <button onclick="toggleFAQ(this)" class="w-full flex items-center justify-between p-4 text-left">
+                    <span class="text-white font-medium">Minimum withdrawal kitna hai?</span>
+                    <i class="fas fa-chevron-down text-slate-400 transition-transform"></i>
+                </button>
+                <div class="faq-answer hidden px-4 pb-4">
+                    <p class="text-slate-400 text-sm">
+                        Minimum withdrawal amount ₹50 hai. UPI aur Paytm ke liye instant transfer hota hai. Bank transfer me 1-3 business days lag sakte hain.
+                    </p>
+                </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="faq-item bg-slate-800/50 backdrop-blur rounded-xl border border-slate-700/50 overflow-hidden">
+                <button onclick="toggleFAQ(this)" class="w-full flex items-center justify-between p-4 text-left">
+                    <span class="text-white font-medium">Task complete kiya but paisa nahi mila?</span>
+                    <i class="fas fa-chevron-down text-slate-400 transition-transform"></i>
+                </button>
+                <div class="faq-answer hidden px-4 pb-4">
+                    <p class="text-slate-400 text-sm">
+                        Kuch tasks me verification 24-48 hours tak lag sakti hai. Agar 48 hours ke baad bhi credit na ho, toh support se contact karo with task screenshot.
+                    </p>
+                </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="faq-item bg-slate-800/50 backdrop-blur rounded-xl border border-slate-700/50 overflow-hidden">
+                <button onclick="toggleFAQ(this)" class="w-full flex items-center justify-between p-4 text-left">
+                    <span class="text-white font-medium">Referral bonus kab milta hai?</span>
+                    <i class="fas fa-chevron-down text-slate-400 transition-transform"></i>
+                </button>
+                <div class="faq-answer hidden px-4 pb-4">
+                    <p class="text-slate-400 text-sm">
+                        Jab aapka friend signup karta hai aur apna pehla task complete karta hai, tab aapko ₹50 referral bonus milta hai. Uske baad unki har earning ka 10% lifetime commission milta rahega.
+                    </p>
+                </div>
+            </div>
+
+            <!-- FAQ 5 -->
+            <div class="faq-item bg-slate-800/50 backdrop-blur rounded-xl border border-slate-700/50 overflow-hidden">
+                <button onclick="toggleFAQ(this)" class="w-full flex items-center justify-between p-4 text-left">
+                    <span class="text-white font-medium">KYC verification kaise kare?</span>
+                    <i class="fas fa-chevron-down text-slate-400 transition-transform"></i>
+                </button>
+                <div class="faq-answer hidden px-4 pb-4">
+                    <p class="text-slate-400 text-sm">
+                        Profile section me KYC option hai. Aadhaar number enter karo, OTP verify karo, aur done! KYC complete hone ke baad higher withdrawal limits unlock ho jaati hain.
+                    </p>
+                </div>
+            </div>
+
+            <!-- FAQ 6 -->
+            <div class="faq-item bg-slate-800/50 backdrop-blur rounded-xl border border-slate-700/50 overflow-hidden">
+                <button onclick="toggleFAQ(this)" class="w-full flex items-center justify-between p-4 text-left">
+                    <span class="text-white font-medium">Account suspend ho gaya?</span>
+                    <i class="fas fa-chevron-down text-slate-400 transition-transform"></i>
+                </button>
+                <div class="faq-answer hidden px-4 pb-4">
+                    <p class="text-slate-400 text-sm">
+                        Account suspend hone ke kayi reasons ho sakte hain - fraud activity, multiple accounts, ya fake referrals. Appeal ke liye support@earnzone.app pe email karo with your User ID.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Issue -->
+        <h3 class="text-lg font-bold text-white mb-3">
+            <i class="fas fa-bug text-red-400 mr-2"></i>Report an Issue
+        </h3>
+
+        <div class="bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 mb-6">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-slate-400 text-sm mb-2">Issue Type</label>
+                    <select id="issueType" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary">
+                        <option value="">Select issue type</option>
+                        <option value="withdrawal">Withdrawal Problem</option>
+                        <option value="task">Task Not Credited</option>
+                        <option value="referral">Referral Issue</option>
+                        <option value="login">Login Problem</option>
+                        <option value="kyc">KYC Verification</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-slate-400 text-sm mb-2">Describe your issue</label>
+                    <textarea id="issueDescription" rows="4" placeholder="Explain your problem in detail..." class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-primary resize-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-slate-400 text-sm mb-2">Attach Screenshot (Optional)</label>
+                    <div class="flex items-center gap-3">
+                        <input type="file" id="screenshotInput" accept="image/*" class="hidden" onchange="handleFileUpload(this)">
+                        <button onclick="document.getElementById('screenshotInput').click()" class="flex-1 bg-slate-700 border border-dashed border-slate-600 rounded-xl py-4 text-slate-400 hover:border-primary hover:text-primary transition">
+                            <i class="fas fa-camera mr-2"></i>Upload Screenshot
+                        </button>
+                    </div>
+                    <p id="fileName" class="text-slate-500 text-sm mt-2 hidden"></p>
+                </div>
+
+                <button onclick="submitIssue()" class="w-full bg-gradient-to-r from-primary to-secondary py-3 rounded-xl text-white font-medium">
+                    <i class="fas fa-paper-plane mr-2"></i>Submit Issue
+                </button>
+            </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50">
+            <h4 class="text-white font-semibold mb-4">Other Ways to Reach Us</h4>
+
+            <div class="space-y-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                        <i class="fab fa-telegram text-blue-400"></i>
+                    </div>
+                    <div>
+                        <p class="text-white">Telegram Support</p>
+                        <a href="https://t.me/earnzone_support" class="text-primary text-sm">@earnzone_support</a>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-pink-500/20 rounded-lg flex items-center justify-center">
+                        <i class="fab fa-instagram text-pink-400"></i>
+                    </div>
+                    <div>
+                        <p class="text-white">Instagram</p>
+                        <a href="#" class="text-primary text-sm">@earnzone_official</a>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center">
+                        <i class="fab fa-youtube text-red-400"></i>
+                    </div>
+                    <div>
+                        <p class="text-white">YouTube (Tutorials)</p>
+                        <a href="#" class="text-primary text-sm">EarnZone Official</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-t border-slate-700/50 z-40">
+        <div class="max-w-lg mx-auto px-4">
+            <div class="flex items-center justify-around py-2">
+                <a href="index.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-home text-xl mb-1"></i>
+                    <span class="text-xs">Home</span>
+                </a>
+                <a href="tasks.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-tasks text-xl mb-1"></i>
+                    <span class="text-xs">Earn</span>
+                </a>
+                <a href="wallet.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-wallet text-xl mb-1"></i>
+                    <span class="text-xs">Wallet</span>
+                </a>
+                <a href="referral.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-users text-xl mb-1"></i>
+                    <span class="text-xs">Refer</span>
+                </a>
+                <a href="profile.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-user text-xl mb-1"></i>
+                    <span class="text-xs">Profile</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Live Chat Modal -->
+    <div id="chatModal" class="hidden fixed inset-0 bg-slate-900/95 z-50 flex flex-col">
+        <div class="bg-gradient-to-r from-primary to-secondary px-4 py-3 flex items-center">
+            <button onclick="closeChat()" class="p-2 text-white">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </button>
+            <div class="flex-1 flex items-center gap-3 ml-2">
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                    <i class="fas fa-headset text-white"></i>
+                </div>
+                <div>
+                    <p class="text-white font-medium">Support Team</p>
+                    <p class="text-purple-200 text-xs flex items-center gap-1">
+                        <span class="w-2 h-2 bg-green-400 rounded-full"></span>Online
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 space-y-4" id="chatMessages">
+            <!-- Welcome message -->
+            <div class="flex items-start gap-3">
+                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                    <i class="fas fa-robot text-white text-sm"></i>
+                </div>
+                <div class="bg-slate-800 rounded-2xl rounded-tl-none px-4 py-2 max-w-[80%]">
+                    <p class="text-white text-sm">Hello! 👋 Welcome to EarnZone Support. How can I help you today?</p>
+                    <p class="text-slate-500 text-xs mt-1">Just now</p>
+                </div>
+            </div>
+
+            <!-- Quick replies -->
+            <div class="flex flex-wrap gap-2">
+                <button onclick="sendQuickReply('Withdrawal issue')" class="bg-primary/20 text-primary px-3 py-1.5 rounded-full text-sm">
+                    Withdrawal issue
+                </button>
+                <button onclick="sendQuickReply('Task not credited')" class="bg-primary/20 text-primary px-3 py-1.5 rounded-full text-sm">
+                    Task not credited
+                </button>
+                <button onclick="sendQuickReply('KYC help')" class="bg-primary/20 text-primary px-3 py-1.5 rounded-full text-sm">
+                    KYC help
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-slate-800 p-4 border-t border-slate-700">
+            <div class="flex items-center gap-3">
+                <input type="text" id="chatInput" placeholder="Type your message..." class="flex-1 bg-slate-700 border-0 rounded-full px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary">
+                <button onclick="sendMessage()" class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 rounded-2xl p-8 text-center max-w-sm w-full">
+            <div class="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check-circle text-4xl text-green-500"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Issue Submitted!</h3>
+            <p class="text-slate-400 mb-4">We'll get back to you within 24 hours.</p>
+            <p class="text-slate-500 text-sm mb-6">Ticket ID: <span class="text-white font-mono" id="ticketId">#12345</span></p>
+            <button onclick="closeSuccessModal()" class="w-full bg-gradient-to-r from-primary to-secondary py-3 rounded-xl text-white font-medium">
+                Done
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function toggleFAQ(button) {
+            const answer = button.nextElementSibling;
+            const icon = button.querySelector('i');
+
+            answer.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        function handleFileUpload(input) {
+            if (input.files && input.files[0]) {
+                document.getElementById('fileName').textContent = input.files[0].name;
+                document.getElementById('fileName').classList.remove('hidden');
+            }
+        }
+
+        function submitIssue() {
+            const type = document.getElementById('issueType').value;
+            const description = document.getElementById('issueDescription').value;
+
+            if (!type || !description) {
+                alert('Please fill all required fields');
+                return;
+            }
+
+            // Generate ticket ID
+            const ticketId = '#' + Math.random().toString(36).substr(2, 8).toUpperCase();
+            document.getElementById('ticketId').textContent = ticketId;
+
+            // Show success modal
+            document.getElementById('successModal').classList.remove('hidden');
+
+            // Clear form
+            document.getElementById('issueType').value = '';
+            document.getElementById('issueDescription').value = '';
+            document.getElementById('fileName').classList.add('hidden');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+        }
+
+        function openChat() {
+            document.getElementById('chatModal').classList.remove('hidden');
+        }
+
+        function closeChat() {
+            document.getElementById('chatModal').classList.add('hidden');
+        }
+
+        function sendQuickReply(message) {
+            addUserMessage(message);
+            setTimeout(() => {
+                addBotResponse(message);
+            }, 1000);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            addUserMessage(message);
+            input.value = '';
+
+            setTimeout(() => {
+                addBotResponse(message);
+            }, 1500);
+        }
+
+        function addUserMessage(message) {
+            const container = document.getElementById('chatMessages');
+            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+            container.innerHTML += `
+                <div class="flex items-start gap-3 justify-end">
+                    <div class="bg-primary rounded-2xl rounded-tr-none px-4 py-2 max-w-[80%]">
+                        <p class="text-white text-sm">${message}</p>
+                        <p class="text-purple-200 text-xs mt-1">${time}</p>
+                    </div>
+                </div>
+            `;
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function addBotResponse(userMessage) {
+            const container = document.getElementById('chatMessages');
+            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+            let response = '';
+            const lowerMessage = userMessage.toLowerCase();
+
+            if (lowerMessage.includes('withdrawal') || lowerMessage.includes('withdraw')) {
+                response = 'For withdrawal issues, please make sure your KYC is complete and you have minimum ₹50 balance. If still facing issues, please share your User ID and I\'ll check your account.';
+            } else if (lowerMessage.includes('task') || lowerMessage.includes('credit')) {
+                response = 'Task rewards usually take 24-48 hours to credit. If it\'s been more than 48 hours, please share the task name and screenshot of completion.';
+            } else if (lowerMessage.includes('kyc')) {
+                response = 'To complete KYC, go to Profile > KYC Verification. You\'ll need your Aadhaar number. The verification is instant once OTP is verified.';
+            } else if (lowerMessage.includes('referral')) {
+                response = 'Referral bonus of ₹50 is credited when your friend completes their first task. Make sure they used your correct referral code while signing up.';
+            } else {
+                response = 'Thank you for your message. A support agent will respond shortly. In the meantime, can you please provide your User ID or registered phone number?';
+            }
+
+            container.innerHTML += `
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                        <i class="fas fa-headset text-white text-sm"></i>
+                    </div>
+                    <div class="bg-slate-800 rounded-2xl rounded-tl-none px-4 py-2 max-w-[80%]">
+                        <p class="text-white text-sm">${response}</p>
+                        <p class="text-slate-500 text-xs mt-1">${time}</p>
+                    </div>
+                </div>
+            `;
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Enter key to send message
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

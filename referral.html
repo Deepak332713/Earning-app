@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Refer & Earn - EarnZone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#22c55e',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-poppins bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen pb-20">
+    <!-- Header -->
+    <header class="bg-slate-900/80 backdrop-blur-lg sticky top-0 z-40 border-b border-slate-700/50">
+        <div class="max-w-lg mx-auto px-4 py-3 flex items-center">
+            <a href="dashboard.html" class="p-2 text-slate-400 hover:text-white transition">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </a>
+            <h1 class="flex-1 text-center text-lg font-bold text-white">Refer & Earn</h1>
+            <div class="w-10"></div>
+        </div>
+    </header>
+
+    <main class="max-w-lg mx-auto px-4 py-6">
+        <!-- Hero Banner -->
+        <div class="bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl p-6 mb-6 text-center relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+            <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+
+            <div class="relative z-10">
+                <div class="w-20 h-20 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-gift text-4xl text-white"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-2">Earn ₹50 Per Referral!</h2>
+                <p class="text-green-100 mb-4">+ 10% Lifetime Commission on their earnings</p>
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur px-4 py-2 rounded-full text-white">
+                    <i class="fas fa-infinity"></i>
+                    <span>Unlimited Referrals</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Referral Stats -->
+        <div class="grid grid-cols-3 gap-3 mb-6">
+            <div class="bg-slate-800/50 backdrop-blur rounded-xl p-4 text-center border border-slate-700/50">
+                <div class="text-2xl font-bold text-green-400" id="totalReferrals">0</div>
+                <div class="text-xs text-slate-400">Total Referrals</div>
+            </div>
+            <div class="bg-slate-800/50 backdrop-blur rounded-xl p-4 text-center border border-slate-700/50">
+                <div class="text-2xl font-bold text-blue-400" id="activeReferrals">0</div>
+                <div class="text-xs text-slate-400">Active Users</div>
+            </div>
+            <div class="bg-slate-800/50 backdrop-blur rounded-xl p-4 text-center border border-slate-700/50">
+                <div class="text-2xl font-bold text-yellow-400" id="referralEarnings">₹0</div>
+                <div class="text-xs text-slate-400">Total Earned</div>
+            </div>
+        </div>
+
+        <!-- Referral Code Section -->
+        <div class="bg-slate-800/50 backdrop-blur rounded-2xl p-6 mb-6 border border-slate-700/50">
+            <h3 class="text-white font-semibold mb-4 text-center">Your Referral Code</h3>
+
+            <div class="bg-slate-900/50 rounded-xl p-4 flex items-center justify-between mb-4">
+                <span class="text-2xl font-bold text-primary tracking-wider" id="referralCode">EARN******</span>
+                <button onclick="copyCode()" class="bg-primary/20 text-primary px-4 py-2 rounded-lg font-medium hover:bg-primary hover:text-white transition">
+                    <i class="fas fa-copy mr-2"></i>Copy
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="shareWhatsApp()" class="bg-green-500 py-3 rounded-xl text-white font-medium hover:bg-green-600 transition">
+                    <i class="fab fa-whatsapp mr-2"></i>WhatsApp
+                </button>
+                <button onclick="shareTelegram()" class="bg-blue-500 py-3 rounded-xl text-white font-medium hover:bg-blue-600 transition">
+                    <i class="fab fa-telegram mr-2"></i>Telegram
+                </button>
+            </div>
+
+            <button onclick="shareMore()" class="w-full mt-3 bg-slate-700 py-3 rounded-xl text-white font-medium hover:bg-slate-600 transition">
+                <i class="fas fa-share-alt mr-2"></i>More Share Options
+            </button>
+        </div>
+
+        <!-- How It Works -->
+        <div class="bg-slate-800/50 backdrop-blur rounded-2xl p-6 mb-6 border border-slate-700/50">
+            <h3 class="text-white font-semibold mb-4">
+                <i class="fas fa-question-circle text-primary mr-2"></i>How It Works
+            </h3>
+
+            <div class="space-y-4">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center font-bold flex-shrink-0">1</div>
+                    <div>
+                        <h4 class="text-white font-medium">Share Your Code</h4>
+                        <p class="text-slate-400 text-sm">Share your unique referral code with friends & family</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center font-bold flex-shrink-0">2</div>
+                    <div>
+                        <h4 class="text-white font-medium">They Sign Up</h4>
+                        <p class="text-slate-400 text-sm">Your friend signs up using your referral code</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 bg-yellow-500/20 text-yellow-400 rounded-full flex items-center justify-center font-bold flex-shrink-0">3</div>
+                    <div>
+                        <h4 class="text-white font-medium">Both Earn Rewards!</h4>
+                        <p class="text-slate-400 text-sm">You get ₹50 + 10% of their lifetime earnings. They get ₹25 bonus!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Referral Milestones -->
+        <div class="bg-slate-800/50 backdrop-blur rounded-2xl p-6 mb-6 border border-slate-700/50">
+            <h3 class="text-white font-semibold mb-4">
+                <i class="fas fa-trophy text-yellow-400 mr-2"></i>Referral Milestones
+            </h3>
+
+            <div class="space-y-3">
+                <div class="flex items-center gap-4 bg-slate-700/30 rounded-xl p-3">
+                    <div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">
+                        <span class="text-yellow-400 font-bold">5</span>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-white font-medium">5 Referrals</p>
+                        <p class="text-slate-400 text-sm">Extra ₹100 bonus</p>
+                    </div>
+                    <div class="text-slate-500 text-sm">0/5</div>
+                </div>
+
+                <div class="flex items-center gap-4 bg-slate-700/30 rounded-xl p-3">
+                    <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
+                        <span class="text-blue-400 font-bold">10</span>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-white font-medium">10 Referrals</p>
+                        <p class="text-slate-400 text-sm">Extra ₹250 bonus</p>
+                    </div>
+                    <div class="text-slate-500 text-sm">0/10</div>
+                </div>
+
+                <div class="flex items-center gap-4 bg-slate-700/30 rounded-xl p-3">
+                    <div class="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center">
+                        <span class="text-purple-400 font-bold">25</span>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-white font-medium">25 Referrals</p>
+                        <p class="text-slate-400 text-sm">Extra ₹500 + VIP badge</p>
+                    </div>
+                    <div class="text-slate-500 text-sm">0/25</div>
+                </div>
+
+                <div class="flex items-center gap-4 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-xl p-3 border border-yellow-500/30">
+                    <div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">
+                        <span class="text-yellow-400 font-bold">50</span>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-white font-medium">50 Referrals</p>
+                        <p class="text-yellow-400 text-sm">₹1000 + Ambassador Status</p>
+                    </div>
+                    <div class="text-slate-500 text-sm">0/50</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Referrals List -->
+        <div class="bg-slate-800/50 backdrop-blur rounded-2xl p-6 border border-slate-700/50">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-white font-semibold">
+                    <i class="fas fa-users text-primary mr-2"></i>My Referrals
+                </h3>
+                <span class="text-slate-400 text-sm" id="referralCount">0 Users</span>
+            </div>
+
+            <div class="space-y-3" id="referralList">
+                <!-- Empty State -->
+                <div class="text-center py-8" id="emptyState">
+                    <div class="w-16 h-16 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-friends text-2xl text-slate-500"></i>
+                    </div>
+                    <p class="text-slate-400 mb-2">No referrals yet</p>
+                    <p class="text-slate-500 text-sm">Share your code and start earning!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-t border-slate-700/50 z-40">
+        <div class="max-w-lg mx-auto px-4">
+            <div class="flex items-center justify-around py-2">
+                <a href="index.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-home text-xl mb-1"></i>
+                    <span class="text-xs">Home</span>
+                </a>
+                <a href="tasks.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-tasks text-xl mb-1"></i>
+                    <span class="text-xs">Earn</span>
+                </a>
+                <a href="wallet.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-wallet text-xl mb-1"></i>
+                    <span class="text-xs">Wallet</span>
+                </a>
+                <a href="referral.html" class="flex flex-col items-center py-2 px-4 text-primary">
+                    <i class="fas fa-users text-xl mb-1"></i>
+                    <span class="text-xs">Refer</span>
+                </a>
+                <a href="profile.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-user text-xl mb-1"></i>
+                    <span class="text-xs">Profile</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Copy Toast -->
+    <div id="copyToast" class="hidden fixed bottom-24 left-1/2 -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg z-50">
+        <i class="fas fa-check-circle mr-2"></i>Code copied to clipboard!
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCPvpgRkqIEdpmrvKWh-GBS04BQj2_8SAI",
+            authDomain: "earning-app-c048f.firebaseapp.com",
+            databaseURL: "https://earning-app-c048f-default-rtdb.firebaseio.com",
+            projectId: "earning-app-c048f",
+            storageBucket: "earning-app-c048f.firebasestorage.app",
+            messagingSenderId: "843375564973",
+            appId: "1:843375564973:web:xxxxxx"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+        let userReferralCode = 'EARN' + Math.random().toString(36).substr(2, 6).toUpperCase();
+        const appLink = 'https://earnzone.app/';
+
+        // Load user data
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                loadUserReferralData(user.uid);
+            } else {
+                const userId = localStorage.getItem('userId');
+                if (userId) {
+                    loadUserReferralData(userId);
+                }
+            }
+        });
+
+        function loadUserReferralData(userId) {
+            database.ref('users/' + userId).once('value').then((snapshot) => {
+                const userData = snapshot.val();
+                if (userData) {
+                    userReferralCode = userData.myReferralCode || userReferralCode;
+                    document.getElementById('referralCode').textContent = userReferralCode;
+
+                    // Load referral stats
+                    if (userData.referrals) {
+                        const referrals = Object.values(userData.referrals);
+                        document.getElementById('totalReferrals').textContent = referrals.length;
+                        document.getElementById('activeReferrals').textContent = referrals.filter(r => r.active).length;
+                        document.getElementById('referralCount').textContent = referrals.length + ' Users';
+
+                        let totalEarnings = referrals.reduce((sum, r) => sum + (r.earned || 0), 0);
+                        document.getElementById('referralEarnings').textContent = '₹' + totalEarnings;
+
+                        // Show referrals list
+                        if (referrals.length > 0) {
+                            document.getElementById('emptyState').classList.add('hidden');
+                            const listContainer = document.getElementById('referralList');
+                            listContainer.innerHTML = referrals.slice(0, 10).map(r => `
+                                <div class="flex items-center gap-3 bg-slate-700/30 rounded-xl p-3">
+                                    <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center text-white font-bold">
+                                        ${(r.name || 'U')[0].toUpperCase()}
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="text-white font-medium">${r.name || 'User'}</p>
+                                        <p class="text-slate-400 text-xs">${r.joinDate || 'Recently joined'}</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-green-400 font-medium">₹${r.earned || 50}</p>
+                                        <p class="text-slate-500 text-xs">Earned</p>
+                                    </div>
+                                </div>
+                            `).join('');
+                        }
+                    }
+                }
+            });
+        }
+
+        function copyCode() {
+            navigator.clipboard.writeText(userReferralCode).then(() => {
+                showToast();
+            }).catch(() => {
+                // Fallback
+                const textArea = document.createElement('textarea');
+                textArea.value = userReferralCode;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast();
+            });
+        }
+
+        function showToast() {
+            const toast = document.getElementById('copyToast');
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        function shareWhatsApp() {
+            const message = `🎉 *EarnZone App* se main daily ₹500+ kama raha hun! 💰
+
+✅ Tasks complete karo - ₹5-100
+✅ Surveys bharo - ₹10-200
+✅ Ads dekho - ₹1-5
+✅ Refer karo - ₹50 per friend
+
+📱 Abhi download karo aur signup pe ₹25 bonus pao!
+
+👉 ${appLink}
+
+🎁 Mera Referral Code: *${userReferralCode}*
+
+Signup karte waqt code dalna mat bhoolna! 🚀`;
+
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        function shareTelegram() {
+            const message = `🎉 EarnZone App se daily ₹500+ kamao!
+
+✅ Tasks, Surveys, Ads & more
+📱 Download: ${appLink}
+🎁 Code: ${userReferralCode}
+
+Signup pe ₹25 bonus! 🚀`;
+
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(appLink)}&text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        function shareMore() {
+            const shareData = {
+                title: 'EarnZone - Ghar Baithe Kamao',
+                text: `Join EarnZone & earn money daily! Use my code: ${userReferralCode} for ₹25 bonus`,
+                url: appLink
+            };
+
+            if (navigator.share) {
+                navigator.share(shareData);
+            } else {
+                copyCode();
+                alert('Link copied! Share it with your friends.');
+            }
+        }
+    </script>
+</body>
+</html>

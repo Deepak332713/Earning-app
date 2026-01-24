@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login - EarnZone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#22c55e',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-poppins bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen">
+    <!-- Header -->
+    <header class="bg-slate-900/80 backdrop-blur-lg sticky top-0 z-40 border-b border-slate-700/50">
+        <div class="max-w-lg mx-auto px-4 py-3 flex items-center">
+            <a href="index.html" class="p-2 text-slate-400 hover:text-white transition">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </a>
+            <h1 class="flex-1 text-center text-lg font-bold text-white">Login / Sign Up</h1>
+            <div class="w-10"></div>
+        </div>
+    </header>
+
+    <main class="max-w-lg mx-auto px-4 py-8">
+        <!-- Logo -->
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-3xl flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-rupee-sign text-3xl text-white"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-white">Welcome to EarnZone</h2>
+            <p class="text-slate-400 mt-1">Sign up karke ₹25 bonus paao!</p>
+        </div>
+
+        <!-- Tab Buttons -->
+        <div class="flex bg-slate-800/50 rounded-xl p-1 mb-6">
+            <button onclick="switchTab('login')" id="loginTab" class="flex-1 py-3 rounded-lg text-sm font-medium transition bg-primary text-white">
+                Login
+            </button>
+            <button onclick="switchTab('signup')" id="signupTab" class="flex-1 py-3 rounded-lg text-sm font-medium transition text-slate-400">
+                Sign Up
+            </button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginForm" class="space-y-4">
+            <!-- Login Method Toggle -->
+            <div class="flex gap-2 mb-4">
+                <button onclick="switchLoginMethod('phone')" id="phoneMethodBtn" class="flex-1 py-2 rounded-lg text-sm font-medium bg-primary/20 text-primary border border-primary/50">
+                    <i class="fas fa-phone mr-2"></i>Phone
+                </button>
+                <button onclick="switchLoginMethod('email')" id="emailMethodBtn" class="flex-1 py-2 rounded-lg text-sm font-medium bg-slate-800 text-slate-400 border border-slate-700">
+                    <i class="fas fa-envelope mr-2"></i>Email
+                </button>
+            </div>
+
+            <!-- Phone Login -->
+            <div id="phoneLogin">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-slate-400 text-sm mb-2">Mobile Number</label>
+                        <div class="flex">
+                            <span class="bg-slate-800 border border-slate-700 border-r-0 rounded-l-xl px-4 py-3 text-slate-400">+91</span>
+                            <input type="tel" id="phoneNumber" maxlength="10" placeholder="Enter mobile number" class="flex-1 bg-slate-800/50 border border-slate-700 rounded-r-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-primary">
+                        </div>
+                    </div>
+
+                    <button onclick="sendOTP('phone')" id="sendOTPBtn" class="w-full bg-gradient-to-r from-primary to-secondary py-3 rounded-xl text-white font-medium hover:opacity-90 transition">
+                        <i class="fas fa-paper-plane mr-2"></i>Send OTP
+                    </button>
+                </div>
+            </div>
+
+            <!-- Email Login -->
+            <div id="emailLogin" class="hidden">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-slate-400 text-sm mb-2">Email Address</label>
+                        <input type="email" id="emailAddress" placeholder="Enter your email" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-primary">
+                    </div>
+                    <div>
+                        <label class="block text-slate-400 text-sm mb-2">Password</label>
+                        <div class="relative">
+                            <input type="password" id="password" placeholder="Enter password" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-primary pr-12">
+                            <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">
+                                <i class="fas fa-eye" id="passwordEye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button onclick="loginWithEmail()" class="w-full bg-gradient-to-r from-primary to-secondary py-3 rounded-xl text-white font-medium hover:opacity-90 transition">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login
+                    </button>
+
+                    <div class="text-center">
+                        <a href="#" class="text-primary text-sm hover:underline">Forgot Password?</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OTP Verification (Hidden initially) -->
+            <div id="otpSection" class="hidden space-y-4">
+                <div class="text-center mb-4">
+                    <p class="text-slate-400">OTP sent to <span id="sentTo" class="text-white">+91 XXXXXXXXXX</span></p>
+                </div>
+
+                <div>
+                    <label class="block text-slate-400 text-sm mb-2">Enter OTP</label>
+                    <div class="flex gap-2 justify-center">
+                        <input type="text" maxlength="1" class="otp-input w-12 h-12 bg-slate-800/50 border border-slate-700 rounded-xl text-center text-white text-xl font-bold focus:outline-none focus:border-primary">
+                        <input type="text" maxlength="1" class="otp-input w-12 h-12 bg-slate-800/50 border border-slate-700 rounded-xl text-center text-white text-xl font-bold focus:outline-none focus:border-primary">
+                        <input type="text" maxlength="1" class="otp-input w-12 h-12 bg-slate-800/50 border border-slate-700 rounded-xl text-center text-white text-xl font-bold focus:outline-none focus:border-primary">
+                        <input type="text" maxlength="1" class="otp-input w-12 h-12 bg-slate-800/50 border border-slate-700 rounded-xl text-center text-white text-xl font-bold focus:outline-none focus:border-primary">
+                        <input type="text" maxlength="1" class="otp-input w-12 h-12 bg-slate-800/50 border border-slate-700 rounded-xl text-center text-white text-xl font-bold focus:outline-none focus:border-primary">
+                        <input type="text" maxlength="1" class="otp-input w-12 h-12 bg-slate-800/50 border border-slate-700 rounded-xl text-center text-white text-xl font-bold focus:outline-none focus:border-primary">
+                    </div>
+                </div>
+
+                <button onclick="verifyOTP()" class="w-full bg-gradient-to-r from-primary to-secondary py-3 rounded-xl text-white font-medium hover:opacity-90 transition">
+                    <i class="fas fa-check-circle mr-2"></i>Verify OTP
+                </button>
+
+                <div class="text-center">
+                    <p class="text-slate-400 text-sm">Didn't receive OTP? <button onclick="resendOTP()" id="resendBtn" class="text-primary hover:underline">Resend</button></p>
+                    <p id="timerText" class="text-slate-500 text-sm mt-1"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sign Up Form -->
+        <div id="signupForm" class="hidden space-y-4">
+            <div>
+                <label class="block text-slate-400 text-sm mb-2">Full Name</label>
+                <input type="text" id="fullName" placeholder="Enter your full name" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-primary">
+            </div>
+
+            <div>
+                <label class="block text-slate-400 text-sm mb-2">Mobile Number</label>
+                <div class="flex">
+                    <span class="bg-slate-800 border border-slate-700 border-r-0 rounded-l-xl px-4 py-3 text-slate-400">+91</span>
+                    <input type="tel" id="signupPhone" maxlength="10" placeholder="Enter mobile number" class="flex-1 bg-slate-800/50 border border-slate-700 rounded-r-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-primary">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-slate-400 text-sm mb-2">Email Address</label>
+                <input type="email" id="signupEmail" placeholder="Enter your email" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-primary">
+            </div>
+
+            <div>
+                <label class="block text-slate-400 text-sm mb-2">Create Password</label>
+                <div class="relative">
+                    <input type="password" id="signupPassword" placeholder="Min 6 characters" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-primary pr-12">
+                    <button type="button" onclick="toggleSignupPassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">
+                        <i class="fas fa-eye" id="signupPasswordEye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-slate-400 text-sm mb-2">Referral Code (Optional)</label>
+                <input type="text" id="referralCode" placeholder="Enter referral code" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-primary">
+            </div>
+
+            <div class="flex items-start gap-3">
+                <input type="checkbox" id="agreeTerms" class="mt-1 w-5 h-5 rounded border-slate-700 bg-slate-800 text-primary focus:ring-primary">
+                <label for="agreeTerms" class="text-slate-400 text-sm">
+                    I agree to the <a href="#" class="text-primary hover:underline">Terms & Conditions</a> and <a href="#" class="text-primary hover:underline">Privacy Policy</a>
+                </label>
+            </div>
+
+            <button onclick="signUp()" class="w-full bg-gradient-to-r from-primary to-secondary py-3 rounded-xl text-white font-medium hover:opacity-90 transition">
+                <i class="fas fa-user-plus mr-2"></i>Create Account
+            </button>
+        </div>
+
+        <!-- Social Login -->
+        <div class="mt-8">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="flex-1 h-px bg-slate-700"></div>
+                <span class="text-slate-500 text-sm">Or continue with</span>
+                <div class="flex-1 h-px bg-slate-700"></div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="loginWithGoogle()" class="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl py-3 text-white hover:bg-slate-800 transition">
+                    <i class="fab fa-google text-red-500 mr-2"></i>Google
+                </button>
+                <button onclick="loginWithFacebook()" class="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl py-3 text-white hover:bg-slate-800 transition">
+                    <i class="fab fa-facebook text-blue-500 mr-2"></i>Facebook
+                </button>
+            </div>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="mt-8 text-center">
+            <div class="flex justify-center gap-6 text-slate-500 text-sm">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-shield-alt text-green-500"></i>
+                    <span>100% Secure</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-lock text-primary"></i>
+                    <span>SSL Encrypted</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div class="bg-slate-800 rounded-2xl p-8 text-center">
+            <div class="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-white" id="loadingText">Processing...</p>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 rounded-2xl p-8 text-center max-w-sm w-full">
+            <div class="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check-circle text-4xl text-green-500"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Welcome to EarnZone!</h3>
+            <p class="text-slate-400 mb-2">Login successful!</p>
+            <p class="text-green-400 font-semibold mb-6">₹25 Bonus credited to your wallet!</p>
+            <button onclick="goToDashboard()" class="w-full bg-gradient-to-r from-primary to-secondary py-3 rounded-xl text-white font-medium">
+                Go to Dashboard
+            </button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCPvpgRkqIEdpmrvKWh-GBS04BQj2_8SAI",
+            authDomain: "earning-app-c048f.firebaseapp.com",
+            databaseURL: "https://earning-app-c048f-default-rtdb.firebaseio.com",
+            projectId: "earning-app-c048f",
+            storageBucket: "earning-app-c048f.firebasestorage.app",
+            messagingSenderId: "843375564973",
+            appId: "1:843375564973:web:xxxxxx"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+        let currentLoginMethod = 'phone';
+        let otpTimer = null;
+        let currentPhoneNumber = '';
+
+        // Tab Switching
+        function switchTab(tab) {
+            const loginTab = document.getElementById('loginTab');
+            const signupTab = document.getElementById('signupTab');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+
+            if (tab === 'login') {
+                loginTab.classList.add('bg-primary', 'text-white');
+                loginTab.classList.remove('text-slate-400');
+                signupTab.classList.remove('bg-primary', 'text-white');
+                signupTab.classList.add('text-slate-400');
+                loginForm.classList.remove('hidden');
+                signupForm.classList.add('hidden');
+            } else {
+                signupTab.classList.add('bg-primary', 'text-white');
+                signupTab.classList.remove('text-slate-400');
+                loginTab.classList.remove('bg-primary', 'text-white');
+                loginTab.classList.add('text-slate-400');
+                signupForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+            }
+        }
+
+        // Login Method Switching
+        function switchLoginMethod(method) {
+            currentLoginMethod = method;
+            const phoneBtn = document.getElementById('phoneMethodBtn');
+            const emailBtn = document.getElementById('emailMethodBtn');
+            const phoneLogin = document.getElementById('phoneLogin');
+            const emailLogin = document.getElementById('emailLogin');
+            const otpSection = document.getElementById('otpSection');
+
+            otpSection.classList.add('hidden');
+
+            if (method === 'phone') {
+                phoneBtn.classList.add('bg-primary/20', 'text-primary', 'border-primary/50');
+                phoneBtn.classList.remove('bg-slate-800', 'text-slate-400', 'border-slate-700');
+                emailBtn.classList.remove('bg-primary/20', 'text-primary', 'border-primary/50');
+                emailBtn.classList.add('bg-slate-800', 'text-slate-400', 'border-slate-700');
+                phoneLogin.classList.remove('hidden');
+                emailLogin.classList.add('hidden');
+            } else {
+                emailBtn.classList.add('bg-primary/20', 'text-primary', 'border-primary/50');
+                emailBtn.classList.remove('bg-slate-800', 'text-slate-400', 'border-slate-700');
+                phoneBtn.classList.remove('bg-primary/20', 'text-primary', 'border-primary/50');
+                phoneBtn.classList.add('bg-slate-800', 'text-slate-400', 'border-slate-700');
+                emailLogin.classList.remove('hidden');
+                phoneLogin.classList.add('hidden');
+            }
+        }
+
+        // Password Toggle
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const passwordEye = document.getElementById('passwordEye');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordEye.classList.remove('fa-eye');
+                passwordEye.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                passwordEye.classList.remove('fa-eye-slash');
+                passwordEye.classList.add('fa-eye');
+            }
+        }
+
+        function toggleSignupPassword() {
+            const passwordInput = document.getElementById('signupPassword');
+            const passwordEye = document.getElementById('signupPasswordEye');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordEye.classList.remove('fa-eye');
+                passwordEye.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                passwordEye.classList.remove('fa-eye-slash');
+                passwordEye.classList.add('fa-eye');
+            }
+        }
+
+        // Send OTP
+        function sendOTP(type) {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+
+            if (phoneNumber.length !== 10) {
+                alert('Please enter a valid 10-digit mobile number');
+                return;
+            }
+
+            currentPhoneNumber = phoneNumber;
+            showLoading('Sending OTP...');
+
+            // Simulate OTP sending (In production, use Firebase Phone Auth or SMS API)
+            setTimeout(() => {
+                hideLoading();
+                document.getElementById('phoneLogin').classList.add('hidden');
+                document.getElementById('otpSection').classList.remove('hidden');
+                document.getElementById('sentTo').textContent = '+91 ' + phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1***$3');
+                startOTPTimer();
+                setupOTPInputs();
+            }, 1500);
+        }
+
+        // Setup OTP Inputs
+        function setupOTPInputs() {
+            const inputs = document.querySelectorAll('.otp-input');
+            inputs.forEach((input, index) => {
+                input.value = '';
+                input.addEventListener('input', (e) => {
+                    if (e.target.value.length === 1 && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                });
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                });
+            });
+            inputs[0].focus();
+        }
+
+        // Start OTP Timer
+        function startOTPTimer() {
+            let seconds = 60;
+            const timerText = document.getElementById('timerText');
+            const resendBtn = document.getElementById('resendBtn');
+            resendBtn.disabled = true;
+            resendBtn.classList.add('opacity-50');
+
+            otpTimer = setInterval(() => {
+                seconds--;
+                timerText.textContent = `Resend in ${seconds}s`;
+                if (seconds <= 0) {
+                    clearInterval(otpTimer);
+                    timerText.textContent = '';
+                    resendBtn.disabled = false;
+                    resendBtn.classList.remove('opacity-50');
+                }
+            }, 1000);
+        }
+
+        // Resend OTP
+        function resendOTP() {
+            showLoading('Resending OTP...');
+            setTimeout(() => {
+                hideLoading();
+                startOTPTimer();
+                alert('OTP resent successfully!');
+            }, 1000);
+        }
+
+        // Verify OTP
+        function verifyOTP() {
+            const inputs = document.querySelectorAll('.otp-input');
+            let otp = '';
+            inputs.forEach(input => otp += input.value);
+
+            if (otp.length !== 6) {
+                alert('Please enter complete 6-digit OTP');
+                return;
+            }
+
+            showLoading('Verifying OTP...');
+
+            // Simulate OTP verification (In production, verify with Firebase/Backend)
+            setTimeout(() => {
+                hideLoading();
+                // Create or login user
+                loginOrCreateUser(currentPhoneNumber, 'phone');
+            }, 1500);
+        }
+
+        // Login with Email
+        function loginWithEmail() {
+            const email = document.getElementById('emailAddress').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                alert('Please enter email and password');
+                return;
+            }
+
+            showLoading('Logging in...');
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    hideLoading();
+                    showSuccessModal();
+                })
+                .catch((error) => {
+                    hideLoading();
+                    if (error.code === 'auth/user-not-found') {
+                        alert('Account not found. Please sign up first.');
+                    } else if (error.code === 'auth/wrong-password') {
+                        alert('Incorrect password. Please try again.');
+                    } else {
+                        alert('Login failed: ' + error.message);
+                    }
+                });
+        }
+
+        // Sign Up
+        function signUp() {
+            const fullName = document.getElementById('fullName').value;
+            const phone = document.getElementById('signupPhone').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const referralCode = document.getElementById('referralCode').value;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+
+            if (!fullName || !phone || !email || !password) {
+                alert('Please fill all required fields');
+                return;
+            }
+
+            if (phone.length !== 10) {
+                alert('Please enter a valid 10-digit mobile number');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters');
+                return;
+            }
+
+            if (!agreeTerms) {
+                alert('Please agree to Terms & Conditions');
+                return;
+            }
+
+            showLoading('Creating account...');
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+
+                    // Save user data to database
+                    return database.ref('users/' + user.uid).set({
+                        fullName: fullName,
+                        phone: phone,
+                        email: email,
+                        referralCode: referralCode,
+                        referredBy: referralCode || null,
+                        myReferralCode: generateReferralCode(),
+                        wallet: 25, // Signup bonus
+                        totalEarnings: 25,
+                        createdAt: Date.now(),
+                        lastLogin: Date.now(),
+                        streak: 1,
+                        kycVerified: false,
+                        profileComplete: false
+                    });
+                })
+                .then(() => {
+                    hideLoading();
+                    showSuccessModal();
+                })
+                .catch((error) => {
+                    hideLoading();
+                    if (error.code === 'auth/email-already-in-use') {
+                        alert('This email is already registered. Please login.');
+                    } else {
+                        alert('Sign up failed: ' + error.message);
+                    }
+                });
+        }
+
+        // Login or Create User (for phone auth)
+        function loginOrCreateUser(phone, method) {
+            // In production, this would check if user exists and create/login accordingly
+            const userId = 'phone_' + phone;
+
+            database.ref('users').orderByChild('phone').equalTo(phone).once('value')
+                .then((snapshot) => {
+                    if (snapshot.exists()) {
+                        // User exists, update last login
+                        const userData = snapshot.val();
+                        const uid = Object.keys(userData)[0];
+                        database.ref('users/' + uid).update({
+                            lastLogin: Date.now()
+                        });
+                        localStorage.setItem('userId', uid);
+                        localStorage.setItem('userPhone', phone);
+                        showSuccessModal();
+                    } else {
+                        // Create new user
+                        const newUserRef = database.ref('users').push();
+                        newUserRef.set({
+                            phone: phone,
+                            fullName: '',
+                            email: '',
+                            myReferralCode: generateReferralCode(),
+                            wallet: 25,
+                            totalEarnings: 25,
+                            createdAt: Date.now(),
+                            lastLogin: Date.now(),
+                            streak: 1,
+                            kycVerified: false,
+                            profileComplete: false
+                        }).then(() => {
+                            localStorage.setItem('userId', newUserRef.key);
+                            localStorage.setItem('userPhone', phone);
+                            showSuccessModal();
+                        });
+                    }
+                });
+        }
+
+        // Generate Referral Code
+        function generateReferralCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = 'EARN';
+            for (let i = 0; i < 6; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        // Google Login
+        function loginWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            showLoading('Connecting to Google...');
+
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    // Check if user exists in database
+                    database.ref('users/' + user.uid).once('value')
+                        .then((snapshot) => {
+                            if (!snapshot.exists()) {
+                                // Create new user
+                                database.ref('users/' + user.uid).set({
+                                    fullName: user.displayName || '',
+                                    email: user.email,
+                                    phone: user.phoneNumber || '',
+                                    myReferralCode: generateReferralCode(),
+                                    wallet: 25,
+                                    totalEarnings: 25,
+                                    createdAt: Date.now(),
+                                    lastLogin: Date.now(),
+                                    streak: 1,
+                                    kycVerified: false,
+                                    profileComplete: false,
+                                    photoURL: user.photoURL || ''
+                                });
+                            } else {
+                                database.ref('users/' + user.uid).update({
+                                    lastLogin: Date.now()
+                                });
+                            }
+                            hideLoading();
+                            showSuccessModal();
+                        });
+                })
+                .catch((error) => {
+                    hideLoading();
+                    alert('Google login failed: ' + error.message);
+                });
+        }
+
+        // Facebook Login
+        function loginWithFacebook() {
+            const provider = new firebase.auth.FacebookAuthProvider();
+            showLoading('Connecting to Facebook...');
+
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    database.ref('users/' + user.uid).once('value')
+                        .then((snapshot) => {
+                            if (!snapshot.exists()) {
+                                database.ref('users/' + user.uid).set({
+                                    fullName: user.displayName || '',
+                                    email: user.email,
+                                    phone: '',
+                                    myReferralCode: generateReferralCode(),
+                                    wallet: 25,
+                                    totalEarnings: 25,
+                                    createdAt: Date.now(),
+                                    lastLogin: Date.now(),
+                                    streak: 1,
+                                    kycVerified: false,
+                                    profileComplete: false,
+                                    photoURL: user.photoURL || ''
+                                });
+                            } else {
+                                database.ref('users/' + user.uid).update({
+                                    lastLogin: Date.now()
+                                });
+                            }
+                            hideLoading();
+                            showSuccessModal();
+                        });
+                })
+                .catch((error) => {
+                    hideLoading();
+                    alert('Facebook login failed: ' + error.message);
+                });
+        }
+
+        // Loading Functions
+        function showLoading(text) {
+            document.getElementById('loadingText').textContent = text || 'Processing...';
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        // Success Modal
+        function showSuccessModal() {
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function goToDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+
+        // Check if already logged in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>

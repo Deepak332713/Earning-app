@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EarnZone - Ghar Baithe Paisa Kamao</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#22c55e',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-poppins bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen">
+    <!-- Splash Screen -->
+    <div id="splashScreen" class="fixed inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 z-50 flex items-center justify-center">
+        <div class="text-center">
+            <div class="w-24 h-24 bg-gradient-to-r from-primary to-secondary rounded-3xl flex items-center justify-center mx-auto mb-4 animate-bounce">
+                <i class="fas fa-rupee-sign text-4xl text-white"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-white mb-2">EarnZone</h1>
+            <p class="text-purple-300">Loading...</p>
+            <div class="mt-4 w-48 h-1 bg-slate-700 rounded-full mx-auto overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-primary to-accent animate-pulse rounded-full" style="width: 70%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="mainApp" class="hidden">
+        <!-- Header -->
+        <header class="bg-slate-900/80 backdrop-blur-lg sticky top-0 z-40 border-b border-slate-700/50">
+            <div class="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-xl flex items-center justify-center">
+                        <i class="fas fa-rupee-sign text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-white">EarnZone</h1>
+                        <p class="text-xs text-purple-300">Trusted Earning App</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="location.href='notifications.html'" class="relative p-2 text-slate-400 hover:text-white transition">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">3</span>
+                    </button>
+                    <button onclick="location.href='login.html'" class="bg-gradient-to-r from-primary to-secondary px-4 py-2 rounded-lg text-white text-sm font-medium">
+                        Login
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="max-w-lg mx-auto px-4 py-8">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center gap-2 bg-green-500/20 text-green-400 px-4 py-2 rounded-full text-sm mb-4">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    100% Genuine & Trusted
+                </div>
+                <h2 class="text-3xl font-bold text-white mb-3">
+                    Ghar Baithe <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Paisa Kamao</span>
+                </h2>
+                <p class="text-slate-400">Tasks complete karo, Ads dekho, Refer karo aur daily ₹500-₹2000 tak kamao!</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-3 gap-3 mb-8">
+                <div class="bg-slate-800/50 backdrop-blur rounded-2xl p-4 text-center border border-slate-700/50">
+                    <div class="text-2xl font-bold text-white">50L+</div>
+                    <div class="text-xs text-slate-400">Active Users</div>
+                </div>
+                <div class="bg-slate-800/50 backdrop-blur rounded-2xl p-4 text-center border border-slate-700/50">
+                    <div class="text-2xl font-bold text-green-400">₹10Cr+</div>
+                    <div class="text-xs text-slate-400">Total Paid</div>
+                </div>
+                <div class="bg-slate-800/50 backdrop-blur rounded-2xl p-4 text-center border border-slate-700/50">
+                    <div class="text-2xl font-bold text-yellow-400">4.8★</div>
+                    <div class="text-xs text-slate-400">User Rating</div>
+                </div>
+            </div>
+
+            <!-- Daily Bonus Banner -->
+            <div class="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-2xl p-4 mb-6 border border-yellow-500/30">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-gift text-2xl text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-white font-semibold">Daily Bonus ₹50</h3>
+                        <p class="text-yellow-300 text-sm">Login karke abhi claim karo!</p>
+                    </div>
+                    <button onclick="location.href='login.html'" class="bg-gradient-to-r from-yellow-500 to-orange-500 px-4 py-2 rounded-xl text-white text-sm font-medium">
+                        Claim
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Earning Methods -->
+        <section class="max-w-lg mx-auto px-4 pb-8">
+            <h3 class="text-xl font-bold text-white mb-4">
+                <i class="fas fa-coins text-yellow-400 mr-2"></i>Earning Methods
+            </h3>
+
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Tasks -->
+                <a href="tasks.html" class="bg-slate-800/50 backdrop-blur rounded-2xl p-4 border border-slate-700/50 hover:border-primary/50 transition group">
+                    <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                        <i class="fas fa-tasks text-xl text-white"></i>
+                    </div>
+                    <h4 class="text-white font-semibold mb-1">Tasks</h4>
+                    <p class="text-slate-400 text-xs">₹5 - ₹100 per task</p>
+                    <div class="mt-2 flex items-center gap-1 text-green-400 text-xs">
+                        <i class="fas fa-fire"></i> 50+ Available
+                    </div>
+                </a>
+
+                <!-- Surveys -->
+                <a href="surveys.html" class="bg-slate-800/50 backdrop-blur rounded-2xl p-4 border border-slate-700/50 hover:border-primary/50 transition group">
+                    <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                        <i class="fas fa-poll text-xl text-white"></i>
+                    </div>
+                    <h4 class="text-white font-semibold mb-1">Surveys</h4>
+                    <p class="text-slate-400 text-xs">₹10 - ₹200 per survey</p>
+                    <div class="mt-2 flex items-center gap-1 text-green-400 text-xs">
+                        <i class="fas fa-fire"></i> 25+ Available
+                    </div>
+                </a>
+
+                <!-- Watch Ads -->
+                <a href="ads.html" class="bg-slate-800/50 backdrop-blur rounded-2xl p-4 border border-slate-700/50 hover:border-primary/50 transition group">
+                    <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                        <i class="fas fa-play-circle text-xl text-white"></i>
+                    </div>
+                    <h4 class="text-white font-semibold mb-1">Watch Ads</h4>
+                    <p class="text-slate-400 text-xs">₹1 - ₹5 per ad</p>
+                    <div class="mt-2 flex items-center gap-1 text-green-400 text-xs">
+                        <i class="fas fa-infinity"></i> Unlimited
+                    </div>
+                </a>
+
+                <!-- Referral -->
+                <a href="referral.html" class="bg-slate-800/50 backdrop-blur rounded-2xl p-4 border border-slate-700/50 hover:border-primary/50 transition group">
+                    <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                        <i class="fas fa-user-plus text-xl text-white"></i>
+                    </div>
+                    <h4 class="text-white font-semibold mb-1">Refer & Earn</h4>
+                    <p class="text-slate-400 text-xs">₹50 per referral</p>
+                    <div class="mt-2 flex items-center gap-1 text-yellow-400 text-xs">
+                        <i class="fas fa-star"></i> +10% Lifetime
+                    </div>
+                </a>
+
+                <!-- Spin Wheel -->
+                <a href="spin.html" class="bg-slate-800/50 backdrop-blur rounded-2xl p-4 border border-slate-700/50 hover:border-primary/50 transition group">
+                    <div class="w-12 h-12 bg-gradient-to-r from-yellow-500 to-amber-500 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                        <i class="fas fa-dharmachakra text-xl text-white"></i>
+                    </div>
+                    <h4 class="text-white font-semibold mb-1">Spin & Win</h4>
+                    <p class="text-slate-400 text-xs">₹1 - ₹500 prizes</p>
+                    <div class="mt-2 flex items-center gap-1 text-purple-400 text-xs">
+                        <i class="fas fa-clock"></i> 3 Spins/Day
+                    </div>
+                </a>
+
+                <!-- Games -->
+                <a href="games.html" class="bg-slate-800/50 backdrop-blur rounded-2xl p-4 border border-slate-700/50 hover:border-primary/50 transition group">
+                    <div class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-violet-500 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                        <i class="fas fa-gamepad text-xl text-white"></i>
+                    </div>
+                    <h4 class="text-white font-semibold mb-1">Play Games</h4>
+                    <p class="text-slate-400 text-xs">₹10 - ₹1000 prizes</p>
+                    <div class="mt-2 flex items-center gap-1 text-blue-400 text-xs">
+                        <i class="fas fa-trophy"></i> Win Rewards
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="max-w-lg mx-auto px-4 pb-8">
+            <h3 class="text-xl font-bold text-white mb-4">
+                <i class="fas fa-question-circle text-primary mr-2"></i>Kaise Kaam Karta Hai?
+            </h3>
+
+            <div class="space-y-3">
+                <div class="flex items-center gap-4 bg-slate-800/50 backdrop-blur rounded-2xl p-4 border border-slate-700/50">
+                    <div class="w-10 h-10 bg-primary/20 text-primary rounded-full flex items-center justify-center font-bold">1</div>
+                    <div>
+                        <h4 class="text-white font-semibold">Sign Up Karo</h4>
+                        <p class="text-slate-400 text-sm">Mobile ya Email se free register</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 bg-slate-800/50 backdrop-blur rounded-2xl p-4 border border-slate-700/50">
+                    <div class="w-10 h-10 bg-secondary/20 text-secondary rounded-full flex items-center justify-center font-bold">2</div>
+                    <div>
+                        <h4 class="text-white font-semibold">Tasks Complete Karo</h4>
+                        <p class="text-slate-400 text-sm">Simple tasks aur surveys complete karo</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 bg-slate-800/50 backdrop-blur rounded-2xl p-4 border border-slate-700/50">
+                    <div class="w-10 h-10 bg-accent/20 text-accent rounded-full flex items-center justify-center font-bold">3</div>
+                    <div>
+                        <h4 class="text-white font-semibold">Instant Withdrawal</h4>
+                        <p class="text-slate-400 text-sm">UPI, Paytm ya Bank me turant paisa lo</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Withdrawals -->
+        <section class="max-w-lg mx-auto px-4 pb-8">
+            <h3 class="text-xl font-bold text-white mb-4">
+                <i class="fas fa-bolt text-yellow-400 mr-2"></i>Live Withdrawals
+            </h3>
+
+            <div class="bg-slate-800/50 backdrop-blur rounded-2xl p-4 border border-slate-700/50 space-y-3" id="liveWithdrawals">
+                <!-- Live withdrawal items will be added by JS -->
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="max-w-lg mx-auto px-4 pb-8">
+            <h3 class="text-xl font-bold text-white mb-4">
+                <i class="fas fa-star text-yellow-400 mr-2"></i>User Reviews
+            </h3>
+
+            <div class="space-y-3">
+                <div class="bg-slate-800/50 backdrop-blur rounded-2xl p-4 border border-slate-700/50">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold">R</div>
+                        <div>
+                            <h4 class="text-white font-semibold">Rahul Kumar</h4>
+                            <div class="text-yellow-400 text-xs">★★★★★</div>
+                        </div>
+                        <span class="ml-auto text-green-400 text-sm">₹15,000 earned</span>
+                    </div>
+                    <p class="text-slate-400 text-sm">"Bahut achi app hai! Maine 2 mahine me ₹15,000 kama liye. Withdrawal bhi instant hota hai."</p>
+                </div>
+
+                <div class="bg-slate-800/50 backdrop-blur rounded-2xl p-4 border border-slate-700/50">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center text-white font-bold">P</div>
+                        <div>
+                            <h4 class="text-white font-semibold">Priya Singh</h4>
+                            <div class="text-yellow-400 text-xs">★★★★★</div>
+                        </div>
+                        <span class="ml-auto text-green-400 text-sm">₹8,500 earned</span>
+                    </div>
+                    <p class="text-slate-400 text-sm">"Students ke liye perfect app! Ghar baithe pocket money kama rahi hun. Thank you EarnZone!"</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Download CTA -->
+        <section class="max-w-lg mx-auto px-4 pb-24">
+            <div class="bg-gradient-to-r from-primary to-secondary rounded-2xl p-6 text-center">
+                <h3 class="text-xl font-bold text-white mb-2">Abhi Shuru Karo!</h3>
+                <p class="text-purple-200 text-sm mb-4">Sign up karo aur ₹25 bonus paao</p>
+                <a href="login.html" class="inline-block bg-white text-primary px-8 py-3 rounded-xl font-semibold hover:bg-slate-100 transition">
+                    <i class="fas fa-rocket mr-2"></i>Get Started
+                </a>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-t border-slate-700/50 z-40">
+            <div class="max-w-lg mx-auto px-4">
+                <div class="flex items-center justify-around py-2">
+                    <a href="index.html" class="flex flex-col items-center py-2 px-4 text-primary">
+                        <i class="fas fa-home text-xl mb-1"></i>
+                        <span class="text-xs">Home</span>
+                    </a>
+                    <a href="tasks.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                        <i class="fas fa-tasks text-xl mb-1"></i>
+                        <span class="text-xs">Earn</span>
+                    </a>
+                    <a href="wallet.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                        <i class="fas fa-wallet text-xl mb-1"></i>
+                        <span class="text-xs">Wallet</span>
+                    </a>
+                    <a href="referral.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                        <i class="fas fa-users text-xl mb-1"></i>
+                        <span class="text-xs">Refer</span>
+                    </a>
+                    <a href="profile.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                        <i class="fas fa-user text-xl mb-1"></i>
+                        <span class="text-xs">Profile</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Splash screen handler
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('splashScreen').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+            }, 2000);
+        });
+
+        // Live withdrawals simulation
+        const names = ['Amit', 'Ravi', 'Sneha', 'Pooja', 'Mohit', 'Anita', 'Suresh', 'Priya', 'Karan', 'Neha', 'Raj', 'Simran', 'Vijay', 'Anjali', 'Deepak'];
+        const cities = ['Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Kolkata', 'Hyderabad', 'Pune', 'Jaipur', 'Lucknow', 'Ahmedabad'];
+        const methods = ['UPI', 'Paytm', 'Bank'];
+
+        function createWithdrawalItem() {
+            const name = names[Math.floor(Math.random() * names.length)];
+            const city = cities[Math.floor(Math.random() * cities.length)];
+            const amount = Math.floor(Math.random() * 900 + 100);
+            const method = methods[Math.floor(Math.random() * methods.length)];
+            const time = Math.floor(Math.random() * 59 + 1);
+
+            return `
+                <div class="flex items-center gap-3 py-2 border-b border-slate-700/50 last:border-0 withdrawal-item">
+                    <div class="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                        ${name[0]}
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-white text-sm font-medium">${name} (${city})</p>
+                        <p class="text-slate-400 text-xs">${time} min ago • ${method}</p>
+                    </div>
+                    <div class="text-green-400 font-semibold">₹${amount}</div>
+                </div>
+            `;
+        }
+
+        // Initialize live withdrawals
+        const withdrawalsContainer = document.getElementById('liveWithdrawals');
+        for (let i = 0; i < 5; i++) {
+            withdrawalsContainer.innerHTML += createWithdrawalItem();
+        }
+
+        // Add new withdrawal every 5 seconds
+        setInterval(() => {
+            const newItem = document.createElement('div');
+            newItem.innerHTML = createWithdrawalItem();
+            newItem.firstElementChild.style.opacity = '0';
+            withdrawalsContainer.insertBefore(newItem.firstElementChild, withdrawalsContainer.firstChild);
+
+            setTimeout(() => {
+                withdrawalsContainer.firstChild.style.opacity = '1';
+                withdrawalsContainer.firstChild.style.transition = 'opacity 0.5s';
+            }, 100);
+
+            // Remove last item if more than 5
+            if (withdrawalsContainer.children.length > 5) {
+                withdrawalsContainer.lastChild.remove();
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

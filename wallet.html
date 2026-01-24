@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wallet - EarnZone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#22c55e',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-poppins bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen pb-20">
+    <!-- Header -->
+    <header class="bg-slate-900/80 backdrop-blur-lg sticky top-0 z-40 border-b border-slate-700/50">
+        <div class="max-w-lg mx-auto px-4 py-3 flex items-center">
+            <a href="dashboard.html" class="p-2 text-slate-400 hover:text-white transition">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </a>
+            <h1 class="flex-1 text-center text-lg font-bold text-white">My Wallet</h1>
+            <a href="history.html" class="p-2 text-slate-400 hover:text-white transition">
+                <i class="fas fa-history text-xl"></i>
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-lg mx-auto px-4 py-6">
+        <!-- Wallet Card -->
+        <div class="bg-gradient-to-r from-primary via-purple-600 to-secondary rounded-2xl p-6 mb-6 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+            <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+
+            <div class="relative z-10">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <p class="text-purple-200 text-sm">Total Balance</p>
+                        <h2 class="text-4xl font-bold text-white">₹<span id="totalBalance">0.00</span></h2>
+                    </div>
+                    <div class="w-14 h-14 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
+                        <i class="fas fa-wallet text-2xl text-white"></i>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <a href="withdraw.html" class="flex-1 bg-white/20 backdrop-blur py-3 rounded-xl text-white font-medium text-center hover:bg-white/30 transition">
+                        <i class="fas fa-paper-plane mr-2"></i>Withdraw
+                    </a>
+                    <a href="tasks.html" class="flex-1 bg-white/20 backdrop-blur py-3 rounded-xl text-white font-medium text-center hover:bg-white/30 transition">
+                        <i class="fas fa-plus mr-2"></i>Earn More
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Balance Breakdown -->
+        <div class="grid grid-cols-2 gap-3 mb-6">
+            <div class="bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-arrow-down text-green-400"></i>
+                    </div>
+                    <span class="text-slate-400 text-sm">Total Earned</span>
+                </div>
+                <p class="text-xl font-bold text-green-400" id="totalEarned">₹0</p>
+            </div>
+
+            <div class="bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-arrow-up text-red-400"></i>
+                    </div>
+                    <span class="text-slate-400 text-sm">Total Withdrawn</span>
+                </div>
+                <p class="text-xl font-bold text-white" id="totalWithdrawn">₹0</p>
+            </div>
+        </div>
+
+        <!-- Earning Stats -->
+        <div class="bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 mb-6">
+            <h3 class="text-white font-semibold mb-4">Earnings Breakdown</h3>
+
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-tasks text-blue-400 text-sm"></i>
+                        </div>
+                        <span class="text-slate-300">Tasks</span>
+                    </div>
+                    <span class="text-white font-medium" id="tasksEarnings">₹0</span>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-poll text-purple-400 text-sm"></i>
+                        </div>
+                        <span class="text-slate-300">Surveys</span>
+                    </div>
+                    <span class="text-white font-medium" id="surveysEarnings">₹0</span>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-play-circle text-red-400 text-sm"></i>
+                        </div>
+                        <span class="text-slate-300">Watch Ads</span>
+                    </div>
+                    <span class="text-white font-medium" id="adsEarnings">₹0</span>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-users text-green-400 text-sm"></i>
+                        </div>
+                        <span class="text-slate-300">Referrals</span>
+                    </div>
+                    <span class="text-white font-medium" id="referralEarnings">₹0</span>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-yellow-500/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-gift text-yellow-400 text-sm"></i>
+                        </div>
+                        <span class="text-slate-300">Bonus & Rewards</span>
+                    </div>
+                    <span class="text-white font-medium" id="bonusEarnings">₹0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Withdrawals -->
+        <div class="bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-white font-semibold">Pending Withdrawals</h3>
+                <a href="history.html" class="text-primary text-sm">View All</a>
+            </div>
+
+            <div class="space-y-3" id="pendingWithdrawals">
+                <div class="text-center py-4" id="noPending">
+                    <p class="text-slate-500">No pending withdrawals</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-white font-semibold">Recent Transactions</h3>
+                <a href="history.html" class="text-primary text-sm">View All</a>
+            </div>
+
+            <div class="space-y-3" id="recentTransactions">
+                <!-- Transactions will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-t border-slate-700/50 z-40">
+        <div class="max-w-lg mx-auto px-4">
+            <div class="flex items-center justify-around py-2">
+                <a href="index.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-home text-xl mb-1"></i>
+                    <span class="text-xs">Home</span>
+                </a>
+                <a href="tasks.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-tasks text-xl mb-1"></i>
+                    <span class="text-xs">Earn</span>
+                </a>
+                <a href="wallet.html" class="flex flex-col items-center py-2 px-4 text-primary">
+                    <i class="fas fa-wallet text-xl mb-1"></i>
+                    <span class="text-xs">Wallet</span>
+                </a>
+                <a href="referral.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-users text-xl mb-1"></i>
+                    <span class="text-xs">Refer</span>
+                </a>
+                <a href="profile.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-user text-xl mb-1"></i>
+                    <span class="text-xs">Profile</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCPvpgRkqIEdpmrvKWh-GBS04BQj2_8SAI",
+            authDomain: "earning-app-c048f.firebaseapp.com",
+            databaseURL: "https://earning-app-c048f-default-rtdb.firebaseio.com",
+            projectId: "earning-app-c048f",
+            storageBucket: "earning-app-c048f.firebasestorage.app"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        const userId = localStorage.getItem('userId');
+        if (userId) {
+            // Load wallet data
+            database.ref('users/' + userId).on('value', (snapshot) => {
+                const data = snapshot.val() || {};
+                document.getElementById('totalBalance').textContent = (data.wallet || 0).toFixed(2);
+                document.getElementById('totalEarned').textContent = '₹' + (data.totalEarnings || 0);
+                document.getElementById('totalWithdrawn').textContent = '₹' + (data.totalWithdrawn || 0);
+                document.getElementById('tasksEarnings').textContent = '₹' + (data.tasksEarnings || 0);
+                document.getElementById('surveysEarnings').textContent = '₹' + (data.surveysEarnings || 0);
+                document.getElementById('adsEarnings').textContent = '₹' + (data.adsEarnings || 0);
+                document.getElementById('referralEarnings').textContent = '₹' + (data.referralEarnings || 0);
+                document.getElementById('bonusEarnings').textContent = '₹' + (data.bonusEarnings || 0);
+            });
+
+            // Load transactions
+            database.ref('transactions/' + userId).orderByChild('timestamp').limitToLast(5).on('value', (snapshot) => {
+                const container = document.getElementById('recentTransactions');
+                container.innerHTML = '';
+
+                if (!snapshot.exists()) {
+                    container.innerHTML = '<div class="text-center py-4"><p class="text-slate-500">No transactions yet</p></div>';
+                    return;
+                }
+
+                const transactions = [];
+                snapshot.forEach((child) => {
+                    transactions.push({ id: child.key, ...child.val() });
+                });
+
+                transactions.reverse().forEach((txn) => {
+                    const isCredit = txn.type === 'credit';
+                    const date = new Date(txn.timestamp).toLocaleDateString('hi-IN');
+                    container.innerHTML += `
+                        <div class="flex items-center gap-3 py-2 border-b border-slate-700/50 last:border-0">
+                            <div class="w-10 h-10 ${isCredit ? 'bg-green-500/20' : 'bg-red-500/20'} rounded-full flex items-center justify-center">
+                                <i class="fas fa-${isCredit ? 'arrow-down' : 'arrow-up'} ${isCredit ? 'text-green-400' : 'text-red-400'}"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-white text-sm font-medium">${txn.description || 'Transaction'}</p>
+                                <p class="text-slate-500 text-xs">${date}</p>
+                            </div>
+                            <span class="${isCredit ? 'text-green-400' : 'text-red-400'} font-medium">
+                                ${isCredit ? '+' : '-'}₹${txn.amount}
+                            </span>
+                        </div>
+                    `;
+                });
+            });
+
+            // Load pending withdrawals
+            database.ref('withdrawals/' + userId).orderByChild('status').equalTo('pending').on('value', (snapshot) => {
+                const container = document.getElementById('pendingWithdrawals');
+                const noPending = document.getElementById('noPending');
+
+                if (!snapshot.exists()) {
+                    noPending.style.display = 'block';
+                    return;
+                }
+
+                noPending.style.display = 'none';
+                container.innerHTML = '';
+
+                snapshot.forEach((child) => {
+                    const w = child.val();
+                    const date = new Date(w.timestamp).toLocaleDateString('hi-IN');
+                    container.innerHTML += `
+                        <div class="flex items-center gap-3 py-2 bg-yellow-500/10 rounded-lg px-3">
+                            <div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-clock text-yellow-400"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-white text-sm font-medium">₹${w.amount} via ${w.method.toUpperCase()}</p>
+                                <p class="text-slate-500 text-xs">${date}</p>
+                            </div>
+                            <span class="text-yellow-400 text-sm">Pending</span>
+                        </div>
+                    `;
+                });
+            });
+        }
+    </script>
+</body>
+</html>

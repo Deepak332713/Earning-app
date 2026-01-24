@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Profile - EarnZone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#22c55e',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-poppins bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen pb-20">
+    <!-- Header -->
+    <header class="bg-slate-900/80 backdrop-blur-lg sticky top-0 z-40 border-b border-slate-700/50">
+        <div class="max-w-lg mx-auto px-4 py-3 flex items-center">
+            <a href="dashboard.html" class="p-2 text-slate-400 hover:text-white transition">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </a>
+            <h1 class="flex-1 text-center text-lg font-bold text-white">My Profile</h1>
+            <button onclick="logout()" class="p-2 text-red-400 hover:text-red-300 transition">
+                <i class="fas fa-sign-out-alt text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-lg mx-auto px-4 py-6">
+        <!-- Profile Header -->
+        <div class="bg-slate-800/50 backdrop-blur rounded-2xl p-6 mb-6 border border-slate-700/50 text-center">
+            <div class="relative inline-block mb-4">
+                <div class="w-24 h-24 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center text-white text-3xl font-bold" id="userAvatar">
+                    U
+                </div>
+                <button onclick="changePhoto()" class="absolute bottom-0 right-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white border-2 border-slate-800">
+                    <i class="fas fa-camera text-sm"></i>
+                </button>
+            </div>
+            <h2 class="text-xl font-bold text-white" id="userName">Loading...</h2>
+            <p class="text-slate-400 text-sm" id="userEmail">loading@email.com</p>
+
+            <!-- Badges -->
+            <div class="flex justify-center gap-2 mt-4">
+                <span id="verifiedBadge" class="hidden bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full">
+                    <i class="fas fa-check-circle mr-1"></i>Verified
+                </span>
+                <span id="vipBadge" class="hidden bg-yellow-500/20 text-yellow-400 text-xs px-3 py-1 rounded-full">
+                    <i class="fas fa-crown mr-1"></i>VIP
+                </span>
+                <span class="bg-primary/20 text-primary text-xs px-3 py-1 rounded-full">
+                    <i class="fas fa-user mr-1"></i>Member
+                </span>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-3 mb-6">
+            <div class="bg-slate-800/50 backdrop-blur rounded-xl p-3 text-center border border-slate-700/50">
+                <div class="text-xl font-bold text-green-400" id="totalEarned">₹0</div>
+                <div class="text-xs text-slate-400">Total Earned</div>
+            </div>
+            <div class="bg-slate-800/50 backdrop-blur rounded-xl p-3 text-center border border-slate-700/50">
+                <div class="text-xl font-bold text-blue-400" id="totalReferrals">0</div>
+                <div class="text-xs text-slate-400">Referrals</div>
+            </div>
+            <div class="bg-slate-800/50 backdrop-blur rounded-xl p-3 text-center border border-slate-700/50">
+                <div class="text-xl font-bold text-yellow-400" id="userStreak">0</div>
+                <div class="text-xs text-slate-400">Day Streak</div>
+            </div>
+        </div>
+
+        <!-- KYC Verification Section -->
+        <div class="bg-slate-800/50 backdrop-blur rounded-2xl p-4 mb-6 border border-slate-700/50">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-white font-semibold">
+                    <i class="fas fa-shield-alt text-primary mr-2"></i>KYC Verification
+                </h3>
+                <span id="kycStatus" class="bg-yellow-500/20 text-yellow-400 text-xs px-3 py-1 rounded-full">
+                    Pending
+                </span>
+            </div>
+
+            <div id="kycPending" class="space-y-3">
+                <p class="text-slate-400 text-sm">Complete KYC to unlock higher withdrawal limits and exclusive features.</p>
+
+                <div class="space-y-2">
+                    <div class="flex items-center gap-3 text-sm">
+                        <i class="fas fa-check-circle text-green-500" id="step1Icon"></i>
+                        <span class="text-slate-300">Phone number verified</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-sm">
+                        <i class="fas fa-circle text-slate-600" id="step2Icon"></i>
+                        <span class="text-slate-400">Email verification</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-sm">
+                        <i class="fas fa-circle text-slate-600" id="step3Icon"></i>
+                        <span class="text-slate-400">Aadhaar/PAN verification</span>
+                    </div>
+                </div>
+
+                <button onclick="startKYC()" class="w-full bg-gradient-to-r from-primary to-secondary py-3 rounded-xl text-white font-medium mt-4">
+                    <i class="fas fa-id-card mr-2"></i>Complete KYC
+                </button>
+            </div>
+
+            <div id="kycComplete" class="hidden text-center py-4">
+                <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-check-circle text-3xl text-green-500"></i>
+                </div>
+                <p class="text-green-400 font-medium">KYC Verified Successfully!</p>
+                <p class="text-slate-400 text-sm">You have full access to all features</p>
+            </div>
+        </div>
+
+        <!-- Profile Options -->
+        <div class="space-y-3 mb-6">
+            <a href="#" onclick="editProfile()" class="flex items-center gap-4 bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 hover:border-primary/50 transition">
+                <div class="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-user-edit text-blue-400"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-white font-medium">Edit Profile</h4>
+                    <p class="text-slate-400 text-sm">Update your personal details</p>
+                </div>
+                <i class="fas fa-chevron-right text-slate-500"></i>
+            </a>
+
+            <a href="history.html" class="flex items-center gap-4 bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 hover:border-primary/50 transition">
+                <div class="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-history text-green-400"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-white font-medium">Transaction History</h4>
+                    <p class="text-slate-400 text-sm">View all your transactions</p>
+                </div>
+                <i class="fas fa-chevron-right text-slate-500"></i>
+            </a>
+
+            <a href="#" onclick="managePayments()" class="flex items-center gap-4 bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 hover:border-primary/50 transition">
+                <div class="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-credit-card text-purple-400"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-white font-medium">Payment Methods</h4>
+                    <p class="text-slate-400 text-sm">Manage your withdrawal accounts</p>
+                </div>
+                <i class="fas fa-chevron-right text-slate-500"></i>
+            </a>
+
+            <a href="notifications.html" class="flex items-center gap-4 bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 hover:border-primary/50 transition">
+                <div class="w-10 h-10 bg-yellow-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-bell text-yellow-400"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-white font-medium">Notifications</h4>
+                    <p class="text-slate-400 text-sm">Manage notification preferences</p>
+                </div>
+                <i class="fas fa-chevron-right text-slate-500"></i>
+            </a>
+
+            <a href="#" onclick="changeLanguage()" class="flex items-center gap-4 bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 hover:border-primary/50 transition">
+                <div class="w-10 h-10 bg-cyan-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-language text-cyan-400"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-white font-medium">Language</h4>
+                    <p class="text-slate-400 text-sm">हिंदी / English</p>
+                </div>
+                <i class="fas fa-chevron-right text-slate-500"></i>
+            </a>
+
+            <a href="support.html" class="flex items-center gap-4 bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 hover:border-primary/50 transition">
+                <div class="w-10 h-10 bg-pink-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-headset text-pink-400"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-white font-medium">Help & Support</h4>
+                    <p class="text-slate-400 text-sm">24/7 customer support</p>
+                </div>
+                <i class="fas fa-chevron-right text-slate-500"></i>
+            </a>
+        </div>
+
+        <!-- Other Options -->
+        <div class="space-y-3">
+            <a href="#" class="flex items-center gap-4 bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 hover:border-primary/50 transition">
+                <div class="w-10 h-10 bg-slate-700/50 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-file-contract text-slate-400"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-white font-medium">Terms & Conditions</h4>
+                </div>
+                <i class="fas fa-chevron-right text-slate-500"></i>
+            </a>
+
+            <a href="#" class="flex items-center gap-4 bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 hover:border-primary/50 transition">
+                <div class="w-10 h-10 bg-slate-700/50 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-shield-alt text-slate-400"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-white font-medium">Privacy Policy</h4>
+                </div>
+                <i class="fas fa-chevron-right text-slate-500"></i>
+            </a>
+
+            <a href="#" class="flex items-center gap-4 bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 hover:border-primary/50 transition">
+                <div class="w-10 h-10 bg-slate-700/50 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-star text-slate-400"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-white font-medium">Rate Us</h4>
+                </div>
+                <i class="fas fa-chevron-right text-slate-500"></i>
+            </a>
+
+            <button onclick="logout()" class="w-full flex items-center gap-4 bg-red-500/10 backdrop-blur rounded-xl p-4 border border-red-500/30 hover:bg-red-500/20 transition">
+                <div class="w-10 h-10 bg-red-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-sign-out-alt text-red-400"></i>
+                </div>
+                <div class="flex-1 text-left">
+                    <h4 class="text-red-400 font-medium">Logout</h4>
+                </div>
+            </button>
+        </div>
+
+        <!-- App Version -->
+        <div class="text-center mt-8">
+            <p class="text-slate-500 text-sm">EarnZone v1.0.0</p>
+            <p class="text-slate-600 text-xs">Made with ❤️ in India</p>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-t border-slate-700/50 z-40">
+        <div class="max-w-lg mx-auto px-4">
+            <div class="flex items-center justify-around py-2">
+                <a href="index.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-home text-xl mb-1"></i>
+                    <span class="text-xs">Home</span>
+                </a>
+                <a href="tasks.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-tasks text-xl mb-1"></i>
+                    <span class="text-xs">Earn</span>
+                </a>
+                <a href="wallet.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-wallet text-xl mb-1"></i>
+                    <span class="text-xs">Wallet</span>
+                </a>
+                <a href="referral.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-users text-xl mb-1"></i>
+                    <span class="text-xs">Refer</span>
+                </a>
+                <a href="profile.html" class="flex flex-col items-center py-2 px-4 text-primary">
+                    <i class="fas fa-user text-xl mb-1"></i>
+                    <span class="text-xs">Profile</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- KYC Modal -->
+    <div id="kycModal" class="hidden fixed inset-0 bg-slate-900/95 z-50 overflow-y-auto">
+        <div class="max-w-lg mx-auto px-4 py-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-white">KYC Verification</h2>
+                <button onclick="closeKYC()" class="p-2 text-slate-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Step 1: Email -->
+            <div id="kycStep1" class="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50 mb-4">
+                <h3 class="text-white font-semibold mb-3">Step 1: Verify Email</h3>
+                <input type="email" id="kycEmail" placeholder="Enter your email" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-primary mb-3">
+                <button onclick="verifyEmail()" class="w-full bg-primary py-3 rounded-xl text-white font-medium">
+                    Send Verification Link
+                </button>
+            </div>
+
+            <!-- Step 2: Aadhaar -->
+            <div id="kycStep2" class="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50 mb-4">
+                <h3 class="text-white font-semibold mb-3">Step 2: Aadhaar Verification</h3>
+                <input type="text" id="aadhaarNumber" maxlength="12" placeholder="Enter 12-digit Aadhaar number" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-primary mb-3">
+                <button onclick="verifyAadhaar()" class="w-full bg-primary py-3 rounded-xl text-white font-medium">
+                    Verify Aadhaar
+                </button>
+            </div>
+
+            <!-- Step 3: PAN (Optional) -->
+            <div id="kycStep3" class="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50 mb-4">
+                <h3 class="text-white font-semibold mb-3">Step 3: PAN Card (Optional)</h3>
+                <input type="text" id="panNumber" maxlength="10" placeholder="Enter PAN number" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-primary mb-3 uppercase">
+                <button onclick="verifyPAN()" class="w-full bg-slate-700 py-3 rounded-xl text-white font-medium">
+                    Verify PAN
+                </button>
+                <p class="text-slate-500 text-sm text-center mt-2">Required for withdrawals above ₹50,000</p>
+            </div>
+
+            <p class="text-slate-500 text-sm text-center">
+                <i class="fas fa-lock mr-1"></i>Your data is encrypted and secure
+            </p>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editModal" class="hidden fixed inset-0 bg-slate-900/95 z-50 overflow-y-auto">
+        <div class="max-w-lg mx-auto px-4 py-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-white">Edit Profile</h2>
+                <button onclick="closeEditModal()" class="p-2 text-slate-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-slate-400 text-sm mb-2">Full Name</label>
+                    <input type="text" id="editName" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary">
+                </div>
+                <div>
+                    <label class="block text-slate-400 text-sm mb-2">Email</label>
+                    <input type="email" id="editEmail" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary">
+                </div>
+                <div>
+                    <label class="block text-slate-400 text-sm mb-2">Phone Number</label>
+                    <input type="tel" id="editPhone" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary" readonly>
+                    <p class="text-slate-500 text-xs mt-1">Phone number cannot be changed</p>
+                </div>
+                <div>
+                    <label class="block text-slate-400 text-sm mb-2">Date of Birth</label>
+                    <input type="date" id="editDOB" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary">
+                </div>
+                <div>
+                    <label class="block text-slate-400 text-sm mb-2">Gender</label>
+                    <select id="editGender" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary">
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <button onclick="saveProfile()" class="w-full bg-gradient-to-r from-primary to-secondary py-3 rounded-xl text-white font-medium mt-4">
+                    <i class="fas fa-save mr-2"></i>Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Modal -->
+    <div id="languageModal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 rounded-2xl p-6 w-full max-w-sm">
+            <h3 class="text-xl font-bold text-white mb-4">Select Language</h3>
+            <div class="space-y-3">
+                <button onclick="setLanguage('hi')" class="w-full flex items-center gap-4 bg-slate-700/50 rounded-xl p-4 hover:bg-slate-700 transition">
+                    <span class="text-2xl">🇮🇳</span>
+                    <span class="text-white font-medium">हिंदी</span>
+                </button>
+                <button onclick="setLanguage('en')" class="w-full flex items-center gap-4 bg-slate-700/50 rounded-xl p-4 hover:bg-slate-700 transition">
+                    <span class="text-2xl">🇬🇧</span>
+                    <span class="text-white font-medium">English</span>
+                </button>
+                <button onclick="setLanguage('ta')" class="w-full flex items-center gap-4 bg-slate-700/50 rounded-xl p-4 hover:bg-slate-700 transition">
+                    <span class="text-2xl">🇮🇳</span>
+                    <span class="text-white font-medium">தமிழ்</span>
+                </button>
+                <button onclick="setLanguage('te')" class="w-full flex items-center gap-4 bg-slate-700/50 rounded-xl p-4 hover:bg-slate-700 transition">
+                    <span class="text-2xl">🇮🇳</span>
+                    <span class="text-white font-medium">తెలుగు</span>
+                </button>
+            </div>
+            <button onclick="closeLanguageModal()" class="w-full bg-slate-700 py-3 rounded-xl text-white font-medium mt-4">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCPvpgRkqIEdpmrvKWh-GBS04BQj2_8SAI",
+            authDomain: "earning-app-c048f.firebaseapp.com",
+            databaseURL: "https://earning-app-c048f-default-rtdb.firebaseio.com",
+            projectId: "earning-app-c048f",
+            storageBucket: "earning-app-c048f.firebasestorage.app",
+            messagingSenderId: "843375564973",
+            appId: "1:843375564973:web:xxxxxx"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+        let userData = null;
+        let userId = null;
+
+        // Load user data
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                userId = user.uid;
+                loadProfile(user.uid);
+            } else {
+                userId = localStorage.getItem('userId');
+                if (userId) {
+                    loadProfile(userId);
+                } else {
+                    window.location.href = 'login.html';
+                }
+            }
+        });
+
+        function loadProfile(uid) {
+            database.ref('users/' + uid).on('value', (snapshot) => {
+                userData = snapshot.val();
+                if (userData) {
+                    document.getElementById('userName').textContent = userData.fullName || 'User';
+                    document.getElementById('userEmail').textContent = userData.email || 'Not set';
+                    document.getElementById('userAvatar').textContent = (userData.fullName || 'U')[0].toUpperCase();
+                    document.getElementById('totalEarned').textContent = '₹' + (userData.totalEarnings || 0);
+                    document.getElementById('totalReferrals').textContent = userData.referralCount || 0;
+                    document.getElementById('userStreak').textContent = userData.streak || 0;
+
+                    // KYC Status
+                    if (userData.kycVerified) {
+                        document.getElementById('kycStatus').textContent = 'Verified';
+                        document.getElementById('kycStatus').classList.remove('bg-yellow-500/20', 'text-yellow-400');
+                        document.getElementById('kycStatus').classList.add('bg-green-500/20', 'text-green-400');
+                        document.getElementById('kycPending').classList.add('hidden');
+                        document.getElementById('kycComplete').classList.remove('hidden');
+                        document.getElementById('verifiedBadge').classList.remove('hidden');
+                    }
+
+                    // VIP Badge
+                    if (userData.isVIP) {
+                        document.getElementById('vipBadge').classList.remove('hidden');
+                    }
+                }
+            });
+        }
+
+        function editProfile() {
+            document.getElementById('editModal').classList.remove('hidden');
+            if (userData) {
+                document.getElementById('editName').value = userData.fullName || '';
+                document.getElementById('editEmail').value = userData.email || '';
+                document.getElementById('editPhone').value = userData.phone || '';
+                document.getElementById('editDOB').value = userData.dob || '';
+                document.getElementById('editGender').value = userData.gender || '';
+            }
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
+
+        function saveProfile() {
+            const updates = {
+                fullName: document.getElementById('editName').value,
+                email: document.getElementById('editEmail').value,
+                dob: document.getElementById('editDOB').value,
+                gender: document.getElementById('editGender').value
+            };
+
+            database.ref('users/' + userId).update(updates).then(() => {
+                alert('Profile updated successfully!');
+                closeEditModal();
+            }).catch((error) => {
+                alert('Error updating profile: ' + error.message);
+            });
+        }
+
+        function startKYC() {
+            document.getElementById('kycModal').classList.remove('hidden');
+        }
+
+        function closeKYC() {
+            document.getElementById('kycModal').classList.add('hidden');
+        }
+
+        function verifyEmail() {
+            const email = document.getElementById('kycEmail').value;
+            if (!email) {
+                alert('Please enter your email');
+                return;
+            }
+            // In production, send verification email
+            alert('Verification link sent to ' + email);
+        }
+
+        function verifyAadhaar() {
+            const aadhaar = document.getElementById('aadhaarNumber').value;
+            if (!aadhaar || aadhaar.length !== 12) {
+                alert('Please enter valid 12-digit Aadhaar number');
+                return;
+            }
+            // In production, integrate with Aadhaar verification API
+            alert('Aadhaar verification initiated. You will receive OTP on linked mobile.');
+        }
+
+        function verifyPAN() {
+            const pan = document.getElementById('panNumber').value;
+            if (!pan || pan.length !== 10) {
+                alert('Please enter valid 10-character PAN number');
+                return;
+            }
+            // In production, integrate with PAN verification API
+            alert('PAN verification successful!');
+        }
+
+        function changePhoto() {
+            alert('Photo upload feature coming soon!');
+        }
+
+        function managePayments() {
+            window.location.href = 'withdraw.html';
+        }
+
+        function changeLanguage() {
+            document.getElementById('languageModal').classList.remove('hidden');
+        }
+
+        function closeLanguageModal() {
+            document.getElementById('languageModal').classList.add('hidden');
+        }
+
+        function setLanguage(lang) {
+            localStorage.setItem('language', lang);
+            closeLanguageModal();
+            alert('Language changed! App will reload.');
+            location.reload();
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                auth.signOut().then(() => {
+                    localStorage.clear();
+                    window.location.href = 'login.html';
+                });
+            }
+        }
+    </script>
+</body>
+</html>

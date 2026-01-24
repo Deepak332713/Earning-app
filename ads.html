@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Watch & Earn - EarnZone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#22c55e',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-poppins bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen pb-20">
+    <!-- Header -->
+    <header class="bg-slate-900/80 backdrop-blur-lg sticky top-0 z-40 border-b border-slate-700/50">
+        <div class="max-w-lg mx-auto px-4 py-3 flex items-center">
+            <a href="dashboard.html" class="p-2 text-slate-400 hover:text-white transition">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </a>
+            <h1 class="flex-1 text-center text-lg font-bold text-white">Watch & Earn</h1>
+            <div class="w-10"></div>
+        </div>
+    </header>
+
+    <main class="max-w-lg mx-auto px-4 py-6">
+        <!-- Ad Earnings Summary -->
+        <div class="bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-2xl p-4 mb-6 border border-red-500/30">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-slate-400 text-sm">Today's Ad Earnings</p>
+                    <p class="text-2xl font-bold text-white">₹<span id="adEarningsToday">0</span></p>
+                </div>
+                <div class="text-right">
+                    <p class="text-slate-400 text-sm">Ads Watched</p>
+                    <p class="text-2xl font-bold text-red-400" id="adsWatchedToday">0</p>
+                </div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-red-500/30 flex items-center justify-between text-sm">
+                <span class="text-slate-400">Daily Limit: <span class="text-white">50 ads</span></span>
+                <span class="text-green-400"><i class="fas fa-check-circle mr-1"></i>Unlimited rewarded ads</span>
+            </div>
+        </div>
+
+        <!-- Quick Watch Section -->
+        <div class="bg-slate-800/50 backdrop-blur rounded-2xl p-6 mb-6 border border-slate-700/50 text-center">
+            <div class="w-20 h-20 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-play text-3xl text-white"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Watch Video Ad</h3>
+            <p class="text-slate-400 mb-4">Watch a 15-30 second video and earn instantly!</p>
+
+            <div class="flex items-center justify-center gap-4 mb-4">
+                <div class="bg-slate-700/50 rounded-lg px-4 py-2">
+                    <span class="text-green-400 font-bold text-lg">₹1 - ₹5</span>
+                    <p class="text-slate-500 text-xs">per video</p>
+                </div>
+                <div class="bg-slate-700/50 rounded-lg px-4 py-2">
+                    <span class="text-blue-400 font-bold text-lg">15-30s</span>
+                    <p class="text-slate-500 text-xs">duration</p>
+                </div>
+            </div>
+
+            <button onclick="watchAd('video')" id="watchVideoBtn" class="w-full bg-gradient-to-r from-red-500 to-orange-500 py-4 rounded-xl text-white font-semibold text-lg hover:opacity-90 transition">
+                <i class="fas fa-play-circle mr-2"></i>Watch Now & Earn ₹2
+            </button>
+        </div>
+
+        <!-- Ad Types -->
+        <h3 class="text-lg font-bold text-white mb-3">
+            <i class="fas fa-ad text-primary mr-2"></i>More Ways to Earn
+        </h3>
+
+        <div class="space-y-3 mb-6">
+            <!-- Rewarded Video -->
+            <div class="bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-film text-2xl text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-white font-semibold">Rewarded Video</h4>
+                        <p class="text-slate-400 text-sm">Watch full video for bonus</p>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-xs text-slate-500"><i class="fas fa-clock mr-1"></i>30 sec</span>
+                            <span class="text-xs text-green-400">+50% bonus</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg font-bold text-green-400">₹3</p>
+                        <button onclick="watchAd('rewarded')" class="mt-1 bg-purple-500/20 text-purple-400 px-3 py-1 rounded-lg text-sm font-medium hover:bg-purple-500 hover:text-white transition">
+                            Watch
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interstitial Ad -->
+            <div class="bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-expand text-2xl text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-white font-semibold">Full Screen Ad</h4>
+                        <p class="text-slate-400 text-sm">View full screen ad</p>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-xs text-slate-500"><i class="fas fa-clock mr-1"></i>5 sec</span>
+                            <span class="text-xs text-blue-400">Quick earn</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg font-bold text-green-400">₹1</p>
+                        <button onclick="watchAd('interstitial')" class="mt-1 bg-blue-500/20 text-blue-400 px-3 py-1 rounded-lg text-sm font-medium hover:bg-blue-500 hover:text-white transition">
+                            View
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Banner Ad -->
+            <div class="bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-image text-2xl text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-white font-semibold">Click Banner Ad</h4>
+                        <p class="text-slate-400 text-sm">Click and visit sponsor</p>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-xs text-slate-500"><i class="fas fa-mouse-pointer mr-1"></i>1 click</span>
+                            <span class="text-xs text-green-400">Easy earn</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg font-bold text-green-400">₹0.50</p>
+                        <button onclick="watchAd('banner')" class="mt-1 bg-green-500/20 text-green-400 px-3 py-1 rounded-lg text-sm font-medium hover:bg-green-500 hover:text-white transition">
+                            Click
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Native Ad -->
+            <div class="bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-r from-yellow-500 to-amber-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-newspaper text-2xl text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-white font-semibold">Read Sponsored Article</h4>
+                        <p class="text-slate-400 text-sm">Read article for 30 seconds</p>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-xs text-slate-500"><i class="fas fa-book-reader mr-1"></i>30 sec read</span>
+                            <span class="text-xs text-yellow-400">High reward</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg font-bold text-green-400">₹5</p>
+                        <button onclick="watchAd('native')" class="mt-1 bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-lg text-sm font-medium hover:bg-yellow-500 hover:text-white transition">
+                            Read
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Ad Bonus -->
+        <div class="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-2xl p-4 mb-6 border border-yellow-500/30">
+            <div class="flex items-center gap-4">
+                <div class="w-14 h-14 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center">
+                    <i class="fas fa-gift text-2xl text-white"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-white font-semibold">Watch 20 Ads Bonus</h3>
+                    <p class="text-yellow-300 text-sm">Complete daily target for extra ₹10!</p>
+                    <div class="w-full bg-slate-700 rounded-full h-2 mt-2">
+                        <div class="bg-gradient-to-r from-yellow-500 to-orange-500 h-2 rounded-full" id="adProgressBar" style="width: 0%"></div>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1"><span id="adProgress">0</span>/20 ads watched</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ad Tips -->
+        <div class="bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50">
+            <h4 class="text-white font-semibold mb-3">
+                <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>Tips to Earn More
+            </h4>
+            <ul class="text-slate-400 text-sm space-y-2">
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-check text-green-400 mt-1"></i>
+                    <span>Watch complete video without skipping</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-check text-green-400 mt-1"></i>
+                    <span>Use Wi-Fi for uninterrupted ads</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-check text-green-400 mt-1"></i>
+                    <span>Complete daily ad target for bonus</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fas fa-check text-green-400 mt-1"></i>
+                    <span>Check back every few hours for new ads</span>
+                </li>
+            </ul>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-t border-slate-700/50 z-40">
+        <div class="max-w-lg mx-auto px-4">
+            <div class="flex items-center justify-around py-2">
+                <a href="index.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-home text-xl mb-1"></i>
+                    <span class="text-xs">Home</span>
+                </a>
+                <a href="tasks.html" class="flex flex-col items-center py-2 px-4 text-primary">
+                    <i class="fas fa-tasks text-xl mb-1"></i>
+                    <span class="text-xs">Earn</span>
+                </a>
+                <a href="wallet.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-wallet text-xl mb-1"></i>
+                    <span class="text-xs">Wallet</span>
+                </a>
+                <a href="referral.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-users text-xl mb-1"></i>
+                    <span class="text-xs">Refer</span>
+                </a>
+                <a href="profile.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-user text-xl mb-1"></i>
+                    <span class="text-xs">Profile</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Ad Watching Modal -->
+    <div id="adModal" class="hidden fixed inset-0 bg-slate-900 z-50 flex flex-col">
+        <div class="flex-1 flex items-center justify-center bg-slate-800">
+            <div class="text-center">
+                <div class="w-24 h-24 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+                    <i class="fas fa-play text-4xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2" id="adModalTitle">Loading Ad...</h3>
+                <p class="text-slate-400" id="adModalSubtitle">Please wait</p>
+            </div>
+        </div>
+        <div class="bg-slate-900 p-4">
+            <div class="max-w-lg mx-auto">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-slate-400 text-sm">Ad playing...</span>
+                    <span class="text-white font-medium" id="adTimer">0:30</span>
+                </div>
+                <div class="w-full bg-slate-700 rounded-full h-2 mb-4">
+                    <div class="bg-gradient-to-r from-primary to-secondary h-2 rounded-full transition-all" id="adTimerBar" style="width: 0%"></div>
+                </div>
+                <button onclick="skipAd()" id="skipBtn" class="w-full bg-slate-700 py-3 rounded-xl text-slate-400 font-medium" disabled>
+                    Skip in <span id="skipCountdown">5</span>s
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reward Modal -->
+    <div id="rewardModal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 rounded-2xl p-8 text-center max-w-sm w-full">
+            <div class="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
+                <i class="fas fa-coins text-4xl text-white"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Reward Earned!</h3>
+            <p class="text-slate-400 mb-2">Ad watched successfully</p>
+            <p class="text-3xl font-bold text-green-400 mb-6">₹<span id="rewardAmount">0</span></p>
+            <button onclick="closeRewardModal()" class="w-full bg-gradient-to-r from-primary to-secondary py-3 rounded-xl text-white font-medium">
+                Watch Another Ad
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let adsWatched = 0;
+        let adEarnings = 0;
+        let adTimer = null;
+        let skipTimer = null;
+        let currentAdReward = 0;
+
+        const adRewards = {
+            video: 2,
+            rewarded: 3,
+            interstitial: 1,
+            banner: 0.5,
+            native: 5
+        };
+
+        const adDurations = {
+            video: 15,
+            rewarded: 30,
+            interstitial: 5,
+            banner: 3,
+            native: 30
+        };
+
+        function watchAd(type) {
+            currentAdReward = adRewards[type];
+            const duration = adDurations[type];
+
+            document.getElementById('adModal').classList.remove('hidden');
+            document.getElementById('adModalTitle').textContent = getAdTitle(type);
+            document.getElementById('adModalSubtitle').textContent = 'Earn ₹' + currentAdReward;
+            document.getElementById('adTimer').textContent = formatTime(duration);
+            document.getElementById('adTimerBar').style.width = '0%';
+
+            let timeLeft = duration;
+            let skipTime = 5;
+
+            // Skip button countdown
+            document.getElementById('skipBtn').disabled = true;
+            document.getElementById('skipBtn').innerHTML = `Skip in <span id="skipCountdown">${skipTime}</span>s`;
+
+            skipTimer = setInterval(() => {
+                skipTime--;
+                document.getElementById('skipCountdown').textContent = skipTime;
+                if (skipTime <= 0) {
+                    clearInterval(skipTimer);
+                    document.getElementById('skipBtn').disabled = false;
+                    document.getElementById('skipBtn').innerHTML = '<i class="fas fa-times mr-2"></i>Skip Ad (No Reward)';
+                    document.getElementById('skipBtn').classList.remove('text-slate-400');
+                    document.getElementById('skipBtn').classList.add('text-white');
+                }
+            }, 1000);
+
+            // Ad timer
+            adTimer = setInterval(() => {
+                timeLeft--;
+                const progress = ((duration - timeLeft) / duration) * 100;
+                document.getElementById('adTimer').textContent = formatTime(timeLeft);
+                document.getElementById('adTimerBar').style.width = progress + '%';
+
+                if (timeLeft <= 0) {
+                    clearInterval(adTimer);
+                    clearInterval(skipTimer);
+                    completeAd();
+                }
+            }, 1000);
+        }
+
+        function getAdTitle(type) {
+            const titles = {
+                video: 'Video Ad Playing',
+                rewarded: 'Rewarded Video',
+                interstitial: 'Full Screen Ad',
+                banner: 'Sponsor Visit',
+                native: 'Reading Article'
+            };
+            return titles[type] || 'Ad Playing';
+        }
+
+        function formatTime(seconds) {
+            return `0:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function skipAd() {
+            clearInterval(adTimer);
+            clearInterval(skipTimer);
+            document.getElementById('adModal').classList.add('hidden');
+        }
+
+        function completeAd() {
+            document.getElementById('adModal').classList.add('hidden');
+
+            adsWatched++;
+            adEarnings += currentAdReward;
+
+            document.getElementById('adsWatchedToday').textContent = adsWatched;
+            document.getElementById('adEarningsToday').textContent = adEarnings.toFixed(2);
+            document.getElementById('adProgress').textContent = Math.min(adsWatched, 20);
+            document.getElementById('adProgressBar').style.width = Math.min((adsWatched / 20) * 100, 100) + '%';
+
+            document.getElementById('rewardAmount').textContent = currentAdReward;
+            document.getElementById('rewardModal').classList.remove('hidden');
+
+            // Check for daily bonus
+            if (adsWatched === 20) {
+                setTimeout(() => {
+                    alert('Congratulations! You earned ₹10 daily ad bonus!');
+                    adEarnings += 10;
+                    document.getElementById('adEarningsToday').textContent = adEarnings.toFixed(2);
+                }, 500);
+            }
+        }
+
+        function closeRewardModal() {
+            document.getElementById('rewardModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

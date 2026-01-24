@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tasks - EarnZone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#22c55e',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-poppins bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen pb-20">
+    <!-- Header -->
+    <header class="bg-slate-900/80 backdrop-blur-lg sticky top-0 z-40 border-b border-slate-700/50">
+        <div class="max-w-lg mx-auto px-4 py-3 flex items-center">
+            <a href="dashboard.html" class="p-2 text-slate-400 hover:text-white transition">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </a>
+            <h1 class="flex-1 text-center text-lg font-bold text-white">Tasks & Offers</h1>
+            <div class="w-10"></div>
+        </div>
+    </header>
+
+    <main class="max-w-lg mx-auto px-4 py-6">
+        <!-- Earnings Summary -->
+        <div class="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-2xl p-4 mb-6 border border-blue-500/30">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-slate-400 text-sm">Task Earnings Today</p>
+                    <p class="text-2xl font-bold text-white">₹<span id="taskEarningsToday">0</span></p>
+                </div>
+                <div class="text-right">
+                    <p class="text-slate-400 text-sm">Tasks Completed</p>
+                    <p class="text-2xl font-bold text-blue-400" id="tasksCompletedToday">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
+            <button onclick="filterTasks('all')" class="filter-btn active px-4 py-2 rounded-full text-sm font-medium bg-primary text-white whitespace-nowrap">
+                All Tasks
+            </button>
+            <button onclick="filterTasks('app')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-slate-800 text-slate-400 whitespace-nowrap">
+                <i class="fas fa-mobile-alt mr-1"></i>App Install
+            </button>
+            <button onclick="filterTasks('video')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-slate-800 text-slate-400 whitespace-nowrap">
+                <i class="fas fa-video mr-1"></i>Video
+            </button>
+            <button onclick="filterTasks('social')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-slate-800 text-slate-400 whitespace-nowrap">
+                <i class="fas fa-share-alt mr-1"></i>Social
+            </button>
+            <button onclick="filterTasks('signup')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-slate-800 text-slate-400 whitespace-nowrap">
+                <i class="fas fa-user-plus mr-1"></i>Signup
+            </button>
+        </div>
+
+        <!-- High Reward Tasks -->
+        <div class="mb-6">
+            <h3 class="text-lg font-bold text-white mb-3">
+                <i class="fas fa-fire text-orange-400 mr-2"></i>High Reward Tasks
+            </h3>
+
+            <div class="space-y-3" id="highRewardTasks">
+                <!-- High reward task card -->
+                <div class="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-xl p-4 border border-yellow-500/30">
+                    <div class="flex items-start gap-4">
+                        <div class="w-14 h-14 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-gamepad text-2xl text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <h4 class="text-white font-semibold">Download Fantasy App</h4>
+                                <span class="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-0.5 rounded-full">HOT</span>
+                            </div>
+                            <p class="text-slate-400 text-sm mb-2">Download, signup & play 1 match</p>
+                            <div class="flex items-center gap-4 text-xs">
+                                <span class="text-slate-500"><i class="fas fa-clock mr-1"></i>10 min</span>
+                                <span class="text-slate-500"><i class="fas fa-users mr-1"></i>2.5k completed</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xl font-bold text-green-400">₹100</p>
+                            <button onclick="startTask('fantasy1')" class="mt-2 bg-gradient-to-r from-yellow-500 to-orange-500 px-4 py-1.5 rounded-lg text-white text-sm font-medium">
+                                Start
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Another high reward -->
+                <div class="bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl p-4 border border-purple-500/30">
+                    <div class="flex items-start gap-4">
+                        <div class="w-14 h-14 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-credit-card text-2xl text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <h4 class="text-white font-semibold">Apply Credit Card</h4>
+                                <span class="bg-purple-500/20 text-purple-400 text-xs px-2 py-0.5 rounded-full">PREMIUM</span>
+                            </div>
+                            <p class="text-slate-400 text-sm mb-2">Apply for free credit card</p>
+                            <div class="flex items-center gap-4 text-xs">
+                                <span class="text-slate-500"><i class="fas fa-clock mr-1"></i>15 min</span>
+                                <span class="text-slate-500"><i class="fas fa-users mr-1"></i>850 completed</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xl font-bold text-green-400">₹500</p>
+                            <button onclick="startTask('credit1')" class="mt-2 bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-1.5 rounded-lg text-white text-sm font-medium">
+                                Start
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Tasks -->
+        <div>
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg font-bold text-white">
+                    <i class="fas fa-tasks text-blue-400 mr-2"></i>All Tasks
+                </h3>
+                <span class="text-slate-400 text-sm" id="taskCount">50+ Available</span>
+            </div>
+
+            <div class="space-y-3" id="allTasks">
+                <!-- Tasks will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Load More Button -->
+        <button onclick="loadMoreTasks()" id="loadMoreBtn" class="w-full mt-6 bg-slate-800/50 border border-slate-700 py-3 rounded-xl text-slate-400 font-medium hover:bg-slate-800 transition">
+            <i class="fas fa-chevron-down mr-2"></i>Load More Tasks
+        </button>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-t border-slate-700/50 z-40">
+        <div class="max-w-lg mx-auto px-4">
+            <div class="flex items-center justify-around py-2">
+                <a href="index.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-home text-xl mb-1"></i>
+                    <span class="text-xs">Home</span>
+                </a>
+                <a href="tasks.html" class="flex flex-col items-center py-2 px-4 text-primary">
+                    <i class="fas fa-tasks text-xl mb-1"></i>
+                    <span class="text-xs">Earn</span>
+                </a>
+                <a href="wallet.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-wallet text-xl mb-1"></i>
+                    <span class="text-xs">Wallet</span>
+                </a>
+                <a href="referral.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-users text-xl mb-1"></i>
+                    <span class="text-xs">Refer</span>
+                </a>
+                <a href="profile.html" class="flex flex-col items-center py-2 px-4 text-slate-400 hover:text-white transition">
+                    <i class="fas fa-user text-xl mb-1"></i>
+                    <span class="text-xs">Profile</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Task Detail Modal -->
+    <div id="taskModal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-end justify-center">
+        <div class="bg-slate-800 rounded-t-3xl p-6 w-full max-w-lg max-h-[80vh] overflow-y-auto">
+            <div class="w-12 h-1 bg-slate-600 rounded-full mx-auto mb-4"></div>
+
+            <div class="text-center mb-6">
+                <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4" id="modalIcon">
+                    <i class="fas fa-download text-3xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-1" id="modalTitle">Task Title</h3>
+                <p class="text-2xl font-bold text-green-400">₹<span id="modalReward">0</span></p>
+            </div>
+
+            <div class="bg-slate-700/50 rounded-xl p-4 mb-6">
+                <h4 class="text-white font-semibold mb-3">How to complete:</h4>
+                <div class="space-y-2" id="modalSteps">
+                    <!-- Steps will be loaded here -->
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 mb-6 text-sm">
+                <div class="flex-1 bg-slate-700/50 rounded-lg p-3 text-center">
+                    <i class="fas fa-clock text-slate-400 mb-1"></i>
+                    <p class="text-white" id="modalTime">5 min</p>
+                </div>
+                <div class="flex-1 bg-slate-700/50 rounded-lg p-3 text-center">
+                    <i class="fas fa-users text-slate-400 mb-1"></i>
+                    <p class="text-white" id="modalCompleted">1.2k</p>
+                </div>
+                <div class="flex-1 bg-slate-700/50 rounded-lg p-3 text-center">
+                    <i class="fas fa-star text-yellow-400 mb-1"></i>
+                    <p class="text-white" id="modalRating">4.8</p>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="closeTaskModal()" class="flex-1 bg-slate-700 py-3 rounded-xl text-white font-medium">
+                    Cancel
+                </button>
+                <button onclick="confirmStartTask()" class="flex-1 bg-gradient-to-r from-primary to-secondary py-3 rounded-xl text-white font-medium">
+                    <i class="fas fa-external-link-alt mr-2"></i>Start Task
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task Completion Modal -->
+    <div id="completionModal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 rounded-2xl p-8 text-center max-w-sm w-full">
+            <div class="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check-circle text-4xl text-green-500"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Task Started!</h3>
+            <p class="text-slate-400 mb-4">Complete the task and come back to claim your reward</p>
+            <div class="bg-slate-700/50 rounded-xl p-4 mb-6">
+                <p class="text-slate-400 text-sm mb-1">Your reward after verification</p>
+                <p class="text-2xl font-bold text-green-400">₹<span id="completionReward">0</span></p>
+            </div>
+            <button onclick="closeCompletionModal()" class="w-full bg-gradient-to-r from-primary to-secondary py-3 rounded-xl text-white font-medium">
+                Got it!
+            </button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCPvpgRkqIEdpmrvKWh-GBS04BQj2_8SAI",
+            authDomain: "earning-app-c048f.firebaseapp.com",
+            databaseURL: "https://earning-app-c048f-default-rtdb.firebaseio.com",
+            projectId: "earning-app-c048f",
+            storageBucket: "earning-app-c048f.firebasestorage.app",
+            messagingSenderId: "843375564973",
+            appId: "1:843375564973:web:xxxxxx"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        let currentFilter = 'all';
+        let currentTask = null;
+        let loadedTasks = 0;
+
+        // Sample Tasks Data
+        const tasksData = [
+            {
+                id: 'task1',
+                title: 'Download Shopping App',
+                description: 'Download app, signup & browse products',
+                reward: 15,
+                time: '3 min',
+                completed: '3.2k',
+                rating: 4.7,
+                category: 'app',
+                icon: 'shopping-bag',
+                color: 'from-blue-500 to-cyan-500',
+                steps: ['Download the app from Play Store', 'Sign up with your mobile number', 'Browse at least 5 products', 'Screenshot & submit proof']
+            },
+            {
+                id: 'task2',
+                title: 'Watch Video Ad',
+                description: 'Watch complete 30 second video',
+                reward: 3,
+                time: '30 sec',
+                completed: '15k',
+                rating: 4.9,
+                category: 'video',
+                icon: 'play-circle',
+                color: 'from-red-500 to-orange-500',
+                steps: ['Click Start to begin', 'Watch the complete video', 'Don\'t skip or minimize', 'Reward auto-credited']
+            },
+            {
+                id: 'task3',
+                title: 'Share on Instagram',
+                description: 'Share post on Instagram story',
+                reward: 10,
+                time: '2 min',
+                completed: '5.8k',
+                rating: 4.6,
+                category: 'social',
+                icon: 'instagram',
+                iconType: 'fab',
+                color: 'from-pink-500 to-purple-500',
+                steps: ['Click to get shareable image', 'Share on Instagram story', 'Tag @earnzone_official', 'Submit screenshot']
+            },
+            {
+                id: 'task4',
+                title: 'Signup on Website',
+                description: 'Create free account on partner site',
+                reward: 20,
+                time: '5 min',
+                completed: '2.1k',
+                rating: 4.5,
+                category: 'signup',
+                icon: 'user-plus',
+                color: 'from-green-500 to-emerald-500',
+                steps: ['Click to visit website', 'Sign up with email', 'Verify your email', 'Submit confirmation screenshot']
+            },
+            {
+                id: 'task5',
+                title: 'Download Game App',
+                description: 'Install game & play tutorial',
+                reward: 25,
+                time: '7 min',
+                completed: '4.5k',
+                rating: 4.8,
+                category: 'app',
+                icon: 'gamepad',
+                color: 'from-purple-500 to-indigo-500',
+                steps: ['Download game from store', 'Complete registration', 'Play tutorial level', 'Reach level 3']
+            },
+            {
+                id: 'task6',
+                title: 'Watch YouTube Video',
+                description: 'Watch & like promotional video',
+                reward: 8,
+                time: '3 min',
+                completed: '8.2k',
+                rating: 4.7,
+                category: 'video',
+                icon: 'youtube',
+                iconType: 'fab',
+                color: 'from-red-500 to-red-600',
+                steps: ['Click to open YouTube', 'Watch full video', 'Like the video', 'Subscribe to channel']
+            },
+            {
+                id: 'task7',
+                title: 'Follow on Twitter',
+                description: 'Follow & retweet post',
+                reward: 5,
+                time: '1 min',
+                completed: '6.9k',
+                rating: 4.4,
+                category: 'social',
+                icon: 'twitter',
+                iconType: 'fab',
+                color: 'from-blue-400 to-blue-600',
+                steps: ['Open Twitter link', 'Follow the account', 'Retweet pinned post', 'Submit screenshot']
+            },
+            {
+                id: 'task8',
+                title: 'Register on Trading App',
+                description: 'Sign up on stock trading platform',
+                reward: 50,
+                time: '10 min',
+                completed: '1.8k',
+                rating: 4.6,
+                category: 'signup',
+                icon: 'chart-line',
+                color: 'from-green-500 to-teal-500',
+                steps: ['Download trading app', 'Complete KYC verification', 'Add bank account', 'Make first deposit (min ₹100)']
+            },
+            {
+                id: 'task9',
+                title: 'Download Music App',
+                description: 'Install & listen to 3 songs',
+                reward: 12,
+                time: '5 min',
+                completed: '3.7k',
+                rating: 4.8,
+                category: 'app',
+                icon: 'music',
+                color: 'from-green-400 to-green-600',
+                steps: ['Download music app', 'Create account', 'Play 3 full songs', 'Add to playlist']
+            },
+            {
+                id: 'task10',
+                title: 'Watch Reward Video',
+                description: 'View sponsored content',
+                reward: 2,
+                time: '15 sec',
+                completed: '25k',
+                rating: 4.9,
+                category: 'video',
+                icon: 'ad',
+                color: 'from-yellow-500 to-orange-500',
+                steps: ['Click watch now', 'View complete ad', 'Don\'t close early', 'Instant reward']
+            }
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTasks();
+        });
+
+        // Load Tasks
+        function loadTasks() {
+            const container = document.getElementById('allTasks');
+            const tasksToShow = tasksData.slice(loadedTasks, loadedTasks + 5);
+
+            tasksToShow.forEach(task => {
+                container.innerHTML += createTaskCard(task);
+            });
+
+            loadedTasks += tasksToShow.length;
+
+            if (loadedTasks >= tasksData.length) {
+                document.getElementById('loadMoreBtn').style.display = 'none';
+            }
+        }
+
+        // Create Task Card
+        function createTaskCard(task) {
+            const iconClass = task.iconType === 'fab' ? 'fab' : 'fas';
+            return `
+                <div class="task-card bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-slate-700/50 hover:border-primary/50 transition" data-category="${task.category}">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-gradient-to-r ${task.color} rounded-xl flex items-center justify-center">
+                            <i class="${iconClass} fa-${task.icon} text-xl text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-white font-medium">${task.title}</h4>
+                            <p class="text-slate-400 text-sm">${task.description}</p>
+                            <div class="flex items-center gap-3 mt-1 text-xs">
+                                <span class="text-slate-500"><i class="fas fa-clock mr-1"></i>${task.time}</span>
+                                <span class="text-slate-500"><i class="fas fa-users mr-1"></i>${task.completed}</span>
+                                <span class="text-yellow-400"><i class="fas fa-star mr-1"></i>${task.rating}</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-lg font-bold text-green-400">₹${task.reward}</p>
+                            <button onclick="startTask('${task.id}')" class="mt-1 bg-primary/20 text-primary px-3 py-1 rounded-lg text-sm font-medium hover:bg-primary hover:text-white transition">
+                                Start
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Filter Tasks
+        function filterTasks(category) {
+            currentFilter = category;
+
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-primary', 'text-white');
+                btn.classList.add('bg-slate-800', 'text-slate-400');
+            });
+            event.target.classList.add('active', 'bg-primary', 'text-white');
+            event.target.classList.remove('bg-slate-800', 'text-slate-400');
+
+            // Filter task cards
+            document.querySelectorAll('.task-card').forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Start Task
+        function startTask(taskId) {
+            currentTask = tasksData.find(t => t.id === taskId) || {
+                id: taskId,
+                title: 'Special Offer',
+                reward: 100,
+                time: '10 min',
+                completed: '2k',
+                rating: 4.8,
+                icon: 'gift',
+                color: 'from-yellow-500 to-orange-500',
+                steps: ['Download the app', 'Complete registration', 'Follow instructions', 'Submit proof']
+            };
+
+            // Update modal
+            const iconClass = currentTask.iconType === 'fab' ? 'fab' : 'fas';
+            document.getElementById('modalIcon').className = `w-20 h-20 bg-gradient-to-r ${currentTask.color} rounded-2xl flex items-center justify-center mx-auto mb-4`;
+            document.getElementById('modalIcon').innerHTML = `<i class="${iconClass} fa-${currentTask.icon} text-3xl text-white"></i>`;
+            document.getElementById('modalTitle').textContent = currentTask.title;
+            document.getElementById('modalReward').textContent = currentTask.reward;
+            document.getElementById('modalTime').textContent = currentTask.time;
+            document.getElementById('modalCompleted').textContent = currentTask.completed;
+            document.getElementById('modalRating').textContent = currentTask.rating;
+
+            // Update steps
+            const stepsContainer = document.getElementById('modalSteps');
+            stepsContainer.innerHTML = currentTask.steps.map((step, index) => `
+                <div class="flex items-start gap-3">
+                    <div class="w-6 h-6 bg-primary/20 text-primary rounded-full flex items-center justify-center text-sm flex-shrink-0">
+                        ${index + 1}
+                    </div>
+                    <p class="text-slate-300 text-sm">${step}</p>
+                </div>
+            `).join('');
+
+            document.getElementById('taskModal').classList.remove('hidden');
+        }
+
+        // Close Task Modal
+        function closeTaskModal() {
+            document.getElementById('taskModal').classList.add('hidden');
+        }
+
+        // Confirm Start Task
+        function confirmStartTask() {
+            closeTaskModal();
+
+            // Show completion modal
+            document.getElementById('completionReward').textContent = currentTask.reward;
+            document.getElementById('completionModal').classList.remove('hidden');
+
+            // In production, this would redirect to the actual task/offer
+            // window.open(currentTask.url, '_blank');
+        }
+
+        // Close Completion Modal
+        function closeCompletionModal() {
+            document.getElementById('completionModal').classList.add('hidden');
+        }
+
+        // Load More Tasks
+        function loadMoreTasks() {
+            loadTasks();
+        }
+
+        // Close modal on outside click
+        document.getElementById('taskModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('taskModal')) {
+                closeTaskModal();
+            }
+        });
+    </script>
+</body>
+</html>
