@@ -1,0 +1,2211 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EarnZone - Kamao Aur Nikalo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-dark: #0f172a;
+            --bg-darker: #020617;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border: rgba(255,255,255,0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        /* Pages */
+        .page { display: none; min-height: 100vh; padding-bottom: 80px; }
+        .page.active { display: block; animation: fadeIn 0.3s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Auth Pages */
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: radial-gradient(circle at top, #1e293b 0%, #020617 70%);
+        }
+
+        .auth-card {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 40px 25px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* Inputs */
+        .input-group { margin-bottom: 16px; text-align: left; }
+        .input-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .input-field {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            color: var(--text-primary);
+            font-size: 15px;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .input-field:focus { border-color: var(--primary); }
+        .input-field::placeholder { color: #475569; }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        .btn-primary:active { transform: scale(0.98); }
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #d97706);
+            color: white;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        /* Header */
+        .app-header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Wallet Card */
+        .wallet-card {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+            border-radius: 24px;
+            padding: 25px;
+            margin: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        .wallet-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 15px;
+        }
+
+        /* Earning Options Grid */
+        .earn-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 0 15px;
+        }
+        .earn-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .earn-card:active { transform: scale(0.95); }
+        .earn-card .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 22px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0 20px;
+            z-index: 1000;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 20px;
+            color: var(--text-secondary);
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; }
+
+        /* Task List */
+        .task-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .task-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        /* Transaction History */
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .transaction-item:last-child { border: none; }
+
+        /* Streak Badge */
+        .streak-badge {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            padding: 8px 16px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            padding: 30px 20px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Language Switch */
+        .lang-switch {
+            display: flex;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+        .lang-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .lang-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Referral Code Box */
+        .referral-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px dashed var(--primary);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+        .referral-code {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* Spinner */
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Ad Container */
+        .ad-container {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 15px;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 15px 25px;
+            border-radius: 14px;
+            z-index: 3000;
+            animation: slideDown 0.3s ease;
+            display: none;
+        }
+        .notification.show { display: block; }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 5000;
+        }
+        .loading-overlay.active { display: flex; }
+    </style>
+</head>
+<body>
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <span id="notification-text"></span>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p class="mt-4 text-slate-400" id="loading-text">Loading...</p>
+    </div>
+
+    <!-- ========== SPLASH SCREEN ========== -->
+    <div id="splash-page" class="page active">
+        <div class="auth-page">
+            <div class="text-center">
+                <div class="inline-flex p-6 rounded-full bg-blue-500/20 text-blue-500 text-6xl mb-6">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <h1 class="text-4xl font-black mb-2">Earn<span class="text-blue-500">Zone</span></h1>
+                <p class="text-slate-400 text-sm mb-8" id="splash-tagline">Kamao, Badho, Nikalo!</p>
+                <div class="spinner mx-auto"></div>
+                <p class="text-slate-500 text-xs mt-4">Initializing...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== WELCOME/ONBOARDING ========== -->
+    <div id="welcome-page" class="page">
+        <div class="auth-page">
+            <div class="auth-card">
+                <div class="inline-flex p-5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white text-5xl mb-6">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h1 class="text-2xl font-black mb-2" id="welcome-title">Welcome to EarnZone!</h1>
+                <p class="text-slate-400 text-sm mb-6" id="welcome-desc">India's #1 Trusted Earning App</p>
+
+                <!-- Language Selection -->
+                <div class="lang-switch">
+                    <button class="lang-btn active" onclick="setLanguage('hi')">हिंदी</button>
+                    <button class="lang-btn" onclick="setLanguage('en')">English</button>
+                </div>
+
+                <button class="btn btn-primary mb-3" onclick="showPage('login-page')" id="btn-login">
+                    <i class="fas fa-sign-in-alt mr-2"></i> Login
+                </button>
+                <button class="btn btn-outline" onclick="showPage('signup-page')" id="btn-signup">
+                    <i class="fas fa-user-plus mr-2"></i> Create Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== LOGIN PAGE ========== -->
+    <div id="login-page" class="page">
+        <div class="auth-page">
+            <div class="auth-card">
+                <button onclick="showPage('welcome-page')" class="absolute top-4 left-4 text-slate-400">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <div class="inline-flex p-4 rounded-full bg-blue-500/20 text-blue-500 text-4xl mb-5">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h2 class="text-2xl font-bold mb-1" id="login-title">Login</h2>
+                <p class="text-slate-400 text-sm mb-6" id="login-subtitle">Apne account mein login karein</p>
+
+                <div class="input-group">
+                    <label id="label-phone">Mobile Number / Email</label>
+                    <input type="text" id="login-identifier" class="input-field" placeholder="Enter mobile or email">
+                </div>
+                <div class="input-group">
+                    <label id="label-password">Password</label>
+                    <input type="password" id="login-password" class="input-field" placeholder="Enter password">
+                </div>
+
+                <button class="btn btn-primary mb-3" onclick="handleLogin()" id="btn-do-login">
+                    Login <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+
+                <p class="text-slate-500 text-sm mt-4">
+                    <span id="no-account">Account nahi hai?</span>
+                    <a href="#" onclick="showPage('signup-page')" class="text-blue-500 font-semibold" id="link-signup">Register</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== SIGNUP PAGE ========== -->
+    <div id="signup-page" class="page">
+        <div class="auth-page">
+            <div class="auth-card">
+                <button onclick="showPage('welcome-page')" class="absolute top-4 left-4 text-slate-400">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <div class="inline-flex p-4 rounded-full bg-green-500/20 text-green-500 text-4xl mb-5">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h2 class="text-2xl font-bold mb-1" id="signup-title">Create Account</h2>
+                <p class="text-slate-400 text-sm mb-6" id="signup-subtitle">Free mein register karein</p>
+
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="signup-name" class="input-field" placeholder="Apna naam likhein">
+                </div>
+                <div class="input-group">
+                    <label>Mobile Number</label>
+                    <input type="tel" id="signup-phone" class="input-field" placeholder="+91 XXXXXXXXXX">
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="signup-email" class="input-field" placeholder="email@example.com">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="signup-password" class="input-field" placeholder="Min 6 characters">
+                </div>
+                <div class="input-group">
+                    <label>Referral Code (Optional)</label>
+                    <input type="text" id="signup-referral" class="input-field" placeholder="Enter code if any">
+                </div>
+
+                <button class="btn btn-success mb-3" onclick="handleSignup()" id="btn-do-signup">
+                    Create Account <i class="fas fa-check ml-2"></i>
+                </button>
+
+                <p class="text-slate-500 text-sm mt-4">
+                    <span id="have-account">Already have account?</span>
+                    <a href="#" onclick="showPage('login-page')" class="text-blue-500 font-semibold">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== OTP VERIFICATION ========== -->
+    <div id="otp-page" class="page">
+        <div class="auth-page">
+            <div class="auth-card">
+                <div class="inline-flex p-4 rounded-full bg-yellow-500/20 text-yellow-500 text-4xl mb-5">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h2 class="text-2xl font-bold mb-1">OTP Verification</h2>
+                <p class="text-slate-400 text-sm mb-6" id="otp-sent-text">OTP sent to your number</p>
+
+                <div class="flex gap-3 justify-center mb-6">
+                    <input type="text" maxlength="1" class="input-field text-center text-2xl font-bold w-14 h-14" id="otp-1">
+                    <input type="text" maxlength="1" class="input-field text-center text-2xl font-bold w-14 h-14" id="otp-2">
+                    <input type="text" maxlength="1" class="input-field text-center text-2xl font-bold w-14 h-14" id="otp-3">
+                    <input type="text" maxlength="1" class="input-field text-center text-2xl font-bold w-14 h-14" id="otp-4">
+                </div>
+
+                <button class="btn btn-warning mb-3" onclick="verifyOTP()">
+                    Verify OTP <i class="fas fa-check ml-2"></i>
+                </button>
+
+                <p class="text-slate-500 text-sm mt-4">
+                    Didn't receive? <a href="#" onclick="resendOTP()" class="text-blue-500 font-semibold">Resend OTP</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== HOME PAGE ========== -->
+    <div id="home-page" class="page">
+        <!-- Header -->
+        <div class="app-header">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center font-bold" id="user-avatar">
+                        U
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400" id="greeting">Namaste</p>
+                        <h3 class="font-bold text-sm" id="user-display-name">User</h3>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="streak-badge">
+                        <i class="fas fa-fire"></i>
+                        <span id="streak-count">0</span>
+                    </div>
+                    <button onclick="showPage('notifications-page')" class="relative">
+                        <i class="fas fa-bell text-xl text-slate-400"></i>
+                        <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[10px] flex items-center justify-center" id="notif-badge">3</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wallet Card -->
+        <div class="wallet-card">
+            <p class="text-white/70 text-xs font-semibold mb-1" id="wallet-label">WALLET BALANCE</p>
+            <h2 class="text-4xl font-black text-white mb-2">₹<span id="wallet-balance">0.00</span></h2>
+            <div class="flex justify-between items-center mt-4">
+                <div>
+                    <p class="text-white/60 text-[10px]" id="today-earning-label">Today's Earning</p>
+                    <p class="text-white font-bold">₹<span id="today-earning">0.00</span></p>
+                </div>
+                <button onclick="showPage('withdraw-page')" class="bg-white/20 backdrop-blur px-5 py-2 rounded-full text-white font-bold text-sm">
+                    <i class="fas fa-wallet mr-1"></i> <span id="btn-withdraw">Withdraw</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Daily Bonus Card -->
+        <div class="card" id="daily-bonus-card">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-yellow-500/20 flex items-center justify-center text-yellow-500 text-xl">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold" id="daily-bonus-title">Daily Bonus</h4>
+                        <p class="text-xs text-slate-400" id="daily-bonus-desc">Claim your daily reward!</p>
+                    </div>
+                </div>
+                <button onclick="claimDailyBonus()" class="bg-yellow-500 text-black px-4 py-2 rounded-xl font-bold text-sm" id="btn-claim">
+                    Claim
+                </button>
+            </div>
+        </div>
+
+        <!-- Section Title -->
+        <div class="px-4 mt-6 mb-3">
+            <h3 class="font-bold text-lg" id="earn-money-title">Earn Money</h3>
+            <p class="text-slate-400 text-xs" id="earn-money-desc">Multiple ways to earn daily</p>
+        </div>
+
+        <!-- Earning Options Grid -->
+        <div class="earn-grid">
+            <div class="earn-card" onclick="showPage('tasks-page')">
+                <div class="icon bg-blue-500/20 text-blue-500">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <h4 class="font-bold text-sm mb-1" id="task-title">Tasks</h4>
+                <p class="text-[10px] text-slate-400" id="task-desc">Complete & Earn</p>
+                <p class="text-green-500 font-bold text-xs mt-2">₹5 - ₹50</p>
+            </div>
+
+            <div class="earn-card" onclick="showPage('surveys-page')">
+                <div class="icon bg-purple-500/20 text-purple-500">
+                    <i class="fas fa-poll"></i>
+                </div>
+                <h4 class="font-bold text-sm mb-1" id="survey-title">Surveys</h4>
+                <p class="text-[10px] text-slate-400" id="survey-desc">Share Opinion</p>
+                <p class="text-green-500 font-bold text-xs mt-2">₹10 - ₹100</p>
+            </div>
+
+            <div class="earn-card" onclick="showPage('watch-ads-page')">
+                <div class="icon bg-red-500/20 text-red-500">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <h4 class="font-bold text-sm mb-1" id="ads-title">Watch Ads</h4>
+                <p class="text-[10px] text-slate-400" id="ads-desc">Watch & Earn</p>
+                <p class="text-green-500 font-bold text-xs mt-2">₹1 - ₹5</p>
+            </div>
+
+            <div class="earn-card" onclick="showPage('referral-page')">
+                <div class="icon bg-green-500/20 text-green-500">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h4 class="font-bold text-sm mb-1" id="refer-title">Refer & Earn</h4>
+                <p class="text-[10px] text-slate-400" id="refer-desc">Invite Friends</p>
+                <p class="text-green-500 font-bold text-xs mt-2">₹10/Refer</p>
+            </div>
+
+            <div class="earn-card" onclick="showPage('spin-page')">
+                <div class="icon bg-yellow-500/20 text-yellow-500">
+                    <i class="fas fa-dharmachakra"></i>
+                </div>
+                <h4 class="font-bold text-sm mb-1" id="spin-title">Lucky Spin</h4>
+                <p class="text-[10px] text-slate-400" id="spin-desc">Try Your Luck</p>
+                <p class="text-green-500 font-bold text-xs mt-2">₹1 - ₹500</p>
+            </div>
+
+            <div class="earn-card" onclick="showPage('scratch-page')">
+                <div class="icon bg-pink-500/20 text-pink-500">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+                <h4 class="font-bold text-sm mb-1" id="scratch-title">Scratch Card</h4>
+                <p class="text-[10px] text-slate-400" id="scratch-desc">Scratch & Win</p>
+                <p class="text-green-500 font-bold text-xs mt-2">₹1 - ₹100</p>
+            </div>
+        </div>
+
+        <!-- Leaderboard Preview -->
+        <div class="card mt-4">
+            <div class="flex items-center justify-between mb-4">
+                <h4 class="font-bold" id="leaderboard-title">Top Earners</h4>
+                <a href="#" onclick="showPage('leaderboard-page')" class="text-blue-500 text-xs font-semibold">View All</a>
+            </div>
+            <div id="leaderboard-preview">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== TASKS PAGE ========== -->
+    <div id="tasks-page" class="page">
+        <div class="app-header">
+            <div class="flex items-center gap-4">
+                <button onclick="showPage('home-page')" class="text-slate-400">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <div>
+                    <h2 class="font-bold" id="tasks-header">Tasks</h2>
+                    <p class="text-xs text-slate-400" id="tasks-subheader">Complete tasks to earn</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4" id="tasks-list">
+            <!-- Tasks will be loaded dynamically -->
+        </div>
+    </div>
+
+    <!-- ========== SURVEYS PAGE ========== -->
+    <div id="surveys-page" class="page">
+        <div class="app-header">
+            <div class="flex items-center gap-4">
+                <button onclick="showPage('home-page')" class="text-slate-400">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <div>
+                    <h2 class="font-bold">Surveys</h2>
+                    <p class="text-xs text-slate-400">Share your opinion & earn</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4" id="surveys-list">
+            <!-- Surveys will be loaded dynamically -->
+        </div>
+    </div>
+
+    <!-- ========== WATCH ADS PAGE ========== -->
+    <div id="watch-ads-page" class="page">
+        <div class="app-header">
+            <div class="flex items-center gap-4">
+                <button onclick="showPage('home-page')" class="text-slate-400">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <div>
+                    <h2 class="font-bold">Watch & Earn</h2>
+                    <p class="text-xs text-slate-400">Watch ads to earn coins</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4">
+            <div class="card text-center mb-4">
+                <p class="text-slate-400 text-sm mb-2" id="ads-watched-label">Ads Watched Today</p>
+                <h2 class="text-3xl font-black"><span id="ads-watched">0</span>/<span id="ads-limit">20</span></h2>
+                <div class="progress-bar mt-3">
+                    <div class="progress-fill" id="ads-progress" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="ad-container" id="ad-display">
+                <div class="text-6xl text-slate-500 mb-4">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <h3 class="font-bold mb-2" id="watch-ad-title">Watch Video Ad</h3>
+                <p class="text-slate-400 text-sm mb-4" id="watch-ad-desc">Earn ₹2 per ad</p>
+                <button onclick="watchAd()" class="btn btn-success" id="btn-watch-ad">
+                    <i class="fas fa-play mr-2"></i> Watch Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== REFERRAL PAGE ========== -->
+    <div id="referral-page" class="page">
+        <div class="app-header">
+            <div class="flex items-center gap-4">
+                <button onclick="showPage('home-page')" class="text-slate-400">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <div>
+                    <h2 class="font-bold">Refer & Earn</h2>
+                    <p class="text-xs text-slate-400">Invite friends, earn money</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4">
+            <div class="card text-center mb-4">
+                <div class="text-5xl text-green-500 mb-4">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2" id="referral-title">Get ₹10 per Referral!</h3>
+                <p class="text-slate-400 text-sm" id="referral-desc">Plus earn 5% of their lifetime earnings</p>
+            </div>
+
+            <div class="referral-box mb-4">
+                <p class="text-xs text-slate-400 mb-1" id="your-code-label">Your Referral Code</p>
+                <p class="referral-code" id="my-referral-code">EARN123</p>
+                <button onclick="copyReferralCode()" class="btn btn-primary mt-3" id="btn-copy-code">
+                    <i class="fas fa-copy mr-2"></i> Copy Code
+                </button>
+            </div>
+
+            <button onclick="shareReferral()" class="btn btn-success mb-4" id="btn-share">
+                <i class="fas fa-share-alt mr-2"></i> Share with Friends
+            </button>
+
+            <div class="card">
+                <h4 class="font-bold mb-3" id="your-referrals-title">Your Referrals</h4>
+                <div class="flex justify-between text-center">
+                    <div>
+                        <p class="text-2xl font-black text-blue-500" id="total-referrals">0</p>
+                        <p class="text-xs text-slate-400" id="total-label">Total</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-black text-green-500" id="active-referrals">0</p>
+                        <p class="text-xs text-slate-400" id="active-label">Active</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-black text-yellow-500">₹<span id="referral-earnings">0</span></p>
+                        <p class="text-xs text-slate-400" id="earned-label">Earned</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== SPIN WHEEL PAGE ========== -->
+    <div id="spin-page" class="page">
+        <div class="app-header">
+            <div class="flex items-center gap-4">
+                <button onclick="showPage('home-page')" class="text-slate-400">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <div>
+                    <h2 class="font-bold">Lucky Spin</h2>
+                    <p class="text-xs text-slate-400">Spin & win rewards</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 text-center">
+            <div class="card mb-4">
+                <p class="text-slate-400 text-sm" id="spins-left-label">Spins Left Today</p>
+                <h2 class="text-3xl font-black"><span id="spins-left">3</span></h2>
+            </div>
+
+            <!-- Spin Wheel -->
+            <div class="relative inline-block mb-6">
+                <div class="w-64 h-64 rounded-full border-8 border-yellow-500 relative overflow-hidden" id="spin-wheel" style="background: conic-gradient(#ef4444 0deg 45deg, #3b82f6 45deg 90deg, #10b981 90deg 135deg, #f59e0b 135deg 180deg, #8b5cf6 180deg 225deg, #ec4899 225deg 270deg, #06b6d4 270deg 315deg, #84cc16 315deg 360deg);">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-16 h-16 rounded-full bg-white shadow-lg flex items-center justify-center">
+                            <i class="fas fa-dharmachakra text-2xl text-yellow-500"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute -top-2 left-1/2 transform -translate-x-1/2">
+                    <i class="fas fa-caret-down text-4xl text-yellow-500"></i>
+                </div>
+            </div>
+
+            <button onclick="spinWheel()" class="btn btn-warning" id="btn-spin">
+                <i class="fas fa-sync-alt mr-2"></i> SPIN NOW
+            </button>
+        </div>
+    </div>
+
+    <!-- ========== SCRATCH CARD PAGE ========== -->
+    <div id="scratch-page" class="page">
+        <div class="app-header">
+            <div class="flex items-center gap-4">
+                <button onclick="showPage('home-page')" class="text-slate-400">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <div>
+                    <h2 class="font-bold">Scratch Cards</h2>
+                    <p class="text-xs text-slate-400">Scratch & reveal rewards</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4">
+            <div class="card text-center mb-4">
+                <p class="text-slate-400 text-sm" id="cards-left-label">Cards Left Today</p>
+                <h2 class="text-3xl font-black"><span id="cards-left">5</span></h2>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4" id="scratch-cards">
+                <!-- Scratch cards will be loaded -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== WALLET PAGE ========== -->
+    <div id="wallet-page" class="page">
+        <div class="app-header">
+            <div class="flex items-center gap-4">
+                <button onclick="showPage('home-page')" class="text-slate-400">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <h2 class="font-bold">My Wallet</h2>
+            </div>
+        </div>
+
+        <!-- Wallet Balance -->
+        <div class="wallet-card">
+            <p class="text-white/70 text-xs font-semibold mb-1" id="total-balance-label">TOTAL BALANCE</p>
+            <h2 class="text-4xl font-black text-white">₹<span id="wallet-total">0.00</span></h2>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-3 gap-3 px-4 mb-4">
+            <div class="card text-center py-4">
+                <p class="text-green-500 font-bold">₹<span id="total-earned">0</span></p>
+                <p class="text-[10px] text-slate-400" id="total-earned-label">Total Earned</p>
+            </div>
+            <div class="card text-center py-4">
+                <p class="text-blue-500 font-bold">₹<span id="total-withdrawn">0</span></p>
+                <p class="text-[10px] text-slate-400" id="total-withdrawn-label">Withdrawn</p>
+            </div>
+            <div class="card text-center py-4">
+                <p class="text-yellow-500 font-bold">₹<span id="pending-amount">0</span></p>
+                <p class="text-[10px] text-slate-400" id="pending-label">Pending</p>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="px-4 grid grid-cols-2 gap-3 mb-4">
+            <button onclick="showPage('withdraw-page')" class="btn btn-success">
+                <i class="fas fa-wallet mr-2"></i> Withdraw
+            </button>
+            <button onclick="showPage('history-page')" class="btn btn-outline">
+                <i class="fas fa-history mr-2"></i> History
+            </button>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="card mx-4">
+            <h4 class="font-bold mb-3" id="recent-trans-title">Recent Transactions</h4>
+            <div id="recent-transactions">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== WITHDRAW PAGE ========== -->
+    <div id="withdraw-page" class="page">
+        <div class="app-header">
+            <div class="flex items-center gap-4">
+                <button onclick="showPage('wallet-page')" class="text-slate-400">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <h2 class="font-bold">Withdraw</h2>
+            </div>
+        </div>
+
+        <div class="p-4">
+            <div class="card text-center mb-4">
+                <p class="text-slate-400 text-sm" id="available-balance-label">Available Balance</p>
+                <h2 class="text-3xl font-black text-green-500">₹<span id="withdraw-balance">0.00</span></h2>
+                <p class="text-xs text-slate-400 mt-2" id="min-withdraw-label">Minimum Withdrawal: ₹<span id="min-withdraw">50</span></p>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="mb-4">
+                <label class="text-xs font-bold text-slate-400 uppercase mb-3 block" id="payment-method-label">Select Payment Method</label>
+                <div class="grid grid-cols-3 gap-3">
+                    <button class="card py-4 text-center payment-option active" data-method="upi" onclick="selectPayment('upi')">
+                        <i class="fas fa-mobile-alt text-2xl text-green-500 mb-2"></i>
+                        <p class="text-xs font-bold">UPI</p>
+                    </button>
+                    <button class="card py-4 text-center payment-option" data-method="paytm" onclick="selectPayment('paytm')">
+                        <i class="fas fa-wallet text-2xl text-blue-500 mb-2"></i>
+                        <p class="text-xs font-bold">Paytm</p>
+                    </button>
+                    <button class="card py-4 text-center payment-option" data-method="bank" onclick="selectPayment('bank')">
+                        <i class="fas fa-university text-2xl text-purple-500 mb-2"></i>
+                        <p class="text-xs font-bold">Bank</p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- UPI Details -->
+            <div id="upi-form" class="payment-form">
+                <div class="input-group">
+                    <label>UPI ID</label>
+                    <input type="text" id="upi-id" class="input-field" placeholder="yourname@upi">
+                </div>
+            </div>
+
+            <!-- Paytm Details -->
+            <div id="paytm-form" class="payment-form" style="display:none">
+                <div class="input-group">
+                    <label>Paytm Number</label>
+                    <input type="tel" id="paytm-number" class="input-field" placeholder="+91 XXXXXXXXXX">
+                </div>
+            </div>
+
+            <!-- Bank Details -->
+            <div id="bank-form" class="payment-form" style="display:none">
+                <div class="input-group">
+                    <label>Account Number</label>
+                    <input type="text" id="bank-account" class="input-field" placeholder="Enter account number">
+                </div>
+                <div class="input-group">
+                    <label>IFSC Code</label>
+                    <input type="text" id="bank-ifsc" class="input-field" placeholder="Enter IFSC code">
+                </div>
+                <div class="input-group">
+                    <label>Account Holder Name</label>
+                    <input type="text" id="bank-name" class="input-field" placeholder="Enter name">
+                </div>
+            </div>
+
+            <!-- Amount -->
+            <div class="input-group">
+                <label id="amount-label">Amount (₹)</label>
+                <input type="number" id="withdraw-amount" class="input-field" placeholder="Enter amount">
+            </div>
+
+            <!-- Quick Amounts -->
+            <div class="flex gap-2 mb-4">
+                <button onclick="setAmount(50)" class="flex-1 btn btn-outline text-sm">₹50</button>
+                <button onclick="setAmount(100)" class="flex-1 btn btn-outline text-sm">₹100</button>
+                <button onclick="setAmount(200)" class="flex-1 btn btn-outline text-sm">₹200</button>
+                <button onclick="setAmount(500)" class="flex-1 btn btn-outline text-sm">₹500</button>
+            </div>
+
+            <button onclick="processWithdraw()" class="btn btn-success" id="btn-withdraw-now">
+                <i class="fas fa-paper-plane mr-2"></i> Withdraw Now
+            </button>
+        </div>
+    </div>
+
+    <!-- ========== HISTORY PAGE ========== -->
+    <div id="history-page" class="page">
+        <div class="app-header">
+            <div class="flex items-center gap-4">
+                <button onclick="showPage('wallet-page')" class="text-slate-400">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <h2 class="font-bold">Transaction History</h2>
+            </div>
+        </div>
+
+        <div class="p-4" id="transaction-history">
+            <!-- Dynamic content -->
+        </div>
+    </div>
+
+    <!-- ========== PROFILE PAGE ========== -->
+    <div id="profile-page" class="page">
+        <div class="app-header">
+            <h2 class="font-bold">Profile</h2>
+        </div>
+
+        <div class="p-4">
+            <!-- Profile Card -->
+            <div class="card text-center mb-4">
+                <div class="w-20 h-20 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-3xl font-bold mx-auto mb-3" id="profile-avatar">
+                    U
+                </div>
+                <h3 class="font-bold text-lg" id="profile-name">User Name</h3>
+                <p class="text-slate-400 text-sm" id="profile-email">email@example.com</p>
+                <p class="text-slate-500 text-xs mt-1" id="profile-joined">Member since: Jan 2024</p>
+            </div>
+
+            <!-- KYC Status -->
+            <div class="card mb-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center text-yellow-500">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm">KYC Verification</h4>
+                            <p class="text-xs text-yellow-500" id="kyc-status">Pending</p>
+                        </div>
+                    </div>
+                    <button onclick="showKYCModal()" class="text-blue-500 text-sm font-semibold">Verify</button>
+                </div>
+            </div>
+
+            <!-- Menu Items -->
+            <div class="card">
+                <div class="divide-y divide-white/10">
+                    <button onclick="showPage('settings-page')" class="flex items-center justify-between w-full py-4">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-cog text-slate-400"></i>
+                            <span class="font-medium" id="menu-settings">Settings</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-slate-500"></i>
+                    </button>
+                    <button onclick="showPage('support-page')" class="flex items-center justify-between w-full py-4">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-headset text-slate-400"></i>
+                            <span class="font-medium" id="menu-support">Help & Support</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-slate-500"></i>
+                    </button>
+                    <button onclick="showPage('about-page')" class="flex items-center justify-between w-full py-4">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-info-circle text-slate-400"></i>
+                            <span class="font-medium" id="menu-about">About App</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-slate-500"></i>
+                    </button>
+                    <button onclick="handleLogout()" class="flex items-center justify-between w-full py-4 text-red-500">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="font-medium" id="menu-logout">Logout</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== LEADERBOARD PAGE ========== -->
+    <div id="leaderboard-page" class="page">
+        <div class="app-header">
+            <div class="flex items-center gap-4">
+                <button onclick="showPage('home-page')" class="text-slate-400">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <h2 class="font-bold">Leaderboard</h2>
+            </div>
+        </div>
+
+        <div class="p-4" id="leaderboard-full">
+            <!-- Dynamic content -->
+        </div>
+    </div>
+
+    <!-- ========== NOTIFICATIONS PAGE ========== -->
+    <div id="notifications-page" class="page">
+        <div class="app-header">
+            <div class="flex items-center gap-4">
+                <button onclick="showPage('home-page')" class="text-slate-400">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <h2 class="font-bold">Notifications</h2>
+            </div>
+        </div>
+
+        <div class="p-4" id="notifications-list">
+            <!-- Dynamic content -->
+        </div>
+    </div>
+
+    <!-- ========== SETTINGS PAGE ========== -->
+    <div id="settings-page" class="page">
+        <div class="app-header">
+            <div class="flex items-center gap-4">
+                <button onclick="showPage('profile-page')" class="text-slate-400">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <h2 class="font-bold">Settings</h2>
+            </div>
+        </div>
+
+        <div class="p-4">
+            <!-- Language -->
+            <div class="card mb-4">
+                <h4 class="font-bold mb-3" id="language-title">Language</h4>
+                <div class="lang-switch">
+                    <button class="lang-btn" id="lang-hi" onclick="setLanguage('hi')">हिंदी</button>
+                    <button class="lang-btn" id="lang-en" onclick="setLanguage('en')">English</button>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="card mb-4">
+                <h4 class="font-bold mb-3" id="notifications-title">Notifications</h4>
+                <div class="flex items-center justify-between py-2">
+                    <span class="text-sm" id="push-notif-label">Push Notifications</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="push-toggle" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- App Info -->
+            <div class="card">
+                <h4 class="font-bold mb-3" id="app-info-title">App Information</h4>
+                <div class="text-sm text-slate-400">
+                    <p class="mb-2">Version: 1.0.0</p>
+                    <p>Build: 2024.01</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== SUPPORT PAGE ========== -->
+    <div id="support-page" class="page">
+        <div class="app-header">
+            <div class="flex items-center gap-4">
+                <button onclick="showPage('profile-page')" class="text-slate-400">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <h2 class="font-bold">Help & Support</h2>
+            </div>
+        </div>
+
+        <div class="p-4">
+            <div class="card text-center mb-4">
+                <div class="text-5xl text-blue-500 mb-4">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2" id="support-title">24x7 Customer Support</h3>
+                <p class="text-slate-400 text-sm mb-4" id="support-desc">We're here to help you</p>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <a href="mailto:support@earnzone.com" class="btn btn-primary">
+                        <i class="fas fa-envelope mr-2"></i> Email
+                    </a>
+                    <a href="https://wa.me/919999999999" class="btn btn-success">
+                        <i class="fab fa-whatsapp mr-2"></i> WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <!-- FAQs -->
+            <div class="card">
+                <h4 class="font-bold mb-3">FAQs</h4>
+                <div class="divide-y divide-white/10">
+                    <div class="py-3">
+                        <p class="font-medium text-sm mb-1">How to withdraw money?</p>
+                        <p class="text-xs text-slate-400">Go to Wallet > Withdraw and select your payment method.</p>
+                    </div>
+                    <div class="py-3">
+                        <p class="font-medium text-sm mb-1">Minimum withdrawal amount?</p>
+                        <p class="text-xs text-slate-400">Minimum withdrawal is ₹50.</p>
+                    </div>
+                    <div class="py-3">
+                        <p class="font-medium text-sm mb-1">How long for withdrawal?</p>
+                        <p class="text-xs text-slate-400">Usually within 24 hours.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== ABOUT PAGE ========== -->
+    <div id="about-page" class="page">
+        <div class="app-header">
+            <div class="flex items-center gap-4">
+                <button onclick="showPage('profile-page')" class="text-slate-400">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <h2 class="font-bold">About</h2>
+            </div>
+        </div>
+
+        <div class="p-4 text-center">
+            <div class="inline-flex p-6 rounded-full bg-blue-500/20 text-blue-500 text-5xl mb-4">
+                <i class="fas fa-coins"></i>
+            </div>
+            <h2 class="text-2xl font-black mb-2">Earn<span class="text-blue-500">Zone</span></h2>
+            <p class="text-slate-400 text-sm mb-6">India's Most Trusted Earning App</p>
+
+            <div class="card text-left">
+                <p class="text-sm text-slate-300 mb-4">
+                    EarnZone is a legitimate earning platform where you can earn real money by completing simple tasks, watching ads, taking surveys, and referring friends.
+                </p>
+                <p class="text-sm text-slate-300">
+                    100% safe and secure. Your earnings are guaranteed!
+                </p>
+            </div>
+
+            <p class="text-xs text-slate-500 mt-6">© 2024 EarnZone. All rights reserved.</p>
+        </div>
+    </div>
+
+    <!-- ========== BOTTOM NAVIGATION ========== -->
+    <nav class="bottom-nav" id="bottom-nav" style="display: none;">
+        <button class="nav-item active" onclick="navigateTo('home-page')">
+            <i class="fas fa-home"></i>
+            <span id="nav-home">Home</span>
+        </button>
+        <button class="nav-item" onclick="navigateTo('tasks-page')">
+            <i class="fas fa-tasks"></i>
+            <span id="nav-tasks">Tasks</span>
+        </button>
+        <button class="nav-item" onclick="navigateTo('wallet-page')">
+            <i class="fas fa-wallet"></i>
+            <span id="nav-wallet">Wallet</span>
+        </button>
+        <button class="nav-item" onclick="navigateTo('referral-page')">
+            <i class="fas fa-gift"></i>
+            <span id="nav-refer">Refer</span>
+        </button>
+        <button class="nav-item" onclick="navigateTo('profile-page')">
+            <i class="fas fa-user"></i>
+            <span id="nav-profile">Profile</span>
+        </button>
+    </nav>
+
+    <!-- ========== KYC MODAL ========== -->
+    <div id="kyc-modal" class="modal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-lg">KYC Verification</h3>
+                <button onclick="closeKYCModal()" class="text-slate-400">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <div class="input-group">
+                <label>Full Name (as per Aadhaar)</label>
+                <input type="text" id="kyc-name" class="input-field" placeholder="Enter full name">
+            </div>
+            <div class="input-group">
+                <label>Aadhaar Number</label>
+                <input type="text" id="kyc-aadhaar" class="input-field" placeholder="XXXX XXXX XXXX" maxlength="14">
+            </div>
+            <div class="input-group">
+                <label>PAN Number</label>
+                <input type="text" id="kyc-pan" class="input-field" placeholder="ABCDE1234F" maxlength="10">
+            </div>
+
+            <button onclick="submitKYC()" class="btn btn-success mt-4">
+                <i class="fas fa-check mr-2"></i> Submit for Verification
+            </button>
+        </div>
+    </div>
+
+    <!-- ========== REWARD MODAL ========== -->
+    <div id="reward-modal" class="modal">
+        <div class="modal-content text-center">
+            <div class="text-6xl text-yellow-500 mb-4">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h2 class="text-2xl font-black mb-2" id="reward-title">Congratulations!</h2>
+            <p class="text-slate-400 mb-4" id="reward-message">You won ₹10</p>
+            <button onclick="closeRewardModal()" class="btn btn-primary">
+                <i class="fas fa-check mr-2"></i> Claim Reward
+            </button>
+        </div>
+    </div>
+
+    <!-- ========== MAIN JAVASCRIPT ========== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, set, get, update, push, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCPvpgRkqIEdpmrvKWh-GBS04BQj2_8SAI",
+            authDomain: "earning-app-c048f.firebaseapp.com",
+            databaseURL: "https://earning-app-c048f-default-rtdb.firebaseio.com",
+            projectId: "earning-app-c048f",
+            storageBucket: "earning-app-c048f.firebasestorage.app",
+            messagingSenderId: "1089921883808",
+            appId: "1:1089921883808:web:b09e829bd2017be218f3c5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        // Global State
+        let currentUser = null;
+        let userData = null;
+        let currentLang = localStorage.getItem('lang') || 'hi';
+        let selectedPaymentMethod = 'upi';
+
+        // Language Strings
+        const strings = {
+            hi: {
+                greeting: "नमस्ते",
+                walletLabel: "वॉलेट बैलेंस",
+                todayEarning: "आज की कमाई",
+                withdraw: "निकालें",
+                dailyBonus: "डेली बोनस",
+                dailyBonusDesc: "अपना रोज़ाना इनाम लें!",
+                claim: "Claim करें",
+                earnMoney: "पैसे कमाएं",
+                earnMoneyDesc: "रोज़ कमाने के कई तरीके",
+                tasks: "Tasks",
+                tasksDesc: "पूरा करें और कमाएं",
+                surveys: "Surveys",
+                surveysDesc: "राय दें",
+                watchAds: "Ads देखें",
+                watchAdsDesc: "देखें और कमाएं",
+                referEarn: "Refer & Earn",
+                referDesc: "दोस्तों को बुलाएं",
+                luckySpin: "Lucky Spin",
+                spinDesc: "किस्मत आज़माएं",
+                scratchCard: "Scratch Card",
+                scratchDesc: "खुजाएं और जीतें",
+                topEarners: "Top Earners",
+                home: "होम",
+                wallet: "वॉलेट",
+                refer: "रेफर",
+                profile: "प्रोफ़ाइल"
+            },
+            en: {
+                greeting: "Hello",
+                walletLabel: "WALLET BALANCE",
+                todayEarning: "Today's Earning",
+                withdraw: "Withdraw",
+                dailyBonus: "Daily Bonus",
+                dailyBonusDesc: "Claim your daily reward!",
+                claim: "Claim",
+                earnMoney: "Earn Money",
+                earnMoneyDesc: "Multiple ways to earn daily",
+                tasks: "Tasks",
+                tasksDesc: "Complete & Earn",
+                surveys: "Surveys",
+                surveysDesc: "Share Opinion",
+                watchAds: "Watch Ads",
+                watchAdsDesc: "Watch & Earn",
+                referEarn: "Refer & Earn",
+                referDesc: "Invite Friends",
+                luckySpin: "Lucky Spin",
+                spinDesc: "Try Your Luck",
+                scratchCard: "Scratch Card",
+                scratchDesc: "Scratch & Win",
+                topEarners: "Top Earners",
+                home: "Home",
+                wallet: "Wallet",
+                refer: "Refer",
+                profile: "Profile"
+            }
+        };
+
+        // Initialize App
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        currentUser = user;
+                        loadUserData();
+                    } else {
+                        showPage('welcome-page');
+                    }
+                });
+            }, 2000);
+        });
+
+        // Page Navigation
+        window.showPage = (pageId) => {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+
+            const authPages = ['splash-page', 'welcome-page', 'login-page', 'signup-page', 'otp-page'];
+            const bottomNav = document.getElementById('bottom-nav');
+            bottomNav.style.display = authPages.includes(pageId) ? 'none' : 'flex';
+        };
+
+        window.navigateTo = (pageId) => {
+            showPage(pageId);
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.target.closest('.nav-item').classList.add('active');
+        };
+
+        // Language Functions
+        window.setLanguage = (lang) => {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            updateLanguage();
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.lang-btn[onclick="setLanguage('${lang}')"]`)?.classList.add('active');
+            document.getElementById(`lang-${lang}`)?.classList.add('active');
+        };
+
+        function updateLanguage() {
+            const s = strings[currentLang];
+            // Update UI elements with language strings
+            if (document.getElementById('greeting')) document.getElementById('greeting').textContent = s.greeting;
+            if (document.getElementById('wallet-label')) document.getElementById('wallet-label').textContent = s.walletLabel;
+            // Add more as needed
+        }
+
+        // Auth Functions
+        window.handleLogin = async () => {
+            const identifier = document.getElementById('login-identifier').value;
+            const password = document.getElementById('login-password').value;
+
+            if (!identifier || !password) {
+                showNotification('Please fill all fields', 'error');
+                return;
+            }
+
+            showLoading('Logging in...');
+            try {
+                const email = identifier.includes('@') ? identifier : `${identifier}@earnzone.app`;
+                await signInWithEmailAndPassword(auth, email, password);
+                hideLoading();
+                currentUser = auth.currentUser;
+                loadUserData();
+            } catch (error) {
+                hideLoading();
+                showNotification('Invalid credentials', 'error');
+            }
+        };
+
+        window.handleSignup = async () => {
+            const name = document.getElementById('signup-name').value;
+            const phone = document.getElementById('signup-phone').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const referralCode = document.getElementById('signup-referral').value;
+
+            if (!name || !phone || !email || !password) {
+                showNotification('Please fill all required fields', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showNotification('Password must be at least 6 characters', 'error');
+                return;
+            }
+
+            showLoading('Creating account...');
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Generate referral code
+                const myReferralCode = 'EARN' + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+                // Create user data
+                const newUserData = {
+                    uid: user.uid,
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    referralCode: myReferralCode,
+                    referredBy: referralCode || null,
+                    balance: 0,
+                    totalEarned: 0,
+                    totalWithdrawn: 0,
+                    pendingAmount: 0,
+                    streak: 0,
+                    lastLogin: new Date().toISOString(),
+                    lastBonusClaim: null,
+                    adsWatchedToday: 0,
+                    spinsLeft: 3,
+                    scratchCardsLeft: 5,
+                    kycStatus: 'pending',
+                    createdAt: new Date().toISOString(),
+                    referrals: {
+                        total: 0,
+                        active: 0,
+                        earnings: 0
+                    }
+                };
+
+                await set(ref(db, `users/${user.uid}`), newUserData);
+
+                // Handle referral bonus
+                if (referralCode) {
+                    await handleReferralBonus(referralCode, user.uid);
+                }
+
+                hideLoading();
+                currentUser = user;
+                userData = newUserData;
+                showReward('Welcome Bonus!', 'You received ₹5 signup bonus!');
+                updateUI();
+                showPage('home-page');
+            } catch (error) {
+                hideLoading();
+                showNotification(error.message, 'error');
+            }
+        };
+
+        window.handleLogout = async () => {
+            await signOut(auth);
+            currentUser = null;
+            userData = null;
+            showPage('welcome-page');
+        };
+
+        // Load User Data
+        async function loadUserData() {
+            if (!currentUser) return;
+
+            showLoading('Loading...');
+            const snapshot = await get(ref(db, `users/${currentUser.uid}`));
+            if (snapshot.exists()) {
+                userData = snapshot.val();
+                updateUI();
+                checkDailyReset();
+                showPage('home-page');
+            }
+            hideLoading();
+
+            // Real-time listener
+            onValue(ref(db, `users/${currentUser.uid}`), (snapshot) => {
+                if (snapshot.exists()) {
+                    userData = snapshot.val();
+                    updateUI();
+                }
+            });
+        }
+
+        // Update UI
+        function updateUI() {
+            if (!userData) return;
+
+            // User info
+            document.getElementById('user-display-name').textContent = userData.name || 'User';
+            document.getElementById('user-avatar').textContent = (userData.name || 'U')[0].toUpperCase();
+            document.getElementById('profile-avatar').textContent = (userData.name || 'U')[0].toUpperCase();
+            document.getElementById('profile-name').textContent = userData.name;
+            document.getElementById('profile-email').textContent = userData.email;
+
+            // Balance
+            const balance = (userData.balance || 0).toFixed(2);
+            document.getElementById('wallet-balance').textContent = balance;
+            document.getElementById('wallet-total').textContent = balance;
+            document.getElementById('withdraw-balance').textContent = balance;
+            document.getElementById('today-earning').textContent = (userData.todayEarning || 0).toFixed(2);
+
+            // Stats
+            document.getElementById('total-earned').textContent = (userData.totalEarned || 0).toFixed(0);
+            document.getElementById('total-withdrawn').textContent = (userData.totalWithdrawn || 0).toFixed(0);
+            document.getElementById('pending-amount').textContent = (userData.pendingAmount || 0).toFixed(0);
+
+            // Streak
+            document.getElementById('streak-count').textContent = userData.streak || 0;
+
+            // Referral
+            document.getElementById('my-referral-code').textContent = userData.referralCode || 'EARN000';
+            document.getElementById('total-referrals').textContent = userData.referrals?.total || 0;
+            document.getElementById('active-referrals').textContent = userData.referrals?.active || 0;
+            document.getElementById('referral-earnings').textContent = userData.referrals?.earnings || 0;
+
+            // Ads
+            document.getElementById('ads-watched').textContent = userData.adsWatchedToday || 0;
+            const adsProgress = ((userData.adsWatchedToday || 0) / 20) * 100;
+            document.getElementById('ads-progress').style.width = `${adsProgress}%`;
+
+            // Spins & Scratch
+            document.getElementById('spins-left').textContent = userData.spinsLeft ?? 3;
+            document.getElementById('cards-left').textContent = userData.scratchCardsLeft ?? 5;
+
+            // KYC
+            document.getElementById('kyc-status').textContent = userData.kycStatus === 'verified' ? 'Verified ✓' : 'Pending';
+            document.getElementById('kyc-status').className = `text-xs ${userData.kycStatus === 'verified' ? 'text-green-500' : 'text-yellow-500'}`;
+
+            // Load tasks
+            loadTasks();
+            loadSurveys();
+            loadLeaderboard();
+            loadTransactions();
+            loadNotifications();
+            loadScratchCards();
+        }
+
+        // Daily Reset Check
+        function checkDailyReset() {
+            const today = new Date().toDateString();
+            const lastLogin = userData.lastLogin ? new Date(userData.lastLogin).toDateString() : null;
+
+            if (lastLogin !== today) {
+                // Reset daily limits
+                update(ref(db, `users/${currentUser.uid}`), {
+                    adsWatchedToday: 0,
+                    spinsLeft: 3,
+                    scratchCardsLeft: 5,
+                    todayEarning: 0,
+                    lastLogin: new Date().toISOString()
+                });
+
+                // Update streak
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                if (lastLogin === yesterday.toDateString()) {
+                    update(ref(db, `users/${currentUser.uid}`), {
+                        streak: (userData.streak || 0) + 1
+                    });
+                } else if (lastLogin !== today) {
+                    update(ref(db, `users/${currentUser.uid}`), {
+                        streak: 1
+                    });
+                }
+            }
+        }
+
+        // Claim Daily Bonus
+        window.claimDailyBonus = async () => {
+            const today = new Date().toDateString();
+            const lastClaim = userData.lastBonusClaim ? new Date(userData.lastBonusClaim).toDateString() : null;
+
+            if (lastClaim === today) {
+                showNotification('Already claimed today!', 'warning');
+                return;
+            }
+
+            const bonusAmount = 2 + (userData.streak || 0) * 0.5; // Base + streak bonus
+
+            await update(ref(db, `users/${currentUser.uid}`), {
+                balance: (userData.balance || 0) + bonusAmount,
+                totalEarned: (userData.totalEarned || 0) + bonusAmount,
+                todayEarning: (userData.todayEarning || 0) + bonusAmount,
+                lastBonusClaim: new Date().toISOString()
+            });
+
+            await addTransaction('credit', bonusAmount, 'Daily Bonus');
+            showReward('Daily Bonus!', `You earned ₹${bonusAmount.toFixed(2)}!`);
+        };
+
+        // Watch Ad
+        window.watchAd = async () => {
+            if ((userData.adsWatchedToday || 0) >= 20) {
+                showNotification('Daily ad limit reached!', 'warning');
+                return;
+            }
+
+            showLoading('Loading Ad...');
+
+            // Simulate ad watching
+            setTimeout(async () => {
+                hideLoading();
+                const reward = 2;
+
+                await update(ref(db, `users/${currentUser.uid}`), {
+                    balance: (userData.balance || 0) + reward,
+                    totalEarned: (userData.totalEarned || 0) + reward,
+                    todayEarning: (userData.todayEarning || 0) + reward,
+                    adsWatchedToday: (userData.adsWatchedToday || 0) + 1
+                });
+
+                await addTransaction('credit', reward, 'Ad Watched');
+                showReward('Ad Complete!', `You earned ₹${reward}!`);
+            }, 3000);
+        };
+
+        // Spin Wheel
+        window.spinWheel = async () => {
+            if ((userData.spinsLeft ?? 3) <= 0) {
+                showNotification('No spins left today!', 'warning');
+                return;
+            }
+
+            const wheel = document.getElementById('spin-wheel');
+            const rewards = [1, 2, 5, 10, 1, 2, 5, 50];
+            const randomIndex = Math.floor(Math.random() * rewards.length);
+            const reward = rewards[randomIndex];
+            const degrees = 360 * 5 + (randomIndex * 45) + Math.random() * 45;
+
+            wheel.style.transition = 'transform 4s ease-out';
+            wheel.style.transform = `rotate(${degrees}deg)`;
+
+            setTimeout(async () => {
+                wheel.style.transition = 'none';
+                wheel.style.transform = `rotate(${degrees % 360}deg)`;
+
+                await update(ref(db, `users/${currentUser.uid}`), {
+                    balance: (userData.balance || 0) + reward,
+                    totalEarned: (userData.totalEarned || 0) + reward,
+                    todayEarning: (userData.todayEarning || 0) + reward,
+                    spinsLeft: (userData.spinsLeft ?? 3) - 1
+                });
+
+                await addTransaction('credit', reward, 'Lucky Spin');
+                showReward('Spin Winner!', `You won ₹${reward}!`);
+            }, 4000);
+        };
+
+        // Load Tasks
+        async function loadTasks() {
+            const tasksContainer = document.getElementById('tasks-list');
+            const configSnapshot = await get(ref(db, 'config/tasks'));
+            const taskReward = configSnapshot.exists() ? parseFloat(configSnapshot.val()) || 5 : 5;
+
+            const tasks = [
+                { id: 1, title: 'Follow on Instagram', icon: 'fab fa-instagram', color: '#E4405F', reward: taskReward },
+                { id: 2, title: 'Subscribe YouTube', icon: 'fab fa-youtube', color: '#FF0000', reward: taskReward * 2 },
+                { id: 3, title: 'Join Telegram', icon: 'fab fa-telegram', color: '#0088cc', reward: taskReward },
+                { id: 4, title: 'Like Facebook Page', icon: 'fab fa-facebook', color: '#1877F2', reward: taskReward },
+                { id: 5, title: 'Download App', icon: 'fas fa-download', color: '#10b981', reward: taskReward * 3 },
+                { id: 6, title: 'Rate Us 5 Star', icon: 'fas fa-star', color: '#f59e0b', reward: taskReward * 2 },
+            ];
+
+            tasksContainer.innerHTML = tasks.map(task => `
+                <div class="task-item">
+                    <div class="task-icon" style="background: ${task.color}20; color: ${task.color}">
+                        <i class="${task.icon}"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-sm">${task.title}</h4>
+                        <p class="text-green-500 text-xs font-bold">+₹${task.reward}</p>
+                    </div>
+                    <button onclick="completeTask(${task.id}, ${task.reward})" class="bg-blue-500 px-4 py-2 rounded-xl text-sm font-bold">
+                        Start
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        window.completeTask = async (taskId, reward) => {
+            showLoading('Verifying task...');
+            setTimeout(async () => {
+                hideLoading();
+                await update(ref(db, `users/${currentUser.uid}`), {
+                    balance: (userData.balance || 0) + reward,
+                    totalEarned: (userData.totalEarned || 0) + reward,
+                    todayEarning: (userData.todayEarning || 0) + reward
+                });
+                await addTransaction('credit', reward, 'Task Completed');
+                showReward('Task Done!', `You earned ₹${reward}!`);
+            }, 2000);
+        };
+
+        // Load Surveys
+        async function loadSurveys() {
+            const surveysContainer = document.getElementById('surveys-list');
+            const surveys = [
+                { id: 1, title: 'Shopping Habits Survey', time: '5 min', reward: 15 },
+                { id: 2, title: 'Entertainment Preferences', time: '3 min', reward: 10 },
+                { id: 3, title: 'Food & Lifestyle', time: '7 min', reward: 25 },
+                { id: 4, title: 'Tech Usage Survey', time: '4 min', reward: 12 },
+            ];
+
+            surveysContainer.innerHTML = surveys.map(survey => `
+                <div class="task-item">
+                    <div class="task-icon bg-purple-500/20 text-purple-500">
+                        <i class="fas fa-poll"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-sm">${survey.title}</h4>
+                        <p class="text-slate-400 text-xs">${survey.time}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-green-500 font-bold text-sm">+₹${survey.reward}</p>
+                        <button onclick="startSurvey(${survey.id}, ${survey.reward})" class="text-blue-500 text-xs font-semibold mt-1">
+                            Start →
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.startSurvey = async (surveyId, reward) => {
+            showLoading('Loading survey...');
+            setTimeout(async () => {
+                hideLoading();
+                await update(ref(db, `users/${currentUser.uid}`), {
+                    balance: (userData.balance || 0) + reward,
+                    totalEarned: (userData.totalEarned || 0) + reward,
+                    todayEarning: (userData.todayEarning || 0) + reward
+                });
+                await addTransaction('credit', reward, 'Survey Completed');
+                showReward('Survey Done!', `You earned ₹${reward}!`);
+            }, 3000);
+        };
+
+        // Load Scratch Cards
+        function loadScratchCards() {
+            const container = document.getElementById('scratch-cards');
+            const cardsLeft = userData.scratchCardsLeft ?? 5;
+            let html = '';
+
+            for (let i = 0; i < 6; i++) {
+                const isAvailable = i < cardsLeft;
+                html += `
+                    <div class="card text-center py-6 ${isAvailable ? '' : 'opacity-50'}" onclick="${isAvailable ? `scratchCard(${i})` : ''}">
+                        <div class="text-4xl ${isAvailable ? 'text-yellow-500' : 'text-slate-500'} mb-2">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                        <p class="text-sm font-bold">${isAvailable ? 'Scratch Me!' : 'Used'}</p>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        window.scratchCard = async (index) => {
+            if ((userData.scratchCardsLeft ?? 5) <= 0) {
+                showNotification('No cards left today!', 'warning');
+                return;
+            }
+
+            const rewards = [1, 2, 3, 5, 10, 20];
+            const reward = rewards[Math.floor(Math.random() * rewards.length)];
+
+            await update(ref(db, `users/${currentUser.uid}`), {
+                balance: (userData.balance || 0) + reward,
+                totalEarned: (userData.totalEarned || 0) + reward,
+                todayEarning: (userData.todayEarning || 0) + reward,
+                scratchCardsLeft: (userData.scratchCardsLeft ?? 5) - 1
+            });
+
+            await addTransaction('credit', reward, 'Scratch Card');
+            showReward('You Won!', `₹${reward} added to wallet!`);
+        };
+
+        // Load Leaderboard
+        async function loadLeaderboard() {
+            // Preview on home
+            const preview = document.getElementById('leaderboard-preview');
+            const full = document.getElementById('leaderboard-full');
+
+            const snapshot = await get(ref(db, 'users'));
+            if (!snapshot.exists()) return;
+
+            const users = [];
+            snapshot.forEach(child => {
+                const u = child.val();
+                users.push({ name: u.name, earned: u.totalEarned || 0 });
+            });
+
+            users.sort((a, b) => b.earned - a.earned);
+            const top3 = users.slice(0, 3);
+            const top10 = users.slice(0, 10);
+
+            preview.innerHTML = top3.map((u, i) => `
+                <div class="flex items-center justify-between py-2 ${i < 2 ? 'border-b border-white/10' : ''}">
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 h-6 rounded-full ${i === 0 ? 'bg-yellow-500' : i === 1 ? 'bg-slate-400' : 'bg-orange-600'} flex items-center justify-center text-xs font-bold text-black">${i + 1}</span>
+                        <span class="font-medium text-sm">${u.name}</span>
+                    </div>
+                    <span class="text-green-500 font-bold text-sm">₹${u.earned.toFixed(0)}</span>
+                </div>
+            `).join('');
+
+            full.innerHTML = `
+                <div class="card">
+                    ${top10.map((u, i) => `
+                        <div class="flex items-center justify-between py-3 ${i < 9 ? 'border-b border-white/10' : ''}">
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-full ${i === 0 ? 'bg-yellow-500' : i === 1 ? 'bg-slate-400' : i === 2 ? 'bg-orange-600' : 'bg-slate-700'} flex items-center justify-center text-sm font-bold ${i < 3 ? 'text-black' : 'text-white'}">${i + 1}</span>
+                                <span class="font-medium">${u.name}</span>
+                            </div>
+                            <span class="text-green-500 font-bold">₹${u.earned.toFixed(0)}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Transactions
+        async function addTransaction(type, amount, description) {
+            const transaction = {
+                type,
+                amount,
+                description,
+                timestamp: new Date().toISOString(),
+                status: 'completed'
+            };
+            await push(ref(db, `users/${currentUser.uid}/transactions`), transaction);
+        }
+
+        async function loadTransactions() {
+            const recent = document.getElementById('recent-transactions');
+            const history = document.getElementById('transaction-history');
+
+            const snapshot = await get(ref(db, `users/${currentUser.uid}/transactions`));
+            if (!snapshot.exists()) {
+                recent.innerHTML = '<p class="text-slate-400 text-center text-sm">No transactions yet</p>';
+                history.innerHTML = '<p class="text-slate-400 text-center text-sm">No transactions yet</p>';
+                return;
+            }
+
+            const transactions = [];
+            snapshot.forEach(child => {
+                transactions.push({ id: child.key, ...child.val() });
+            });
+            transactions.reverse();
+
+            const renderTransaction = (t) => `
+                <div class="transaction-item">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl ${t.type === 'credit' ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500'} flex items-center justify-center">
+                            <i class="fas fa-${t.type === 'credit' ? 'arrow-down' : 'arrow-up'}"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-sm">${t.description}</p>
+                            <p class="text-xs text-slate-400">${new Date(t.timestamp).toLocaleDateString()}</p>
+                        </div>
+                    </div>
+                    <span class="${t.type === 'credit' ? 'text-green-500' : 'text-red-500'} font-bold">
+                        ${t.type === 'credit' ? '+' : '-'}₹${t.amount.toFixed(2)}
+                    </span>
+                </div>
+            `;
+
+            recent.innerHTML = transactions.slice(0, 5).map(renderTransaction).join('');
+            history.innerHTML = `<div class="card">${transactions.map(renderTransaction).join('')}</div>`;
+        }
+
+        // Withdrawal
+        window.selectPayment = (method) => {
+            selectedPaymentMethod = method;
+            document.querySelectorAll('.payment-option').forEach(opt => {
+                opt.classList.toggle('active', opt.dataset.method === method);
+                opt.style.borderColor = opt.dataset.method === method ? '#3b82f6' : 'rgba(255,255,255,0.1)';
+            });
+            document.querySelectorAll('.payment-form').forEach(form => form.style.display = 'none');
+            document.getElementById(`${method}-form`).style.display = 'block';
+        };
+
+        window.setAmount = (amount) => {
+            document.getElementById('withdraw-amount').value = amount;
+        };
+
+        window.processWithdraw = async () => {
+            const amount = parseFloat(document.getElementById('withdraw-amount').value);
+            const minWithdraw = 50;
+
+            if (!amount || amount < minWithdraw) {
+                showNotification(`Minimum withdrawal is ₹${minWithdraw}`, 'error');
+                return;
+            }
+
+            if (amount > (userData.balance || 0)) {
+                showNotification('Insufficient balance', 'error');
+                return;
+            }
+
+            let paymentDetails = {};
+            if (selectedPaymentMethod === 'upi') {
+                paymentDetails.upiId = document.getElementById('upi-id').value;
+                if (!paymentDetails.upiId) {
+                    showNotification('Please enter UPI ID', 'error');
+                    return;
+                }
+            } else if (selectedPaymentMethod === 'paytm') {
+                paymentDetails.paytmNumber = document.getElementById('paytm-number').value;
+                if (!paymentDetails.paytmNumber) {
+                    showNotification('Please enter Paytm number', 'error');
+                    return;
+                }
+            } else {
+                paymentDetails.accountNumber = document.getElementById('bank-account').value;
+                paymentDetails.ifsc = document.getElementById('bank-ifsc').value;
+                paymentDetails.name = document.getElementById('bank-name').value;
+                if (!paymentDetails.accountNumber || !paymentDetails.ifsc || !paymentDetails.name) {
+                    showNotification('Please fill all bank details', 'error');
+                    return;
+                }
+            }
+
+            showLoading('Processing withdrawal...');
+
+            try {
+                // Create withdrawal request
+                const withdrawalRef = push(ref(db, 'withdrawals'));
+                await set(withdrawalRef, {
+                    id: withdrawalRef.key,
+                    userId: currentUser.uid,
+                    userName: userData.name,
+                    amount: amount,
+                    method: selectedPaymentMethod,
+                    details: paymentDetails,
+                    status: 'pending',
+                    timestamp: new Date().toISOString()
+                });
+
+                // Update user balance
+                await update(ref(db, `users/${currentUser.uid}`), {
+                    balance: (userData.balance || 0) - amount,
+                    pendingAmount: (userData.pendingAmount || 0) + amount
+                });
+
+                await addTransaction('debit', amount, `Withdrawal (${selectedPaymentMethod.toUpperCase()})`);
+
+                hideLoading();
+                showNotification('Withdrawal request submitted!', 'success');
+                showPage('wallet-page');
+            } catch (error) {
+                hideLoading();
+                showNotification('Error processing withdrawal', 'error');
+            }
+        };
+
+        // Referral Functions
+        async function handleReferralBonus(code, newUserId) {
+            const usersSnapshot = await get(ref(db, 'users'));
+            usersSnapshot.forEach(child => {
+                const u = child.val();
+                if (u.referralCode === code && u.uid !== newUserId) {
+                    // Give bonus to referrer
+                    update(ref(db, `users/${u.uid}`), {
+                        balance: (u.balance || 0) + 10,
+                        totalEarned: (u.totalEarned || 0) + 10,
+                        'referrals/total': (u.referrals?.total || 0) + 1,
+                        'referrals/active': (u.referrals?.active || 0) + 1,
+                        'referrals/earnings': (u.referrals?.earnings || 0) + 10
+                    });
+                }
+            });
+        }
+
+        window.copyReferralCode = () => {
+            const code = document.getElementById('my-referral-code').textContent;
+            navigator.clipboard.writeText(code);
+            showNotification('Code copied!', 'success');
+        };
+
+        window.shareReferral = () => {
+            const code = userData.referralCode;
+            const text = `Join EarnZone and earn money daily! Use my referral code: ${code} and get ₹5 bonus! Download now: https://earnzone.app`;
+
+            if (navigator.share) {
+                navigator.share({ title: 'EarnZone', text: text });
+            } else {
+                navigator.clipboard.writeText(text);
+                showNotification('Share text copied!', 'success');
+            }
+        };
+
+        // Notifications
+        async function loadNotifications() {
+            const container = document.getElementById('notifications-list');
+            const snapshot = await get(ref(db, 'config/notice'));
+            const globalNotice = snapshot.exists() ? snapshot.val() : null;
+
+            const notifications = [
+                { title: 'Welcome to EarnZone!', message: 'Start earning now by completing tasks.', time: 'Just now', icon: 'fas fa-star', color: '#f59e0b' }
+            ];
+
+            if (globalNotice) {
+                notifications.unshift({
+                    title: 'Announcement',
+                    message: globalNotice,
+                    time: 'Now',
+                    icon: 'fas fa-bullhorn',
+                    color: '#ef4444'
+                });
+            }
+
+            container.innerHTML = notifications.map(n => `
+                <div class="card mb-3">
+                    <div class="flex gap-3">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: ${n.color}20; color: ${n.color}">
+                            <i class="${n.icon}"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-sm">${n.title}</h4>
+                            <p class="text-slate-400 text-xs mt-1">${n.message}</p>
+                            <p class="text-slate-500 text-[10px] mt-2">${n.time}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // KYC Modal
+        window.showKYCModal = () => document.getElementById('kyc-modal').classList.add('active');
+        window.closeKYCModal = () => document.getElementById('kyc-modal').classList.remove('active');
+
+        window.submitKYC = async () => {
+            const name = document.getElementById('kyc-name').value;
+            const aadhaar = document.getElementById('kyc-aadhaar').value;
+            const pan = document.getElementById('kyc-pan').value;
+
+            if (!name || !aadhaar || !pan) {
+                showNotification('Please fill all fields', 'error');
+                return;
+            }
+
+            showLoading('Submitting KYC...');
+
+            await update(ref(db, `users/${currentUser.uid}`), {
+                kycStatus: 'under_review',
+                kycData: { name, aadhaar, pan, submittedAt: new Date().toISOString() }
+            });
+
+            await set(ref(db, `kyc_requests/${currentUser.uid}`), {
+                userId: currentUser.uid,
+                userName: userData.name,
+                name, aadhaar, pan,
+                status: 'pending',
+                submittedAt: new Date().toISOString()
+            });
+
+            hideLoading();
+            closeKYCModal();
+            showNotification('KYC submitted for review', 'success');
+        };
+
+        // Reward Modal
+        window.showReward = (title, message) => {
+            document.getElementById('reward-title').textContent = title;
+            document.getElementById('reward-message').textContent = message;
+            document.getElementById('reward-modal').classList.add('active');
+        };
+        window.closeRewardModal = () => document.getElementById('reward-modal').classList.remove('active');
+
+        // Notification Toast
+        window.showNotification = (message, type = 'info') => {
+            const notif = document.getElementById('notification');
+            const text = document.getElementById('notification-text');
+            text.textContent = message;
+            notif.className = `notification show ${type === 'error' ? 'border-red-500' : type === 'success' ? 'border-green-500' : 'border-blue-500'}`;
+            setTimeout(() => notif.classList.remove('show'), 3000);
+        };
+
+        // Loading
+        window.showLoading = (text = 'Loading...') => {
+            document.getElementById('loading-text').textContent = text;
+            document.getElementById('loading-overlay').classList.add('active');
+        };
+        window.hideLoading = () => document.getElementById('loading-overlay').classList.remove('active');
+
+        // OTP Functions (placeholder)
+        window.verifyOTP = () => {
+            showNotification('OTP Verified!', 'success');
+            showPage('home-page');
+        };
+        window.resendOTP = () => showNotification('OTP Resent!', 'success');
+
+    </script>
+</body>
+</html>
