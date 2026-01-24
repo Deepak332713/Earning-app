@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EarnPro - Daily Earning App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="description" content="EarnPro - Complete earning platform with tasks, surveys, referrals and instant payouts">
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo">
+                <i class="fas fa-wallet"></i>
+            </div>
+            <h1 class="splash-title">EarnPro</h1>
+            <p class="splash-tagline">Earn Daily, Withdraw Instantly</p>
+            <div class="splash-loader"></div>
+        </div>
+    </div>
+
+    <!-- Auth Screen -->
+    <div id="auth-screen" class="screen" style="display: none;">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <h1>EarnPro</h1>
+                <p>Welcome! Start earning today</p>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-form" class="auth-form">
+                <h2>Login</h2>
+                <div class="input-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" id="login-phone" placeholder="Mobile Number" maxlength="10">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="login-password" placeholder="Password">
+                </div>
+                <button class="btn-primary" onclick="handleLogin()">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <p class="auth-switch">New user? <span onclick="showSignup()">Create Account</span></p>
+                <p class="forgot-password" onclick="showForgotPassword()">Forgot Password?</p>
+            </div>
+
+            <!-- Signup Form -->
+            <div id="signup-form" class="auth-form" style="display: none;">
+                <h2>Create Account</h2>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="signup-name" placeholder="Full Name">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" id="signup-phone" placeholder="Mobile Number" maxlength="10">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="signup-email" placeholder="Email Address">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="signup-password" placeholder="Create Password">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-gift"></i>
+                    <input type="text" id="referral-code" placeholder="Referral Code (Optional)">
+                </div>
+                <button class="btn-primary" onclick="handleSignup()">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+                <p class="auth-switch">Already have account? <span onclick="showLogin()">Login</span></p>
+            </div>
+
+            <!-- OTP Verification -->
+            <div id="otp-form" class="auth-form" style="display: none;">
+                <h2>Verify OTP</h2>
+                <p class="otp-info">OTP sent to <span id="otp-phone"></span></p>
+                <div class="otp-inputs">
+                    <input type="tel" maxlength="1" class="otp-box" onkeyup="moveToNext(this, 1)">
+                    <input type="tel" maxlength="1" class="otp-box" onkeyup="moveToNext(this, 2)">
+                    <input type="tel" maxlength="1" class="otp-box" onkeyup="moveToNext(this, 3)">
+                    <input type="tel" maxlength="1" class="otp-box" onkeyup="moveToNext(this, 4)">
+                    <input type="tel" maxlength="1" class="otp-box" onkeyup="moveToNext(this, 5)">
+                    <input type="tel" maxlength="1" class="otp-box" onkeyup="moveToNext(this, 6)">
+                </div>
+                <button class="btn-primary" onclick="verifyOTP()">
+                    <i class="fas fa-check-circle"></i> Verify
+                </button>
+                <p class="resend-otp">Didn't receive? <span id="resend-timer">Resend in 30s</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="main-app" class="screen" style="display: none;">
+        <!-- Top Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="user-avatar" onclick="showProfile()">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <span class="greeting">Namaste!</span>
+                    <span class="user-name" id="header-username">User</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="notification-btn" onclick="showNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notif-badge" id="notif-count">3</span>
+                </div>
+                <div class="language-btn" onclick="showLanguageModal()">
+                    <i class="fas fa-globe"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Wallet Card -->
+        <div class="wallet-card">
+            <div class="wallet-header">
+                <span class="wallet-label">Total Earnings</span>
+                <i class="fas fa-eye" id="balance-toggle" onclick="toggleBalance()"></i>
+            </div>
+            <div class="wallet-balance">
+                <span class="currency">₹</span>
+                <span class="amount" id="total-balance">0.00</span>
+            </div>
+            <div class="wallet-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="today-earning">₹0</span>
+                    <span class="stat-label">Today</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="pending-amount">₹0</span>
+                    <span class="stat-label">Pending</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="withdrawn-amount">₹0</span>
+                    <span class="stat-label">Withdrawn</span>
+                </div>
+            </div>
+            <div class="wallet-actions">
+                <button class="wallet-btn withdraw" onclick="showWithdraw()">
+                    <i class="fas fa-arrow-up"></i> Withdraw
+                </button>
+                <button class="wallet-btn history" onclick="showHistory()">
+                    <i class="fas fa-history"></i> History
+                </button>
+            </div>
+        </div>
+
+        <!-- Daily Bonus Section -->
+        <div class="daily-bonus-card" onclick="claimDailyBonus()">
+            <div class="bonus-icon">
+                <i class="fas fa-gift"></i>
+            </div>
+            <div class="bonus-info">
+                <span class="bonus-title">Daily Bonus</span>
+                <span class="bonus-desc">Claim your daily reward!</span>
+            </div>
+            <div class="bonus-amount">
+                <span id="daily-bonus-amount">₹5</span>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+
+        <!-- Streak Section -->
+        <div class="streak-section">
+            <div class="streak-header">
+                <h3><i class="fas fa-fire"></i> Daily Streak</h3>
+                <span class="streak-count" id="streak-days">0 Days</span>
+            </div>
+            <div class="streak-progress">
+                <div class="streak-day" data-day="1"><span>1</span></div>
+                <div class="streak-day" data-day="2"><span>2</span></div>
+                <div class="streak-day" data-day="3"><span>3</span></div>
+                <div class="streak-day" data-day="4"><span>4</span></div>
+                <div class="streak-day" data-day="5"><span>5</span></div>
+                <div class="streak-day" data-day="6"><span>6</span></div>
+                <div class="streak-day special" data-day="7"><span>7</span><i class="fas fa-crown"></i></div>
+            </div>
+        </div>
+
+        <!-- Quick Earning Options -->
+        <div class="quick-earn-section">
+            <h3 class="section-title">Quick Earn</h3>
+            <div class="quick-earn-grid">
+                <div class="quick-earn-item" onclick="showTasks()">
+                    <div class="earn-icon tasks"><i class="fas fa-tasks"></i></div>
+                    <span class="earn-name">Tasks</span>
+                    <span class="earn-reward">₹2-50</span>
+                </div>
+                <div class="quick-earn-item" onclick="showSurveys()">
+                    <div class="earn-icon surveys"><i class="fas fa-poll"></i></div>
+                    <span class="earn-name">Surveys</span>
+                    <span class="earn-reward">₹5-100</span>
+                </div>
+                <div class="quick-earn-item" onclick="showAds()">
+                    <div class="earn-icon ads"><i class="fas fa-play-circle"></i></div>
+                    <span class="earn-name">Watch Ads</span>
+                    <span class="earn-reward">₹0.50</span>
+                </div>
+                <div class="quick-earn-item" onclick="showReferral()">
+                    <div class="earn-icon referral"><i class="fas fa-user-plus"></i></div>
+                    <span class="earn-name">Refer</span>
+                    <span class="earn-reward">₹25</span>
+                </div>
+                <div class="quick-earn-item" onclick="showSpin()">
+                    <div class="earn-icon spin"><i class="fas fa-dharmachakra"></i></div>
+                    <span class="earn-name">Lucky Spin</span>
+                    <span class="earn-reward">₹1-500</span>
+                </div>
+                <div class="quick-earn-item" onclick="showScratch()">
+                    <div class="earn-icon scratch"><i class="fas fa-ticket-alt"></i></div>
+                    <span class="earn-name">Scratch</span>
+                    <span class="earn-reward">₹1-100</span>
+                </div>
+                <div class="quick-earn-item" onclick="showGames()">
+                    <div class="earn-icon games"><i class="fas fa-gamepad"></i></div>
+                    <span class="earn-name">Games</span>
+                    <span class="earn-reward">₹5-200</span>
+                </div>
+                <div class="quick-earn-item" onclick="showContent()">
+                    <div class="earn-icon content"><i class="fas fa-video"></i></div>
+                    <span class="earn-name">Content</span>
+                    <span class="earn-reward">₹10-500</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Tasks -->
+        <div class="featured-section">
+            <div class="section-header">
+                <h3 class="section-title">Featured Tasks</h3>
+                <span class="see-all" onclick="showTasks()">See All</span>
+            </div>
+            <div class="task-list" id="featured-tasks">
+                <!-- Tasks will be loaded dynamically -->
+            </div>
+        </div>
+
+        <!-- Leaderboard Preview -->
+        <div class="leaderboard-preview" onclick="showLeaderboard()">
+            <div class="lb-header">
+                <h3><i class="fas fa-trophy"></i> Top Earners</h3>
+                <span class="lb-rank">Your Rank: #<span id="user-rank">--</span></span>
+            </div>
+            <div class="lb-list" id="top-earners">
+                <!-- Top earners will be loaded -->
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="showHome()">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" onclick="showEarn()">
+                <i class="fas fa-coins"></i>
+                <span>Earn</span>
+            </div>
+            <div class="nav-item" onclick="showReferral()">
+                <i class="fas fa-users"></i>
+                <span>Refer</span>
+            </div>
+            <div class="nav-item" onclick="showWallet()">
+                <i class="fas fa-wallet"></i>
+                <span>Wallet</span>
+            </div>
+            <div class="nav-item" onclick="showProfile()">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Modals and Overlays -->
+
+    <!-- Tasks Modal -->
+    <div id="tasks-modal" class="modal">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeModal('tasks-modal')">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Complete Tasks</h2>
+            <div class="header-action"></div>
+        </div>
+        <div class="modal-content">
+            <div class="task-categories">
+                <button class="cat-btn active" data-cat="all">All</button>
+                <button class="cat-btn" data-cat="app">App Install</button>
+                <button class="cat-btn" data-cat="signup">Sign Up</button>
+                <button class="cat-btn" data-cat="social">Social</button>
+                <button class="cat-btn" data-cat="youtube">YouTube</button>
+            </div>
+            <div class="tasks-container" id="all-tasks">
+                <!-- Tasks loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Surveys Modal -->
+    <div id="surveys-modal" class="modal">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeModal('surveys-modal')">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Surveys</h2>
+            <div class="header-action"></div>
+        </div>
+        <div class="modal-content">
+            <div class="surveys-info">
+                <i class="fas fa-info-circle"></i>
+                <p>Complete surveys honestly to earn rewards. Fake answers may lead to account suspension.</p>
+            </div>
+            <div class="surveys-container" id="all-surveys">
+                <!-- Surveys loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Watch Ads Modal -->
+    <div id="ads-modal" class="modal">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeModal('ads-modal')">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Watch & Earn</h2>
+            <div class="header-action"></div>
+        </div>
+        <div class="modal-content">
+            <div class="ads-stats">
+                <div class="ad-stat">
+                    <span class="ad-stat-value" id="ads-watched">0</span>
+                    <span class="ad-stat-label">Watched Today</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat-value" id="ads-remaining">20</span>
+                    <span class="ad-stat-label">Remaining</span>
+                </div>
+                <div class="ad-stat">
+                    <span class="ad-stat-value" id="ads-earned">₹0</span>
+                    <span class="ad-stat-label">Earned</span>
+                </div>
+            </div>
+            <div class="watch-ad-btn" onclick="watchAd()">
+                <i class="fas fa-play"></i>
+                <span>Watch Ad</span>
+                <span class="ad-reward">+₹0.50</span>
+            </div>
+            <p class="ads-note">Each ad is 15-30 seconds. Daily limit: 20 ads</p>
+        </div>
+    </div>
+
+    <!-- Referral Modal -->
+    <div id="referral-modal" class="modal">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeModal('referral-modal')">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Refer & Earn</h2>
+            <div class="header-action"></div>
+        </div>
+        <div class="modal-content">
+            <div class="referral-banner">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Crect fill='%231a1a2e' width='400' height='200'/%3E%3Ctext x='200' y='100' text-anchor='middle' fill='%2300d4aa' font-size='24'%3ERefer Friends%3C/text%3E%3C/svg%3E" alt="Refer">
+                <div class="referral-reward">
+                    <span class="reward-amount">₹25</span>
+                    <span class="reward-text">Per Referral</span>
+                </div>
+            </div>
+            <div class="referral-code-box">
+                <span class="label">Your Referral Code</span>
+                <div class="code-display">
+                    <span id="my-referral-code">EARN123</span>
+                    <button onclick="copyReferralCode()"><i class="fas fa-copy"></i></button>
+                </div>
+            </div>
+            <div class="share-buttons">
+                <button class="share-btn whatsapp" onclick="shareWhatsApp()">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </button>
+                <button class="share-btn telegram" onclick="shareTelegram()">
+                    <i class="fab fa-telegram"></i> Telegram
+                </button>
+                <button class="share-btn more" onclick="shareMore()">
+                    <i class="fas fa-share-alt"></i> More
+                </button>
+            </div>
+            <div class="referral-stats">
+                <div class="ref-stat">
+                    <span class="ref-value" id="total-referrals">0</span>
+                    <span class="ref-label">Total Referrals</span>
+                </div>
+                <div class="ref-stat">
+                    <span class="ref-value" id="active-referrals">0</span>
+                    <span class="ref-label">Active</span>
+                </div>
+                <div class="ref-stat">
+                    <span class="ref-value" id="referral-earnings">₹0</span>
+                    <span class="ref-label">Earned</span>
+                </div>
+            </div>
+            <div class="referral-list">
+                <h3>Your Referrals</h3>
+                <div id="my-referrals">
+                    <!-- Referral list -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div id="withdraw-modal" class="modal">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeModal('withdraw-modal')">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Withdraw</h2>
+            <div class="header-action"></div>
+        </div>
+        <div class="modal-content">
+            <div class="withdraw-balance">
+                <span class="wb-label">Available Balance</span>
+                <span class="wb-amount">₹<span id="withdrawable-balance">0.00</span></span>
+            </div>
+            <div class="min-withdraw-note">
+                <i class="fas fa-info-circle"></i>
+                Minimum withdrawal: ₹<span id="min-withdraw">50</span>
+            </div>
+            <div class="payment-methods">
+                <h3>Select Payment Method</h3>
+                <div class="payment-option" data-method="upi" onclick="selectPayment('upi')">
+                    <div class="payment-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <div class="payment-info">
+                        <span class="payment-name">UPI</span>
+                        <span class="payment-desc">Instant transfer</span>
+                    </div>
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="payment-option" data-method="paytm" onclick="selectPayment('paytm')">
+                    <div class="payment-icon"><i class="fas fa-wallet"></i></div>
+                    <div class="payment-info">
+                        <span class="payment-name">Paytm</span>
+                        <span class="payment-desc">Within 24 hours</span>
+                    </div>
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="payment-option" data-method="bank" onclick="selectPayment('bank')">
+                    <div class="payment-icon"><i class="fas fa-university"></i></div>
+                    <div class="payment-info">
+                        <span class="payment-name">Bank Transfer</span>
+                        <span class="payment-desc">1-3 business days</span>
+                    </div>
+                    <i class="fas fa-check-circle"></i>
+                </div>
+            </div>
+            <div class="withdraw-form" id="withdraw-form" style="display: none;">
+                <div class="input-group">
+                    <i class="fas fa-rupee-sign"></i>
+                    <input type="number" id="withdraw-amount" placeholder="Enter Amount">
+                </div>
+                <div id="upi-fields" class="payment-fields" style="display: none;">
+                    <div class="input-group">
+                        <i class="fas fa-at"></i>
+                        <input type="text" id="upi-id" placeholder="UPI ID (example@upi)">
+                    </div>
+                </div>
+                <div id="paytm-fields" class="payment-fields" style="display: none;">
+                    <div class="input-group">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="paytm-number" placeholder="Paytm Number" maxlength="10">
+                    </div>
+                </div>
+                <div id="bank-fields" class="payment-fields" style="display: none;">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="account-holder" placeholder="Account Holder Name">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-credit-card"></i>
+                        <input type="text" id="account-number" placeholder="Account Number">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-code"></i>
+                        <input type="text" id="ifsc-code" placeholder="IFSC Code">
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="processWithdraw()">
+                    <i class="fas fa-paper-plane"></i> Request Withdrawal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeModal('profile-modal')">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Profile</h2>
+            <div class="header-action">
+                <button onclick="editProfile()"><i class="fas fa-edit"></i></button>
+            </div>
+        </div>
+        <div class="modal-content">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                    <div class="avatar-edit" onclick="changeAvatar()">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                </div>
+                <h3 id="profile-name">User Name</h3>
+                <p id="profile-phone">+91 XXXXXXXXXX</p>
+                <div class="profile-level">
+                    <i class="fas fa-star"></i>
+                    <span>Level <span id="user-level">1</span></span>
+                </div>
+            </div>
+            <div class="profile-stats">
+                <div class="p-stat">
+                    <span class="p-value" id="total-earned">₹0</span>
+                    <span class="p-label">Total Earned</span>
+                </div>
+                <div class="p-stat">
+                    <span class="p-value" id="tasks-completed">0</span>
+                    <span class="p-label">Tasks Done</span>
+                </div>
+                <div class="p-stat">
+                    <span class="p-value" id="member-days">0</span>
+                    <span class="p-label">Days</span>
+                </div>
+            </div>
+            <div class="profile-menu">
+                <div class="menu-item" onclick="showKYC()">
+                    <i class="fas fa-id-card"></i>
+                    <span>KYC Verification</span>
+                    <span class="kyc-status" id="kyc-status">Pending</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="menu-item" onclick="showHistory()">
+                    <i class="fas fa-history"></i>
+                    <span>Transaction History</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="menu-item" onclick="showPaymentMethods()">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Payment Methods</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="menu-item" onclick="showSettings()">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="menu-item" onclick="showSupport()">
+                    <i class="fas fa-headset"></i>
+                    <span>Help & Support</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="menu-item" onclick="showAbout()">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About App</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="menu-item logout" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KYC Modal -->
+    <div id="kyc-modal" class="modal">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeModal('kyc-modal')">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>KYC Verification</h2>
+            <div class="header-action"></div>
+        </div>
+        <div class="modal-content">
+            <div class="kyc-info">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Why KYC?</h3>
+                <p>KYC helps us verify your identity and protect your earnings. Complete KYC to unlock higher withdrawal limits.</p>
+            </div>
+            <div class="kyc-form">
+                <div class="input-group">
+                    <i class="fas fa-id-card"></i>
+                    <input type="text" id="aadhar-number" placeholder="Aadhar Number" maxlength="12">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-credit-card"></i>
+                    <input type="text" id="pan-number" placeholder="PAN Number" maxlength="10">
+                </div>
+                <div class="upload-section">
+                    <h4>Upload Documents</h4>
+                    <div class="upload-box" onclick="uploadDocument('aadhar-front')">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Aadhar Front</span>
+                    </div>
+                    <div class="upload-box" onclick="uploadDocument('aadhar-back')">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Aadhar Back</span>
+                    </div>
+                    <div class="upload-box" onclick="uploadDocument('pan')">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>PAN Card</span>
+                    </div>
+                    <div class="upload-box" onclick="uploadDocument('selfie')">
+                        <i class="fas fa-camera"></i>
+                        <span>Selfie</span>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="submitKYC()">
+                    <i class="fas fa-paper-plane"></i> Submit for Verification
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Support Modal -->
+    <div id="support-modal" class="modal">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeModal('support-modal')">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Help & Support</h2>
+            <div class="header-action"></div>
+        </div>
+        <div class="modal-content">
+            <div class="support-options">
+                <div class="support-card" onclick="openChat()">
+                    <i class="fas fa-comments"></i>
+                    <h4>Live Chat</h4>
+                    <p>24x7 Support</p>
+                </div>
+                <div class="support-card" onclick="openEmail()">
+                    <i class="fas fa-envelope"></i>
+                    <h4>Email Us</h4>
+                    <p>support@earnpro.com</p>
+                </div>
+                <div class="support-card" onclick="openWhatsApp()">
+                    <i class="fab fa-whatsapp"></i>
+                    <h4>WhatsApp</h4>
+                    <p>Quick Response</p>
+                </div>
+            </div>
+            <div class="faq-section">
+                <h3>Frequently Asked Questions</h3>
+                <div class="faq-list" id="faq-list">
+                    <!-- FAQs loaded dynamically -->
+                </div>
+            </div>
+            <div class="ticket-section">
+                <h3>Raise a Ticket</h3>
+                <div class="input-group">
+                    <i class="fas fa-tag"></i>
+                    <select id="ticket-category">
+                        <option value="">Select Category</option>
+                        <option value="withdrawal">Withdrawal Issue</option>
+                        <option value="task">Task Not Credited</option>
+                        <option value="account">Account Issue</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-pen"></i>
+                    <textarea id="ticket-message" placeholder="Describe your issue..."></textarea>
+                </div>
+                <button class="btn-primary" onclick="submitTicket()">
+                    <i class="fas fa-paper-plane"></i> Submit Ticket
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lucky Spin Modal -->
+    <div id="spin-modal" class="modal">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeModal('spin-modal')">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Lucky Spin</h2>
+            <div class="header-action">
+                <span class="spin-count">Spins: <span id="available-spins">1</span></span>
+            </div>
+        </div>
+        <div class="modal-content spin-content">
+            <div class="spin-wheel-container">
+                <div class="spin-wheel" id="spin-wheel">
+                    <div class="wheel-section" data-prize="1">₹1</div>
+                    <div class="wheel-section" data-prize="2">₹2</div>
+                    <div class="wheel-section" data-prize="5">₹5</div>
+                    <div class="wheel-section" data-prize="10">₹10</div>
+                    <div class="wheel-section" data-prize="20">₹20</div>
+                    <div class="wheel-section" data-prize="50">₹50</div>
+                    <div class="wheel-section" data-prize="100">₹100</div>
+                    <div class="wheel-section" data-prize="500">₹500</div>
+                </div>
+                <div class="wheel-pointer"><i class="fas fa-caret-down"></i></div>
+            </div>
+            <button class="spin-btn" id="spin-btn" onclick="spinWheel()">
+                <i class="fas fa-dharmachakra"></i> SPIN NOW
+            </button>
+            <p class="spin-note">Watch an ad to get extra spin!</p>
+            <button class="extra-spin-btn" onclick="getExtraSpin()">
+                <i class="fas fa-play"></i> Watch Ad for +1 Spin
+            </button>
+        </div>
+    </div>
+
+    <!-- Scratch Card Modal -->
+    <div id="scratch-modal" class="modal">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeModal('scratch-modal')">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Scratch & Win</h2>
+            <div class="header-action">
+                <span class="scratch-count">Cards: <span id="available-scratches">3</span></span>
+            </div>
+        </div>
+        <div class="modal-content">
+            <div class="scratch-cards-grid" id="scratch-cards">
+                <!-- Scratch cards loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction History Modal -->
+    <div id="history-modal" class="modal">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeModal('history-modal')">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Transaction History</h2>
+            <div class="header-action">
+                <button onclick="filterHistory()"><i class="fas fa-filter"></i></button>
+            </div>
+        </div>
+        <div class="modal-content">
+            <div class="history-tabs">
+                <button class="hist-tab active" data-type="all">All</button>
+                <button class="hist-tab" data-type="earning">Earnings</button>
+                <button class="hist-tab" data-type="withdraw">Withdrawals</button>
+            </div>
+            <div class="history-list" id="transaction-history">
+                <!-- Transactions loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboard-modal" class="modal">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeModal('leaderboard-modal')">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Leaderboard</h2>
+            <div class="header-action"></div>
+        </div>
+        <div class="modal-content">
+            <div class="lb-tabs">
+                <button class="lb-tab active" data-period="daily">Today</button>
+                <button class="lb-tab" data-period="weekly">This Week</button>
+                <button class="lb-tab" data-period="monthly">This Month</button>
+            </div>
+            <div class="lb-podium">
+                <div class="podium-item second">
+                    <div class="podium-avatar">2</div>
+                    <span class="podium-name" id="lb-2-name">--</span>
+                    <span class="podium-amount" id="lb-2-amount">₹0</span>
+                </div>
+                <div class="podium-item first">
+                    <i class="fas fa-crown"></i>
+                    <div class="podium-avatar">1</div>
+                    <span class="podium-name" id="lb-1-name">--</span>
+                    <span class="podium-amount" id="lb-1-amount">₹0</span>
+                </div>
+                <div class="podium-item third">
+                    <div class="podium-avatar">3</div>
+                    <span class="podium-name" id="lb-3-name">--</span>
+                    <span class="podium-amount" id="lb-3-amount">₹0</span>
+                </div>
+            </div>
+            <div class="lb-full-list" id="leaderboard-list">
+                <!-- Full leaderboard -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Modal -->
+    <div id="notifications-modal" class="modal">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeModal('notifications-modal')">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Notifications</h2>
+            <div class="header-action">
+                <button onclick="markAllRead()"><i class="fas fa-check-double"></i></button>
+            </div>
+        </div>
+        <div class="modal-content">
+            <div class="notifications-list" id="notifications-list">
+                <!-- Notifications loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-header">
+            <button class="back-btn" onclick="closeModal('settings-modal')">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Settings</h2>
+            <div class="header-action"></div>
+        </div>
+        <div class="modal-content">
+            <div class="settings-group">
+                <h4>Notifications</h4>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <span>Push Notifications</span>
+                        <p>Receive task and earning alerts</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="push-notif" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <span>Email Notifications</span>
+                        <p>Get updates via email</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="email-notif">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="settings-group">
+                <h4>Security</h4>
+                <div class="setting-item" onclick="changePassword()">
+                    <div class="setting-info">
+                        <span>Change Password</span>
+                        <p>Update your password</p>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="setting-item" onclick="setup2FA()">
+                    <div class="setting-info">
+                        <span>Two-Factor Auth</span>
+                        <p>Add extra security</p>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+            <div class="settings-group">
+                <h4>App</h4>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <span>Language</span>
+                        <p id="current-lang">Hindi</p>
+                    </div>
+                    <i class="fas fa-chevron-right" onclick="showLanguageModal()"></i>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <span>Dark Mode</span>
+                        <p>Enable dark theme</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="dark-mode" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="settings-group">
+                <h4>Account</h4>
+                <div class="setting-item danger" onclick="deleteAccount()">
+                    <div class="setting-info">
+                        <span>Delete Account</span>
+                        <p>Permanently delete your account</p>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Modal -->
+    <div id="language-modal" class="mini-modal">
+        <div class="mini-modal-content">
+            <h3>Select Language</h3>
+            <div class="language-options">
+                <div class="lang-option active" data-lang="hi" onclick="setLanguage('hi')">
+                    <span>हिंदी</span>
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="lang-option" data-lang="en" onclick="setLanguage('en')">
+                    <span>English</span>
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="lang-option" data-lang="ta" onclick="setLanguage('ta')">
+                    <span>தமிழ்</span>
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="lang-option" data-lang="te" onclick="setLanguage('te')">
+                    <span>తెలుగు</span>
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="lang-option" data-lang="bn" onclick="setLanguage('bn')">
+                    <span>বাংলা</span>
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="lang-option" data-lang="mr" onclick="setLanguage('mr')">
+                    <span>मराठी</span>
+                    <i class="fas fa-check"></i>
+                </div>
+            </div>
+            <button class="btn-secondary" onclick="closeLanguageModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i class="toast-icon fas fa-check-circle"></i>
+        <span class="toast-message">Success!</span>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
